@@ -17,11 +17,11 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private bool lockXZ;
     [SerializeField]
-    private Transform up;
+    private EggPartRotator up;
     [SerializeField]
-    private Transform mid;
+    private EggPartRotator mid;
     [SerializeField]
-    private Transform down;
+    private EggPartRotator down;
     [SerializeField]
     private List<PathFollower> ballListForward;
     [SerializeField]
@@ -31,8 +31,8 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private List<PathFollower> ballListRight;
 
-    private Vector3 _lastMousePosition = Vector3.negativeInfinity;
-    private State _state = State.None;
+    private Vector3 lastMousePosition = Vector3.negativeInfinity;
+    private State state = State.None;
 
     private enum State
     {
@@ -47,13 +47,13 @@ public class InputController : MonoBehaviour
         Camera
     }
 
-    public bool IsBallsMove => _state is State.Forward or State.Back or State.Left or State.Right;
+    public bool IsBallsMove => state is State.Forward or State.Back or State.Left or State.Right;
 
     private void Update()
     {
         if (!Input.GetMouseButton(0))
         {
-            _lastMousePosition = Input.mousePosition;
+            lastMousePosition = Input.mousePosition;
             
             foreach (var item in ballListForward)
                 item.speed = 0f;
@@ -64,13 +64,17 @@ public class InputController : MonoBehaviour
             foreach (var item in ballListRight)
                 item.speed = 0f;
 
-            _state = State.None;
+            state = State.None;
+            
+            up.StopRotateY();
+            mid.StopRotateY();            
+            down.StopRotateY();   
             
             return;
         }
         
         var ray = camera.ScreenPointToRay(Input.mousePosition);
-        var delta = Input.mousePosition - _lastMousePosition;
+        var delta = Input.mousePosition - lastMousePosition;
         
         var isBallHit = Physics.Raycast(ray, out var ballHit, 100, BallLayerMask);
         var isUpHit = Physics.Raycast(ray, out var upHit, 100, UpLayerMask);
@@ -82,33 +86,33 @@ public class InputController : MonoBehaviour
             if (isBallHit)
             {
                 if (ballHit.transform.CompareTag("Forward"))
-                    _state = State.Forward;
+                    state = State.Forward;
                 else if (ballHit.transform.CompareTag("Back"))
-                    _state = State.Back;
+                    state = State.Back;
                 else if (ballHit.transform.CompareTag("Left"))
-                    _state = State.Left;
+                    state = State.Left;
                 else if (ballHit.transform.CompareTag("Right"))
-                    _state = State.Right;
+                    state = State.Right;
             }
             else if (isUpHit)
             {
-                _state = State.Up;
+                state = State.Up;
             }
             else if (isMidHit)
             {
-                _state = State.Mid;
+                state = State.Mid;
             }
             else if (isDownHit)
             {
-                _state = State.Down;
+                state = State.Down;
             }
             else
             {
-                _state = State.Camera;
+                state = State.Camera;
             }
         }
 
-        switch (_state)
+        switch (state)
         {
             case State.Forward:
                 MoveBalls(ballListForward, delta);
@@ -134,7 +138,7 @@ public class InputController : MonoBehaviour
             case State.Camera:
                 MoveCamera(cameraRotator, delta);
                 break;
-            case State.None:
+            case State.None:         
                 break;
             default:
                 break;
@@ -147,14 +151,14 @@ public class InputController : MonoBehaviour
         {
             item.speed = -rotation.y  * 0.1f;
         }
-        _lastMousePosition = Input.mousePosition;
+        lastMousePosition = Input.mousePosition;
     }
 
-    private void MoveEggPart(Transform part, Vector3 rotation)
+    private void MoveEggPart(EggPartRotator part, Vector3 rotation)
     {
-        rotation = new Vector3(0f, -rotation.x, 0f);
-        part.Rotate(rotation);
-        _lastMousePosition = Input.mousePosition;
+        part.enabled = true;
+        part.RotateY(-rotation.x);
+        lastMousePosition = Input.mousePosition;
     }
 
     private void MoveCamera(Transform cameraParent, Vector3 rotation)
@@ -162,6 +166,6 @@ public class InputController : MonoBehaviour
         if (lockXZ)
             rotation = new Vector3(0f, rotation.x, 0f);
         cameraParent.Rotate(rotation);
-        _lastMousePosition = Input.mousePosition;
+        lastMousePosition = Input.mousePosition;
     }
 }
