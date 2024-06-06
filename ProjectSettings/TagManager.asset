@@ -20,13 +20,13 @@ TagManager:
   - Up
   - Mid
   - Down
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - UpForBall
+  - MidForBall
+  - DownForBall
+  - ForwardForBall
+  - BackForBall
+  - LeftForBall
+  - RightForBall
   - 
   - 
   - 
