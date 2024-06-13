@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using PathCreation.Examples;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InputController : MonoBehaviour
@@ -15,7 +16,7 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private Transform cameraRotator;
     [SerializeField]
-    private bool lockXZ;
+    private bool lockCameraXZ;
     [SerializeField]
     private EggPartRotator up;
     [SerializeField]
@@ -23,15 +24,16 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private EggPartRotator down;
     [SerializeField]
-    private List<PathFollower> ballListForward;
+    private BallsContainer ballsForward;
     [SerializeField]
-    private List<PathFollower> ballListBack;
+    private BallsContainer ballsBack;
     [SerializeField]
-    private List<PathFollower> ballListLeft;
+    private BallsContainer ballsLeft;
     [SerializeField]
-    private List<PathFollower> ballListRight;
+    private BallsContainer ballsRight;
 
     private Vector3 lastMousePosition = Vector3.negativeInfinity;
+    private Transform lastBallHit;
     private State state = State.None;
 
     private enum State
@@ -49,49 +51,54 @@ public class InputController : MonoBehaviour
 
     public bool IsBallsMove => state is State.Forward or State.Back or State.Left or State.Right;
 
+    private void Awake()
+    {
+        Input.multiTouchEnabled = false;
+    }
+
     private void Update()
     {
         if (!Input.GetMouseButton(0))
         {
             lastMousePosition = Input.mousePosition;
             
-            foreach (var item in ballListForward)
-                item.speed = 0f;
-            foreach (var item in ballListBack)
-                item.speed = 0f;
-            foreach (var item in ballListLeft)
-                item.speed = 0f;
-            foreach (var item in ballListRight)
-                item.speed = 0f;
-
             state = State.None;
-            
+
             up.StopRotateY();
             mid.StopRotateY();            
-            down.StopRotateY();   
+            down.StopRotateY();
+            ballsForward.CanMove = true;
+
+            lastBallHit = null;
             
             return;
         }
         
+        bool isUpHit;
+        bool isMidHit;
+        bool isDownHit;
+        bool isBallHit;
+        
         var ray = camera.ScreenPointToRay(Input.mousePosition);
-        var delta = Input.mousePosition - lastMousePosition;
-        
-        var isBallHit = Physics.Raycast(ray, out var ballHit, 100, BallLayerMask);
-        var isUpHit = Physics.Raycast(ray, out var upHit, 100, UpLayerMask);
-        var isMidHit = Physics.Raycast(ray, out var midHit, 100, MidLayerMask);
-        var isDownHit = Physics.Raycast(ray, out var downHit, 100, DownLayerMask);
-        
+
         if (Input.GetMouseButtonDown(0))
         {
+            isUpHit = Physics.Raycast(ray, 100, UpLayerMask);
+            isMidHit = Physics.Raycast(ray, 100, MidLayerMask);
+            isDownHit = Physics.Raycast(ray, 100, DownLayerMask);
+            isBallHit = Physics.Raycast(ray, out var ballHit, 100, BallLayerMask);
+
             if (isBallHit)
             {
-                if (ballHit.transform.CompareTag("Forward"))
+                lastBallHit = ballHit.transform.parent;
+
+                if (lastBallHit.CompareTag("Forward"))
                     state = State.Forward;
-                else if (ballHit.transform.CompareTag("Back"))
+                else if (lastBallHit.CompareTag("Back"))
                     state = State.Back;
-                else if (ballHit.transform.CompareTag("Left"))
+                else if (lastBallHit.CompareTag("Left"))
                     state = State.Left;
-                else if (ballHit.transform.CompareTag("Right"))
+                else if (lastBallHit.CompareTag("Right"))
                     state = State.Right;
             }
             else if (isUpHit)
@@ -112,19 +119,20 @@ public class InputController : MonoBehaviour
             }
         }
 
+        var delta = Input.mousePosition - lastMousePosition;
         switch (state)
         {
             case State.Forward:
-                MoveBalls(ballListForward, delta);
+                MoveBalls(ballsForward, delta, lastBallHit);
                 break;
             case State.Back:
-                MoveBalls(ballListBack, delta);
+                MoveBalls(ballsBack, delta, lastBallHit);
                 break;
             case State.Left:
-                MoveBalls(ballListLeft, delta);
+                MoveBalls(ballsLeft, delta, lastBallHit);
                 break;
             case State.Right:
-                MoveBalls(ballListRight, delta);
+                MoveBalls(ballsRight, delta, lastBallHit);
                 break;
             case State.Up:
                 MoveEggPart(up, delta);
@@ -145,27 +153,28 @@ public class InputController : MonoBehaviour
         }
     }
 
-    private void MoveBalls(List<PathFollower> pathFollowerList, Vector3 rotation)
+    private void MoveBalls(BallsContainer balls, Vector3 inputDelta, Transform hit)
     {
-        foreach (var item in pathFollowerList)
-        {
-            item.speed = -rotation.y  * 0.1f;
-        }
+        if (hit == null || lastMousePosition == Input.mousePosition)
+            return;
+
+        if (balls.CanMove)
+            balls.Move(Ball.InputDeltaToDelta(inputDelta, hit));
+            
         lastMousePosition = Input.mousePosition;
     }
 
-    private void MoveEggPart(EggPartRotator part, Vector3 rotation)
+    private void MoveEggPart(EggPartRotator part, Vector3 delta)
     {
-        part.enabled = true;
-        part.RotateY(-rotation.x);
+        part.RotateY(-delta.x);
         lastMousePosition = Input.mousePosition;
     }
 
-    private void MoveCamera(Transform cameraParent, Vector3 rotation)
+    private void MoveCamera(Transform cameraParent, Vector3 delta)
     {
-        if (lockXZ)
-            rotation = new Vector3(0f, rotation.x, 0f);
-        cameraParent.Rotate(rotation);
+        if (lockCameraXZ)
+            delta = new Vector3(0f, delta.x, 0f);
+        cameraParent.Rotate(delta);
         lastMousePosition = Input.mousePosition;
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 public class EggPartRotator : MonoBehaviour
 {
 
-    private const float STEP_OF_ROTATION = 90f;
+    private const float STEP = 90f;
 
     private Transform thisTransform;
     private bool aligning;
@@ -42,5 +42,5 @@ public class EggPartRotator : MonoBehaviour
     }
 
 
-    private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y / STEP_OF_ROTATION) * STEP_OF_ROTATION;
+    private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y / STEP) * STEP;
 }
