@@ -254,12 +254,6 @@ namespace PathCreation {
             return Mathf.Lerp (cumulativeLengthAtEachVertex[data.previousIndex], cumulativeLengthAtEachVertex[data.nextIndex], data.percentBetweenIndices);
         }
 
-        public float GetClosestDistanceAlongPath (Vector3 worldPoint, float t) {
-            Vector3 localPoint = MathUtility.InverseTransformPoint(worldPoint, transform, space);
-            TimeOnPathData data = CalculateClosestPointOnPathData(worldPoint);
-            return Mathf.Lerp (cumulativeLengthAtEachVertex[data.previousIndex], cumulativeLengthAtEachVertex[data.nextIndex], t);
-        }
-
         #endregion
 
         #region Internal methods
