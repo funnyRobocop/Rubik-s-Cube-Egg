@@ -77,21 +77,21 @@ public class InputController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             isUpHit = Physics.Raycast(ray, 100, Consts.UpLayerMask);
-            isMidHit = Physics.Raycast(ray, 100, Consts.MidLayerMask);
-            isDownHit = Physics.Raycast(ray, 100, Consts.DownLayerMask);
+            isMidHit = Physics.Raycast(ray, 100, Consts.MiddleLayerMask);
+            isDownHit = Physics.Raycast(ray, 100, Consts.BottomLayerMask);
             isBallHit = Physics.Raycast(ray, out var ballHit, 100, Consts.BallLayerMask);
 
             if (isBallHit)
             {
                 lastBallHit = ballHit.transform.parent;
 
-                if (lastBallHit.CompareTag("Forward"))
+                if (lastBallHit.CompareTag(Consts.ForwardTag))
                     state = State.Forward;
-                else if (lastBallHit.CompareTag("Back"))
+                else if (lastBallHit.CompareTag(Consts.BackTag))
                     state = State.Back;
-                else if (lastBallHit.CompareTag("Left"))
+                else if (lastBallHit.CompareTag(Consts.LeftTag))
                     state = State.Left;
-                else if (lastBallHit.CompareTag("Right"))
+                else if (lastBallHit.CompareTag(Consts.RightTag))
                     state = State.Right;
             }
             else if (isUpHit)
@@ -116,25 +116,25 @@ public class InputController : MonoBehaviour
         switch (state)
         {
             case State.Forward:
-                RotateBalls(forwardContainer, delta, lastBallHit);
+                RotateSideContainer(forwardContainer, delta, lastBallHit);
                 break;
             case State.Back:
-                RotateBalls(backContainer, delta, lastBallHit);
+                RotateSideContainer(backContainer, delta, lastBallHit);
                 break;
             case State.Left:
-                RotateBalls(leftContainer, delta, lastBallHit);
+                RotateSideContainer(leftContainer, delta, lastBallHit);
                 break;
             case State.Right:
-                RotateBalls(rightContainer, delta, lastBallHit);
+                RotateSideContainer(rightContainer, delta, lastBallHit);
                 break;
             case State.Up:
-                RotateEggPart(upContainer, delta);
+                RotateSegmentContainer(upContainer, delta);
                 break;
             case State.Middle:
-                RotateEggPart(middleContainer, delta);
+                RotateSegmentContainer(middleContainer, delta);
                 break;
             case State.Bottom:
-                RotateEggPart(bottomContainer, delta);
+                RotateSegmentContainer(bottomContainer, delta);
                 break;
             case State.Camera:
                 RotateCamera(cameraRotator, delta);
@@ -146,7 +146,7 @@ public class InputController : MonoBehaviour
         }
     }
 
-    private void RotateBalls(SideBallContainer container, Vector3 inputDelta, Transform hit)
+    private void RotateSideContainer(SideBallContainer container, Vector3 inputDelta, Transform hit)
     {
         if (hit == null || lastMousePosition == Input.mousePosition)
             return;
@@ -157,17 +157,18 @@ public class InputController : MonoBehaviour
         lastMousePosition = Input.mousePosition;
     }
 
-    private void RotateEggPart(SegmentBallContainer container, Vector3 inputDelta)
+    private void RotateSegmentContainer(SegmentBallContainer container, Vector3 inputDelta)
     {
         container.Rotate(inputDelta);
         lastMousePosition = Input.mousePosition;
     }
 
-    private void RotateCamera(Transform cameraParent, Vector3 delta)
+    private void RotateCamera(Transform cameraParent, Vector3 inputDelta)
     {
         if (lockCameraXZ)
-            delta = new Vector3(0f, delta.x, 0f);
-        cameraParent.Rotate(delta);
+            inputDelta = new Vector3(0f, inputDelta.x, 0f);
+            
+        cameraParent.Rotate(inputDelta);
         lastMousePosition = Input.mousePosition;
     }
 }
