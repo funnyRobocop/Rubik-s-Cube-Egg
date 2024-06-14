@@ -1,23 +1,27 @@
 using UnityEngine;
 
-public class TriggerController : MonoBehaviour
+
+namespace RubiksCubeEgg.Game
 {
-
-    [SerializeField]
-    private SideBallContainer container;
-
-    private void OnTriggerEnter(Collider other)
+    public class TriggerController : MonoBehaviour
     {
-        if (other.gameObject.layer == Consts.BallLayer)
+
+        [SerializeField]
+        private BallContainerBase container;
+
+        private void OnTriggerEnter(Collider other)
         {
-            container.Add(other.GetComponentInParent<Ball>());
+            if (other.gameObject.layer == Consts.BallLayer)
+            {
+                container.Add(other.GetComponentInParent<Ball>());
+            }
         }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.layer == Consts.BallLayer)
+        private void OnTriggerExit(Collider other)
         {
-            container.Remove(other.GetComponentInParent<Ball>());
+            if (other.gameObject.layer == Consts.BallLayer)
+            {
+                container.Remove(other.GetComponentInParent<Ball>());
+            }
         }
     }
 }

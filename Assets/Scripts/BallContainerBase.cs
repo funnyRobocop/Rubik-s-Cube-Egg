@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class BallContainerBase : MonoBehaviour
+namespace RubiksCubeEgg.Game
 {
-    public virtual void Add(Ball ball) {}
-    public virtual void Remove(Ball ball) {}
+    public class BallContainerBase : MonoBehaviour
+    {
+        public virtual void Add(Ball ball) {}
+        public virtual void Remove(Ball ball) {}
+    }
 }
