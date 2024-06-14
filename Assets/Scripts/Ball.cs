@@ -7,6 +7,7 @@ namespace RubiksCubeEgg.Game
 {
     public class Ball : MonoBehaviour
     {
+        public event Action OnDistanceTravellReached;
 
         [SerializeField]
         private EndOfPathInstruction endOfPathInstruction;
@@ -70,7 +71,18 @@ namespace RubiksCubeEgg.Game
             {
                 ThisTransform.position = pathCreator.path.GetPointAtDistance(goalDistanceTravelled, endOfPathInstruction);
                 enabled = false;
+                OnDistanceTravellReached?.Invoke();
             }
+        }
+
+        private void OnDestroy()
+        {
+            OnDistanceTravellReached = null;
+        }
+        
+        public void Init(Action onRotationFinished)
+        {
+            OnDistanceTravellReached += onRotationFinished;
         }
 
         public void SetGoalPos(int delta)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ namespace RubiksCubeEgg.Game
 {
     public class SegmentBallContainer : BallContainerBase
     {
+
+        public event Action OnAligningFinished;
         
         [SerializeField]
         private List<Ball> ballList;
@@ -25,6 +28,11 @@ namespace RubiksCubeEgg.Game
                 return;
 
             AlignRotation(CalculateGoalY);
+
+            if (Mathf.Abs(CalculateGoalY - thisTransform.localRotation.eulerAngles.y) < float.Epsilon)
+            {
+                OnAligningFinished?.Invoke();
+            }
         }
 
         public override void Add(Ball ball)
@@ -55,9 +63,9 @@ namespace RubiksCubeEgg.Game
             needAligning = true;
         }
         
-        private void AlignRotation(float goal)
+        private void AlignRotation(float goalY)
         {
-            float deltaY = goal - thisTransform.localRotation.eulerAngles.y;
+            var deltaY = goalY - thisTransform.localRotation.eulerAngles.y;
             thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotSpeed, 0f));
         }
 

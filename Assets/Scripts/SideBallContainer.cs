@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using PathCreation;
 using UnityEngine;
@@ -7,6 +8,7 @@ namespace RubiksCubeEgg.Game
 {
     public class SideBallContainer : BallContainerBase
     {
+        
 
         [SerializeField]
         private List<Ball> ballList;
@@ -16,6 +18,12 @@ namespace RubiksCubeEgg.Game
 
         public bool CanMove {get;set;}
 
+
+        public void Init(Action onRotationFinished)
+        {
+            foreach (var item in ballList)
+                item.Init(onRotationFinished);
+        }
 
         public override void Add(Ball ball)
         {
