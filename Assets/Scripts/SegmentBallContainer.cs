@@ -49,6 +49,7 @@ namespace RubiksCubeEgg.Game
             needAligning = false;
             thisTransform.Rotate(new Vector3(0f, -delta.x, 0f));
         }
+
         public void Stop()
         {
             needAligning = true;
@@ -57,9 +58,8 @@ namespace RubiksCubeEgg.Game
         private void AlignRotation(float goal)
         {
             float deltaY = goal - thisTransform.localRotation.eulerAngles.y;
-            thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotStep, 0f));
+            thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotSpeed, 0f));
         }
-
 
         private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y / Consts.SegmentRotStep) * Consts.SegmentRotStep;        
     }
