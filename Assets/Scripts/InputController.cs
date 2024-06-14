@@ -68,6 +68,9 @@ public class InputController : MonoBehaviour
             mid.StopRotateY();            
             down.StopRotateY();
             ballsForward.CanMove = true;
+            ballsBack.CanMove = true;
+            ballsLeft.CanMove = true;
+            ballsRight.CanMove = true;
 
             lastBallHit = null;
             
@@ -123,28 +126,28 @@ public class InputController : MonoBehaviour
         switch (state)
         {
             case State.Forward:
-                MoveBalls(ballsForward, delta, lastBallHit);
+                RotateBalls(ballsForward, delta, lastBallHit);
                 break;
             case State.Back:
-                MoveBalls(ballsBack, delta, lastBallHit);
+                RotateBalls(ballsBack, delta, lastBallHit);
                 break;
             case State.Left:
-                MoveBalls(ballsLeft, delta, lastBallHit);
+                RotateBalls(ballsLeft, delta, lastBallHit);
                 break;
             case State.Right:
-                MoveBalls(ballsRight, delta, lastBallHit);
+                RotateBalls(ballsRight, delta, lastBallHit);
                 break;
             case State.Up:
-                MoveEggPart(up, delta);
+                RotateEggPart(up, delta);
                 break;
             case State.Mid:
-                MoveEggPart(mid, delta);
+                RotateEggPart(mid, delta);
                 break;
             case State.Down:
-                MoveEggPart(down, delta);
+                RotateEggPart(down, delta);
                 break;
             case State.Camera:
-                MoveCamera(cameraRotator, delta);
+                RotateCamera(cameraRotator, delta);
                 break;
             case State.None:         
                 break;
@@ -153,7 +156,7 @@ public class InputController : MonoBehaviour
         }
     }
 
-    private void MoveBalls(BallsContainer balls, Vector3 inputDelta, Transform hit)
+    private void RotateBalls(BallsContainer balls, Vector3 inputDelta, Transform hit)
     {
         if (hit == null || lastMousePosition == Input.mousePosition)
             return;
@@ -164,13 +167,13 @@ public class InputController : MonoBehaviour
         lastMousePosition = Input.mousePosition;
     }
 
-    private void MoveEggPart(EggPartRotator part, Vector3 delta)
+    private void RotateEggPart(EggPartRotator part, Vector3 delta)
     {
-        part.RotateY(-delta.x);
+        part.Rotate(delta);
         lastMousePosition = Input.mousePosition;
     }
 
-    private void MoveCamera(Transform cameraParent, Vector3 delta)
+    private void RotateCamera(Transform cameraParent, Vector3 delta)
     {
         if (lockCameraXZ)
             delta = new Vector3(0f, delta.x, 0f);

@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using PathCreation;
-using PathCreation.Examples;
 using UnityEngine;
 
-public class BallsContainer : MonoBehaviour
+public class BallsContainer : BallsContainerBase
 {
 
     [SerializeField]
@@ -15,7 +14,7 @@ public class BallsContainer : MonoBehaviour
 
     public bool CanMove {get;set;}
 
-        
+
     public void Move(int delta)
     {
         if (!CanMove)
@@ -27,5 +26,23 @@ public class BallsContainer : MonoBehaviour
         }
 
         CanMove = false;
+    }
+
+    public override void Add(Ball ball)
+    {
+        base.Add(ball);
+        if (!ballList.Contains(ball))
+        {
+            ballList.Add(ball);
+            ball.SetPathCreator(pathCreator);
+            ball.tag = tag;
+        }
+    }
+
+    public override void Remove(Ball ball)
+    {
+        base.Remove(ball);
+        if (ballList.Contains(ball))
+            ballList.Remove(ball);
     }
 }

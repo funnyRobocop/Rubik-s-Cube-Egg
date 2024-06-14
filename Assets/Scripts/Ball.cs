@@ -40,7 +40,7 @@ public class Ball : MonoBehaviour
                     delta = (int)Mathf.Sign(xDelta);
             }
                 
-            //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
+            Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
         }
         else
         {
@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour
                     delta = (int)Mathf.Sign(yDelta);
             }
                 
-            //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
+            Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
         }
 
         return delta;
@@ -87,11 +87,8 @@ public class Ball : MonoBehaviour
         enabled = true;
     }
 
-    public void SetPathCreator(PathCreator pathCreator, float distanceTravelled)
+    public void SetPathCreator(PathCreator pathCreator)
     {
         this.pathCreator = pathCreator;
-        this.distanceTravelled = distanceTravelled;
-
-        transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
     }
 }

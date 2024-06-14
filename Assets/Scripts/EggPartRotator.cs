@@ -25,10 +25,10 @@ public class EggPartRotator : MonoBehaviour
     }
 
     
-    public void RotateY(float delta)
+    public void Rotate(Vector3 delta)
     {
         aligning = false;
-        thisTransform.Rotate(new Vector3(0f, delta, 0f));
+        thisTransform.Rotate(new Vector3(0f, -delta.x, 0f));
     }
     public void StopRotateY()
     {
