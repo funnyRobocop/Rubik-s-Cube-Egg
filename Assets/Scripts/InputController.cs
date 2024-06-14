@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using PathCreation.Examples;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class InputController : MonoBehaviour
 {
-    private const int BallLayerMask = 1 << 6;
-    private const int UpLayerMask = 1 << 7;
-    private const int MidLayerMask = 1 << 8;
-    private const int DownLayerMask = 1 << 9;
     
     [SerializeField]
     private new Camera camera;
@@ -18,19 +10,19 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private bool lockCameraXZ;
     [SerializeField]
-    private EggPartRotator up;
+    private SegmentBallContainer up;
     [SerializeField]
-    private EggPartRotator mid;
+    private SegmentBallContainer mid;
     [SerializeField]
-    private EggPartRotator down;
+    private SegmentBallContainer down;
     [SerializeField]
-    private BallsContainer ballsForward;
+    private SideBallContainer ballsForward;
     [SerializeField]
-    private BallsContainer ballsBack;
+    private SideBallContainer ballsBack;
     [SerializeField]
-    private BallsContainer ballsLeft;
+    private SideBallContainer ballsLeft;
     [SerializeField]
-    private BallsContainer ballsRight;
+    private SideBallContainer ballsRight;
 
     private Vector3 lastMousePosition = Vector3.negativeInfinity;
     private Transform lastBallHit;
@@ -48,8 +40,6 @@ public class InputController : MonoBehaviour
         Down,
         Camera
     }
-
-    public bool IsBallsMove => state is State.Forward or State.Back or State.Left or State.Right;
 
     private void Awake()
     {
@@ -86,10 +76,10 @@ public class InputController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            isUpHit = Physics.Raycast(ray, 100, UpLayerMask);
-            isMidHit = Physics.Raycast(ray, 100, MidLayerMask);
-            isDownHit = Physics.Raycast(ray, 100, DownLayerMask);
-            isBallHit = Physics.Raycast(ray, out var ballHit, 100, BallLayerMask);
+            isUpHit = Physics.Raycast(ray, 100, Consts.UpLayerMask);
+            isMidHit = Physics.Raycast(ray, 100, Consts.MidLayerMask);
+            isDownHit = Physics.Raycast(ray, 100, Consts.DownLayerMask);
+            isBallHit = Physics.Raycast(ray, out var ballHit, 100, Consts.BallLayerMask);
 
             if (isBallHit)
             {
@@ -156,20 +146,20 @@ public class InputController : MonoBehaviour
         }
     }
 
-    private void RotateBalls(BallsContainer balls, Vector3 inputDelta, Transform hit)
+    private void RotateBalls(SideBallContainer container, Vector3 inputDelta, Transform hit)
     {
         if (hit == null || lastMousePosition == Input.mousePosition)
             return;
 
-        if (balls.CanMove)
-            balls.Move(Ball.InputDeltaToDelta(inputDelta, hit));
+        if (container.CanMove)
+            container.Move(Ball.InputDeltaToDirection(inputDelta, hit));
             
         lastMousePosition = Input.mousePosition;
     }
 
-    private void RotateEggPart(EggPartRotator part, Vector3 delta)
+    private void RotateEggPart(SegmentBallContainer container, Vector3 inputDelta)
     {
-        part.Rotate(delta);
+        container.Rotate(inputDelta);
         lastMousePosition = Input.mousePosition;
     }
 

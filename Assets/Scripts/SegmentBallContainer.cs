@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EggPartRotator : MonoBehaviour
+public class SegmentBallContainer : MonoBehaviour
 {
 
     private const float STEP = 90f;

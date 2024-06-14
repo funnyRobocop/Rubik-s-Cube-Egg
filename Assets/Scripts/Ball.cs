@@ -16,7 +16,7 @@ public class Ball : MonoBehaviour
     private PathCreator pathCreator;
 
     private float goalDistanceTravelled;
-    private int signMoving;
+    private int direction;
 
     void Awake()
     {
@@ -24,7 +24,7 @@ public class Ball : MonoBehaviour
         enabled = false;
     }
 
-    public static int InputDeltaToDelta(Vector3 inputDelta, Transform tr)
+    public static int InputDeltaToDirection(Vector3 inputDelta, Transform tr)
     {
         int delta = 0;
 
@@ -40,7 +40,7 @@ public class Ball : MonoBehaviour
                     delta = (int)Mathf.Sign(xDelta);
             }
                 
-            Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
+            //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
         }
         else
         {
@@ -54,13 +54,13 @@ public class Ball : MonoBehaviour
                     delta = (int)Mathf.Sign(yDelta);
             }
                 
-            Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
+            //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
         }
 
         return delta;
     }
 
-    void Update()
+    private void Update()
     {
         if (pathCreator == null || goalDistanceTravelled == distanceTravelled)
         {
@@ -70,7 +70,7 @@ public class Ball : MonoBehaviour
 
         if (Mathf.Abs(goalDistanceTravelled - distanceTravelled) > speed * Time.deltaTime)
         {
-            distanceTravelled += speed * Time.deltaTime * signMoving;
+            distanceTravelled += speed * Time.deltaTime * direction;
             transform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
         }
         else
@@ -82,7 +82,7 @@ public class Ball : MonoBehaviour
 
     public void SetGoalPos(int delta)
     {
-        signMoving = delta;
+        direction = delta;
         goalDistanceTravelled += STEP * delta;
         enabled = true;
     }

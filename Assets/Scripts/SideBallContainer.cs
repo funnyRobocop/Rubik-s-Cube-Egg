@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PathCreation;
 using UnityEngine;
 
-public class BallsContainer : BallsContainerBase
+public class SideBallContainer : BallContainerBase
 {
 
     [SerializeField]

@@ -273,7 +273,7 @@ GameObject:
   - component: {fileID: 163925527}
   - component: {fileID: 163925528}
   m_Layer: 0
-  m_Name: BallsLeft
+  m_Name: Left
   m_TagString: Left
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -517,7 +517,7 @@ GameObject:
   - component: {fileID: 519737912}
   - component: {fileID: 519737913}
   m_Layer: 0
-  m_Name: BallsRight
+  m_Name: Right
   m_TagString: Right
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -807,7 +807,7 @@ GameObject:
   - component: {fileID: 750346537}
   - component: {fileID: 750346538}
   m_Layer: 0
-  m_Name: Down
+  m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -915,7 +915,7 @@ GameObject:
   - component: {fileID: 887722380}
   - component: {fileID: 887722381}
   m_Layer: 12
-  m_Name: Down
+  m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1404,7 +1404,7 @@ GameObject:
   - component: {fileID: 1342581533}
   - component: {fileID: 1342581534}
   m_Layer: 11
-  m_Name: Mid
+  m_Name: Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1457,7 +1457,7 @@ GameObject:
   - component: {fileID: 1397170034}
   - component: {fileID: 1397170035}
   m_Layer: 0
-  m_Name: Mid
+  m_Name: Middle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1653,8 +1653,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1542618510}
   - component: {fileID: 1542618511}
-  - component: {fileID: 1542618512}
   - component: {fileID: 1542618513}
+  - component: {fileID: 1542618512}
   m_Layer: 14
   m_Name: Back
   m_TagString: Untagged
@@ -1749,7 +1749,7 @@ GameObject:
   - component: {fileID: 1653300879}
   - component: {fileID: 1653300880}
   m_Layer: 0
-  m_Name: BallsBack
+  m_Name: Back
   m_TagString: Back
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1795,8 +1795,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1743194671}
   - component: {fileID: 1743194672}
-  - component: {fileID: 1743194673}
   - component: {fileID: 1743194674}
+  - component: {fileID: 1743194673}
   m_Layer: 15
   m_Name: Left
   m_TagString: Untagged
@@ -2017,8 +2017,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2091343199}
   - component: {fileID: 2091343200}
-  - component: {fileID: 2091343201}
   - component: {fileID: 2091343202}
+  - component: {fileID: 2091343201}
   m_Layer: 13
   m_Name: Forward
   m_TagString: Untagged
@@ -2112,8 +2112,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2146147379}
   - component: {fileID: 2146147380}
-  - component: {fileID: 2146147381}
   - component: {fileID: 2146147382}
+  - component: {fileID: 2146147381}
   m_Layer: 16
   m_Name: Right
   m_TagString: Untagged
@@ -2225,7 +2225,7 @@ GameObject:
   - component: {fileID: 6617367190842197843}
   - component: {fileID: 6617367190842197844}
   m_Layer: 0
-  m_Name: BallsForward
+  m_Name: Forward
   m_TagString: Forward
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
