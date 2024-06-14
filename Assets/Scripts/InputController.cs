@@ -10,19 +10,19 @@ public class InputController : MonoBehaviour
     [SerializeField]
     private bool lockCameraXZ;
     [SerializeField]
-    private SegmentBallContainer up;
+    private SegmentBallContainer upContainer;
     [SerializeField]
-    private SegmentBallContainer mid;
+    private SegmentBallContainer middleContainer;
     [SerializeField]
-    private SegmentBallContainer down;
+    private SegmentBallContainer bottomContainer;
     [SerializeField]
-    private SideBallContainer ballsForward;
+    private SideBallContainer forwardContainer;
     [SerializeField]
-    private SideBallContainer ballsBack;
+    private SideBallContainer backContainer;
     [SerializeField]
-    private SideBallContainer ballsLeft;
+    private SideBallContainer leftContainer;
     [SerializeField]
-    private SideBallContainer ballsRight;
+    private SideBallContainer rightContainer;
 
     private Vector3 lastMousePosition = Vector3.negativeInfinity;
     private Transform lastBallHit;
@@ -36,8 +36,8 @@ public class InputController : MonoBehaviour
         Left,
         Right,
         Up,
-        Mid,
-        Down,
+        Middle,
+        Bottom,
         Camera
     }
 
@@ -54,13 +54,13 @@ public class InputController : MonoBehaviour
             
             state = State.None;
 
-            up.StopRotateY();
-            mid.StopRotateY();            
-            down.StopRotateY();
-            ballsForward.CanMove = true;
-            ballsBack.CanMove = true;
-            ballsLeft.CanMove = true;
-            ballsRight.CanMove = true;
+            upContainer.Stop();
+            middleContainer.Stop();            
+            bottomContainer.Stop();
+            forwardContainer.CanMove = true;
+            backContainer.CanMove = true;
+            leftContainer.CanMove = true;
+            rightContainer.CanMove = true;
 
             lastBallHit = null;
             
@@ -100,11 +100,11 @@ public class InputController : MonoBehaviour
             }
             else if (isMidHit)
             {
-                state = State.Mid;
+                state = State.Middle;
             }
             else if (isDownHit)
             {
-                state = State.Down;
+                state = State.Bottom;
             }
             else
             {
@@ -116,25 +116,25 @@ public class InputController : MonoBehaviour
         switch (state)
         {
             case State.Forward:
-                RotateBalls(ballsForward, delta, lastBallHit);
+                RotateBalls(forwardContainer, delta, lastBallHit);
                 break;
             case State.Back:
-                RotateBalls(ballsBack, delta, lastBallHit);
+                RotateBalls(backContainer, delta, lastBallHit);
                 break;
             case State.Left:
-                RotateBalls(ballsLeft, delta, lastBallHit);
+                RotateBalls(leftContainer, delta, lastBallHit);
                 break;
             case State.Right:
-                RotateBalls(ballsRight, delta, lastBallHit);
+                RotateBalls(rightContainer, delta, lastBallHit);
                 break;
             case State.Up:
-                RotateEggPart(up, delta);
+                RotateEggPart(upContainer, delta);
                 break;
-            case State.Mid:
-                RotateEggPart(mid, delta);
+            case State.Middle:
+                RotateEggPart(middleContainer, delta);
                 break;
-            case State.Down:
-                RotateEggPart(down, delta);
+            case State.Bottom:
+                RotateEggPart(bottomContainer, delta);
                 break;
             case State.Camera:
                 RotateCamera(cameraRotator, delta);

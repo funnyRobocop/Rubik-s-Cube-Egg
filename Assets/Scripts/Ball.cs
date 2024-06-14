@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    private const float STEP = 0.375f;
 
     [SerializeField]
     private EndOfPathInstruction endOfPathInstruction;
@@ -83,7 +82,7 @@ public class Ball : MonoBehaviour
     public void SetGoalPos(int delta)
     {
         direction = delta;
-        goalDistanceTravelled += STEP * delta;
+        goalDistanceTravelled += Consts.SideRotStep * delta;
         enabled = true;
     }
 

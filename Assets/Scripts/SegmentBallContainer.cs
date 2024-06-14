@@ -3,8 +3,6 @@ using UnityEngine;
 public class SegmentBallContainer : MonoBehaviour
 {
 
-    private const float STEP = 90f;
-
     private Transform thisTransform;
     private bool aligning;
 
@@ -30,7 +28,7 @@ public class SegmentBallContainer : MonoBehaviour
         aligning = false;
         thisTransform.Rotate(new Vector3(0f, -delta.x, 0f));
     }
-    public void StopRotateY()
+    public void Stop()
     {
         aligning = true;
     }
@@ -42,5 +40,5 @@ public class SegmentBallContainer : MonoBehaviour
     }
 
 
-    private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y / STEP) * STEP;
+    private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y /Consts.SegmentRotStep) * Consts.SegmentRotStep;
 }
