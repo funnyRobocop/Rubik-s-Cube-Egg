@@ -7,14 +7,11 @@ namespace RubiksCubeEgg.Game
 {
     public class SegmentBallContainer : BallContainerBase
     {
-
-        public event Action OnAligningFinished;
         
         [SerializeField]
         private List<Ball> ballList;
 
         private Transform thisTransform;
-        private bool needAligning;
 
 
         void Awake()
@@ -24,14 +21,11 @@ namespace RubiksCubeEgg.Game
 
         void Update()
         {
-            if (!needAligning)
-                return;
-
             AlignRotation(CalculateGoalY);
 
             if (Mathf.Abs(CalculateGoalY - thisTransform.localRotation.eulerAngles.y) < float.Epsilon)
             {
-                OnAligningFinished?.Invoke();
+                OnAligningFinish();
             }
         }
 
@@ -54,19 +48,28 @@ namespace RubiksCubeEgg.Game
         
         public void Rotate(Vector3 delta)
         {
-            needAligning = false;
+            enabled = false;
             thisTransform.Rotate(new Vector3(0f, -delta.x, 0f));
         }
 
         public void Stop()
         {
-            needAligning = true;
+            enabled = true;
         }
         
         private void AlignRotation(float goalY)
         {
             var deltaY = goalY - thisTransform.localRotation.eulerAngles.y;
             thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotSpeed, 0f));
+        }
+
+        private void OnAligningFinish()
+        {
+            enabled = false;
+            foreach (var item in ballList)
+            {
+                item.ThisTransform.localRotation = Quaternion.identity;
+            }
         }
 
         private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y / Consts.SegmentRotStep) * Consts.SegmentRotStep;        

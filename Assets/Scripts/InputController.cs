@@ -32,7 +32,6 @@ namespace RubiksCubeEgg.Game
         private Transform lastBallHit;
         private State state;
 
-        public bool IsLocked { get; set; }
 
         private enum State
         {
@@ -50,22 +49,6 @@ namespace RubiksCubeEgg.Game
         private void Awake()
         {
             Input.multiTouchEnabled = false;
-
-            upContainer.OnAligningFinished += UnlockInput;
-            middleContainer.OnAligningFinished += UnlockInput;
-            bottomContainer.OnAligningFinished += UnlockInput;
-
-            forwardContainer.Init(UnlockInput);
-            backContainer.Init(UnlockInput);
-            leftContainer.Init(UnlockInput);
-            rightContainer.Init(UnlockInput);
-        }
-
-        private void OnDestroy()
-        {
-            upContainer.OnAligningFinished -= UnlockInput;
-            middleContainer.OnAligningFinished -= UnlockInput;
-            bottomContainer.OnAligningFinished -= UnlockInput;
         }
 
         private void Update()
@@ -171,20 +154,18 @@ namespace RubiksCubeEgg.Game
 
         private void RotateSideContainer(SideBallContainer container, Vector3 inputDelta, Transform hit)
         {
-            if (hit == null || lastMousePosition == Input.mousePosition || !container.CanMove && IsLocked)
+            if (hit == null || lastMousePosition == Input.mousePosition || !container.CanMove)
                 return;
 
-            LockInput();
             container.Move(Ball.InputDeltaToDirection(inputDelta, hit));
             lastMousePosition = Input.mousePosition;             
         }
 
         private void RotateSegmentContainer(SegmentBallContainer container, Vector3 inputDelta)
         {
-            if (lastMousePosition == Input.mousePosition || IsLocked)
+            if (lastMousePosition == Input.mousePosition)
                 return;
 
-            LockInput();
             container.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
         }
@@ -196,16 +177,6 @@ namespace RubiksCubeEgg.Game
 
             cameraParent.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
-        }
-
-        private void LockInput()
-        {
-            IsLocked = true;
-        }
-
-        private void UnlockInput()
-        {
-            IsLocked = false;
         }
     }
 }

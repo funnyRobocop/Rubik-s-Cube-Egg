@@ -7,7 +7,6 @@ namespace RubiksCubeEgg.Game
 {
     public class Ball : MonoBehaviour
     {
-        public event Action OnDistanceTravellReached;
 
         [SerializeField]
         private EndOfPathInstruction endOfPathInstruction;
@@ -17,7 +16,7 @@ namespace RubiksCubeEgg.Game
         private PathCreator pathCreator;
 
         private float goalDistanceTravelled;
-        private int direction;
+        private int direction;  
 
         public Transform ThisTransform { get; private set; }
 
@@ -36,19 +35,19 @@ namespace RubiksCubeEgg.Game
             {
                 var xDelta = Mathf.RoundToInt(inputDelta.x);
 
-                if (xDelta != 0)
-                    delta = tr.localPosition.y > 0 ? (int)-Mathf.Sign(xDelta) : (int)Mathf.Sign(xDelta);
+                if (xDelta != 0f)
+                    delta = tr.localPosition.y > 0f ? (int)-Mathf.Sign(xDelta) : (int)Mathf.Sign(xDelta);
                     
-                //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
+                Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
             }
             else
             {
                 var yDelta = Mathf.RoundToInt(inputDelta.y);
                 
-                if (yDelta != 0)
-                    delta = tr.localPosition.z > 0 ? (int)-Mathf.Sign(yDelta) : (int)Mathf.Sign(yDelta);
+                if (yDelta != 0f)
+                    delta = tr.localPosition.z > 0f ? (int)-Mathf.Sign(yDelta) : (int)Mathf.Sign(yDelta);
                     
-                //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
+                Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
             }
 
             return delta;
@@ -58,7 +57,7 @@ namespace RubiksCubeEgg.Game
         {
             if (pathCreator == null || goalDistanceTravelled == distanceTravelled)
             {
-                enabled = false;
+                OnGoalDistanceTravelledReach();
                 return;
             }
 
@@ -70,19 +69,8 @@ namespace RubiksCubeEgg.Game
             else
             {
                 ThisTransform.position = pathCreator.path.GetPointAtDistance(goalDistanceTravelled, endOfPathInstruction);
-                enabled = false;
-                OnDistanceTravellReached?.Invoke();
+                OnGoalDistanceTravelledReach();
             }
-        }
-
-        private void OnDestroy()
-        {
-            OnDistanceTravellReached = null;
-        }
-        
-        public void Init(Action onRotationFinished)
-        {
-            OnDistanceTravellReached += onRotationFinished;
         }
 
         public void SetGoalPos(int delta)
@@ -95,6 +83,12 @@ namespace RubiksCubeEgg.Game
         public void SetPathCreator(PathCreator pathCreator)
         {
             this.pathCreator = pathCreator;
+        }
+
+        private void OnGoalDistanceTravelledReach()
+        {
+            enabled = false;
+            ThisTransform.localRotation = Quaternion.identity;
         }
     }
 }

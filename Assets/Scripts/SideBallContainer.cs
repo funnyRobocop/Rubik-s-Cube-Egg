@@ -19,12 +19,6 @@ namespace RubiksCubeEgg.Game
         public bool CanMove {get;set;}
 
 
-        public void Init(Action onRotationFinished)
-        {
-            foreach (var item in ballList)
-                item.Init(onRotationFinished);
-        }
-
         public override void Add(Ball ball)
         {
             base.Add(ball);
@@ -54,6 +48,6 @@ namespace RubiksCubeEgg.Game
             }
 
             CanMove = false;
-        }
+        } 
     }
 }
