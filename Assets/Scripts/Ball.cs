@@ -68,6 +68,7 @@ namespace RubiksCubeEgg.Game
             }
             else
             {
+                distanceTravelled += Consts.SideRotSpeed * Time.deltaTime * direction;
                 ThisTransform.position = pathCreator.path.GetPointAtDistance(goalDistanceTravelled, endOfPathInstruction);
                 OnGoalDistanceTravelledReach();
             }

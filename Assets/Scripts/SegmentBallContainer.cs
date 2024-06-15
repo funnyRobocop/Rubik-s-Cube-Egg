@@ -45,6 +45,14 @@ namespace RubiksCubeEgg.Game
             if (ballList.Contains(ball))
                 ballList.Remove(ball);
         }
+
+        public void OnRotateStart()
+        {
+            foreach (var item in ballList)
+            {
+                item.ThisTransform.SetParent(thisTransform);
+            }
+        }
         
         public void Rotate(Vector3 delta)
         {

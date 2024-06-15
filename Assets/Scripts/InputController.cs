@@ -55,13 +55,14 @@ namespace RubiksCubeEgg.Game
         {
             if (!Input.GetMouseButton(0))
             {
-                lastMousePosition = Input.mousePosition;
-                
-                state = State.None;
+                lastMousePosition = Input.mousePosition;                
 
-                upContainer.Stop();
-                middleContainer.Stop();            
-                bottomContainer.Stop();
+                if (state == State.Up || state == State.Middle|| state == State.Bottom)
+                {
+                    upContainer.Stop();
+                    middleContainer.Stop();            
+                    bottomContainer.Stop();
+                }
 
                 forwardContainer.CanMove = true;
                 backContainer.CanMove = true;
@@ -70,6 +71,8 @@ namespace RubiksCubeEgg.Game
 
                 lastBallHit = null;
                 
+                state = State.None;
+
                 return;
             }
             
@@ -157,7 +160,8 @@ namespace RubiksCubeEgg.Game
             if (hit == null || lastMousePosition == Input.mousePosition || !container.CanMove)
                 return;
 
-            container.Move(Ball.InputDeltaToDirection(inputDelta, hit));
+            container.OnRotateStart();
+            container.Rotate(Ball.InputDeltaToDirection(inputDelta, hit));
             lastMousePosition = Input.mousePosition;             
         }
 
@@ -166,6 +170,7 @@ namespace RubiksCubeEgg.Game
             if (lastMousePosition == Input.mousePosition)
                 return;
 
+            container.OnRotateStart();
             container.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
         }

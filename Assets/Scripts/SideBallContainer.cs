@@ -7,17 +7,21 @@ using UnityEngine;
 namespace RubiksCubeEgg.Game
 {
     public class SideBallContainer : BallContainerBase
-    {
-        
+    {        
 
         [SerializeField]
         private List<Ball> ballList;
-
         [SerializeField]
         private PathCreator pathCreator;
 
+        private Transform thisTransform;
+
         public bool CanMove {get;set;}
 
+        void Awake()
+        {
+            thisTransform = GetComponent<Transform>();
+        }
 
         public override void Add(Ball ball)
         {
@@ -37,7 +41,15 @@ namespace RubiksCubeEgg.Game
                 ballList.Remove(ball);
         }
 
-        public void Move(int delta)
+        public void OnRotateStart()
+        {
+            foreach (var item in ballList)
+            {
+                item.ThisTransform.SetParent(thisTransform);
+            }
+        }
+
+        public void Rotate(int delta)
         {
             if (!CanMove)
                 return;
