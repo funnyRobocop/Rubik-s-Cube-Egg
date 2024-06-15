@@ -16,7 +16,7 @@ namespace RubiksCubeEgg.Game
         private PathCreator pathCreator;
 
         private float goalDistanceTravelled;
-        private int direction;  
+        private int direction;
 
         public Transform ThisTransform { get; private set; }
 
@@ -38,7 +38,7 @@ namespace RubiksCubeEgg.Game
                 if (xDelta != 0f)
                     delta = tr.localPosition.y > 0f ? (int)-Mathf.Sign(xDelta) : (int)Mathf.Sign(xDelta);
                     
-                Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
+                //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundX: {3}", tr.name, tr.transform.localPosition, inputDelta, xDelta);   
             }
             else
             {
@@ -47,7 +47,7 @@ namespace RubiksCubeEgg.Game
                 if (yDelta != 0f)
                     delta = tr.localPosition.z > 0f ? (int)-Mathf.Sign(yDelta) : (int)Mathf.Sign(yDelta);
                     
-                Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
+                //Debug.LogFormat("go: {0} pos: {1} inputDelta: {2} RoundY: {3}", tr.name, tr.transform.localPosition, inputDelta, yDelta);   
             }
 
             return delta;
@@ -55,12 +55,6 @@ namespace RubiksCubeEgg.Game
 
         private void Update()
         {
-            if (pathCreator == null || goalDistanceTravelled == distanceTravelled)
-            {
-                OnGoalDistanceTravelledReach();
-                return;
-            }
-
             if (Mathf.Abs(goalDistanceTravelled - distanceTravelled) > Consts.SideRotSpeed * Time.deltaTime)
             {
                 distanceTravelled += Consts.SideRotSpeed * Time.deltaTime * direction;

@@ -51,9 +51,6 @@ namespace RubiksCubeEgg.Game
 
         public void Rotate(int delta)
         {
-            if (!CanMove)
-                return;
-
             foreach (var item in ballList)
             {
                 item.SetGoalPos(delta);

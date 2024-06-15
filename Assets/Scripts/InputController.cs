@@ -32,7 +32,6 @@ namespace RubiksCubeEgg.Game
         private Transform lastBallHit;
         private State state;
 
-
         private enum State
         {
             None,
