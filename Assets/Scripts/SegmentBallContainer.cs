@@ -23,7 +23,7 @@ namespace RubiksCubeEgg.Game
         {
             AlignRotation(CalculateGoalY);
 
-            if (Mathf.Abs(CalculateGoalY - thisTransform.localRotation.eulerAngles.y) < float.Epsilon)
+            if (Mathf.Abs(CalculateGoalY - thisTransform.localRotation.eulerAngles.y) < 0.1f)
             {
                 OnAligningFinish();
             }
@@ -77,6 +77,9 @@ namespace RubiksCubeEgg.Game
             foreach (var item in ballList)
             {
                 item.ThisTransform.localRotation = Quaternion.identity;
+
+                if (item.SideBallContainer != null)
+                    item.ThisTransform.SetParent(item.SideBallContainer.ThisTransform);
             }
         }
 

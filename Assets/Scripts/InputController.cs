@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -7,7 +8,7 @@ namespace RubiksCubeEgg.Game
     {
         
         [SerializeField]
-        private new Camera camera;
+        private Camera mainCamera;
         [SerializeField]
         private Transform cameraRotator;
         [SerializeField]
@@ -73,51 +74,56 @@ namespace RubiksCubeEgg.Game
                 state = State.None;
 
                 return;
-            }
-            
-            bool isUpHit;
-            bool isMidHit;
-            bool isDownHit;
-            bool isBallHit;
-            
-            var ray = camera.ScreenPointToRay(Input.mousePosition);
+            }            
 
             if (Input.GetMouseButtonDown(0))
             {
-                isUpHit = Physics.Raycast(ray, 100, Consts.UpLayerMask);
-                isMidHit = Physics.Raycast(ray, 100, Consts.MiddleLayerMask);
-                isDownHit = Physics.Raycast(ray, 100, Consts.BottomLayerMask);
-                isBallHit = Physics.Raycast(ray, out var ballHit, 100, Consts.BallLayerMask);
+                var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                var hits = Physics.RaycastAll(ray, 100f, Consts.UpLayerMask | Consts.MiddleLayerMask | Consts.BottomLayerMask | Consts.BallLayerMask | Consts.CameraLayerMask);
+                Transform closestHit = null;
+                float minDistance = float.MaxValue;
+                foreach (var item in hits)
+                {
+                    if (item.distance < minDistance)
+                    {
+                        minDistance = item.distance;
+                        closestHit = item.transform;
 
-                if (isBallHit)
-                {
-                    lastBallHit = ballHit.transform.parent;
+                    } 
+                }
 
-                    if (lastBallHit.CompareTag(Consts.ForwardTag))
-                        state = State.Forward;
-                    else if (lastBallHit.CompareTag(Consts.BackTag))
-                        state = State.Back;
-                    else if (lastBallHit.CompareTag(Consts.LeftTag))
-                        state = State.Left;
-                    else if (lastBallHit.CompareTag(Consts.RightTag))
-                        state = State.Right;
-                }
-                else if (isUpHit)
+                if (closestHit != null)
                 {
-                    state = State.Up;
-                }
-                else if (isMidHit)
-                {
-                    state = State.Middle;
-                }
-                else if (isDownHit)
-                {
-                    state = State.Bottom;
-                }
-                else
-                {
-                    state = State.Camera;
-                }
+                    if (closestHit.gameObject.layer == Consts.BallLayer)
+                    {
+                        lastBallHit = closestHit.parent;
+
+                        if (lastBallHit.CompareTag(Consts.ForwardTag))
+                            state = State.Forward;
+                        else if (lastBallHit.CompareTag(Consts.BackTag))
+                            state = State.Back;
+                        else if (lastBallHit.CompareTag(Consts.LeftTag))
+                            state = State.Left;
+                        else if (lastBallHit.CompareTag(Consts.RightTag))
+                            state = State.Right;
+                    }
+                    else if (closestHit.gameObject.layer == Consts.UpLayer)
+                    {
+                        state = State.Up;
+                    }
+                    else if (closestHit.gameObject.layer == Consts.MiddleLayer)
+                    {
+                        state = State.Middle;
+                    }
+                    else if (closestHit.gameObject.layer == Consts.BottomLayer)
+                    {
+                        state = State.Bottom;
+                    }
+                    else
+                    {
+                        state = State.Camera;
+                    }
+                }                
             }
 
             var delta = Input.mousePosition - lastMousePosition;
