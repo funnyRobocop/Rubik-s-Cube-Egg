@@ -17,8 +17,8 @@ namespace RubiksCubeEgg.Game
 
         private float goalDistanceTravelled;
         private int direction;
+        private SideBallContainer sideBallContainer;
 
-        public SideBallContainer SideBallContainer { get; set; }
         public Transform ThisTransform { get; private set; }
 
         void Awake()
@@ -69,8 +69,9 @@ namespace RubiksCubeEgg.Game
             }
         }
 
-        public void SetGoalPos(int delta)
+        public void InitRotation(int delta, SideBallContainer sideBallContainer)
         {
+            this.sideBallContainer = sideBallContainer;
             direction = delta;
             goalDistanceTravelled += Consts.SideRotStep * delta;
             enabled = true;
@@ -85,6 +86,9 @@ namespace RubiksCubeEgg.Game
         {
             enabled = false;
             ThisTransform.localRotation = Quaternion.identity;
+
+            if (sideBallContainer != null)
+                sideBallContainer.OnRotationFinish();
         }
     }
 }

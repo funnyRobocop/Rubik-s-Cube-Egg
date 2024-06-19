@@ -14,6 +14,7 @@ namespace RubiksCubeEgg.Game
             if (other.gameObject.layer == Consts.BallLayer)
             {
                 container.Add(other.GetComponentInParent<Ball>());
+                Debug.LogFormat("Enter {0} {1}", gameObject.name, other.transform.parent.name);
             }
         }
         private void OnTriggerExit(Collider other)
@@ -21,6 +22,7 @@ namespace RubiksCubeEgg.Game
             if (other.gameObject.layer == Consts.BallLayer)
             {
                 container.Remove(other.GetComponentInParent<Ball>());
+                Debug.LogFormat("Exit {0} {1}", gameObject.name, other.transform.parent.name);
             }
         }
     }

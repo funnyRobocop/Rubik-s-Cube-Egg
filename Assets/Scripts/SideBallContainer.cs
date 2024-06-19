@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using PathCreation;
 using UnityEngine;
 
@@ -26,25 +24,25 @@ namespace RubiksCubeEgg.Game
 
         public override void Add(Ball ball)
         {
-            base.Add(ball);
-            if (ThisTransform.GetComponentsInChildren<Ball>().FirstOrDefault(f => f == ball) == null)
+            if (!ballList.Contains(ball))
             {
-                if (!ballList.Contains(ball))
-                    ballList.Add(ball);
+                ballList.Add(ball);
                 ball.SetPathCreator(pathCreator);
                 ball.tag = tag;
-                ball.SideBallContainer = this;
             }
         }
 
         public override void Remove(Ball ball)
         {
-            base.Remove(ball);
             if (ballList.Contains(ball))
             {
                 ballList.Remove(ball);
-                ball.SideBallContainer = null;
             }
+        }
+
+        public override void Clear()
+        {
+            ballList.Clear();
         }
 
         public void OnRotateStart()
@@ -59,10 +57,16 @@ namespace RubiksCubeEgg.Game
         {
             foreach (var item in ballList)
             {
-                item.SetGoalPos(delta);
+                item.InitRotation(delta, this);
             }
 
             CanMove = false;
-        } 
+        }
+
+        public void OnRotationFinish()
+        {
+            Debug.LogFormat("{0} OnRotationFinish", gameObject.name);
+            OnRotationFinished?.Invoke();
+        }
     }
 }

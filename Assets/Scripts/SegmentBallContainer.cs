@@ -25,13 +25,12 @@ namespace RubiksCubeEgg.Game
 
             if (Mathf.Abs(CalculateGoalY - thisTransform.localRotation.eulerAngles.y) < 0.1f)
             {
-                OnAligningFinish();
+                OnRotationFinish();
             }
         }
 
         public override void Add(Ball ball)
         {
-            base.Add(ball);
             if (!ballList.Contains(ball))
             {
                 ballList.Add(ball);
@@ -41,9 +40,13 @@ namespace RubiksCubeEgg.Game
 
         public override void Remove(Ball ball)
         {
-            base.Remove(ball);
             if (ballList.Contains(ball))
                 ballList.Remove(ball);
+        }
+
+        public override void Clear()
+        {
+            ballList.Clear();
         }
 
         public void OnRotateStart()
@@ -57,7 +60,7 @@ namespace RubiksCubeEgg.Game
         public void Rotate(Vector3 delta)
         {
             enabled = false;
-            thisTransform.Rotate(new Vector3(0f, -delta.x, 0f));
+            thisTransform.Rotate(new Vector3(0f, -delta.x * Time.deltaTime * Consts.SegmentRotSpeed, 0f));
         }
 
         public void Stop()
@@ -68,19 +71,13 @@ namespace RubiksCubeEgg.Game
         private void AlignRotation(float goalY)
         {
             var deltaY = goalY - thisTransform.localRotation.eulerAngles.y;
-            thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotSpeed, 0f));
+            thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotAligningSpeed, 0f));
         }
 
-        private void OnAligningFinish()
+        private void OnRotationFinish()
         {
             enabled = false;
-            foreach (var item in ballList)
-            {
-                item.ThisTransform.localRotation = Quaternion.identity;
-
-                if (item.SideBallContainer != null)
-                    item.ThisTransform.SetParent(item.SideBallContainer.ThisTransform);
-            }
+            OnRotationFinished?.Invoke();
         }
 
         private float CalculateGoalY => Mathf.Round(thisTransform.localRotation.eulerAngles.y / Consts.SegmentRotStep) * Consts.SegmentRotStep;        

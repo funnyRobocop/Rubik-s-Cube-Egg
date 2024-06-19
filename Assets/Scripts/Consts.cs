@@ -15,7 +15,8 @@ namespace RubiksCubeEgg.Game
         public const int BottomLayer = 9;          
         public const float SegmentRotStep = 90f;
         public const float SideRotStep = 0.375f;
-        public const float SegmentRotSpeed = 50f;
+        public const float SegmentRotSpeed = 300f;
+        public const float SegmentRotAligningSpeed = 50f;
         public const float SideRotSpeed = 1f;
         public const string ForwardTag = "Forward";
         public const string BackTag = "Back";
