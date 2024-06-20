@@ -1,6 +1,6 @@
 namespace RubiksCubeEgg.Game
 {
-    public class Consts
+    public static class Consts
     {
         
         public const int CameraLayerMask = 1 << 3;

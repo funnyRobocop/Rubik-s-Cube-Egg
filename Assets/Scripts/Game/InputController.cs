@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 
@@ -149,8 +148,6 @@ namespace RubiksCubeEgg.Game
                     RotateCamera(delta);
                     break;
                 case State.None:         
-                    break;
-                default:
                     break;
             }
         }
