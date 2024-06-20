@@ -19,17 +19,17 @@ namespace RubiksCubeEgg.Game
                 item.OnRotationFinished += Run;
         }
 
-        private void Start()
-        {
-            Run();
-        }
-
         private void OnDestroy()
         {
             StopAllCoroutines();
 
             foreach (var item in ballContainers)
                 item.OnRotationFinished -= Run;
+        }
+
+        public void Init()
+        {
+            Run();
         }
 
         public void Run()

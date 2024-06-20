@@ -10,7 +10,7 @@ namespace RubiksCubeEgg.Game
 
         [SerializeField]
         private List<Ball> ballList;
-        [SerializeField]
+        
         private PathCreator pathCreator;
 
         public bool CanMove { get; set; }
@@ -20,6 +20,7 @@ namespace RubiksCubeEgg.Game
         void Awake()
         {
             ThisTransform = GetComponent<Transform>();
+            pathCreator = GetComponent<PathCreator>();
         }
 
         public override void Add(Ball ball)
@@ -27,7 +28,7 @@ namespace RubiksCubeEgg.Game
             if (!ballList.Contains(ball))
             {
                 ballList.Add(ball);
-                ball.SetPathCreator(pathCreator);
+                ball.PathCreator = pathCreator;
                 ball.tag = tag;
             }
         }
@@ -65,7 +66,7 @@ namespace RubiksCubeEgg.Game
 
         public void OnRotationFinish()
         {
-            Debug.LogFormat("{0} OnRotationFinish", gameObject.name);
+            //Debug.LogFormat("{0} OnRotationFinish", gameObject.name);
             OnRotationFinished?.Invoke();
         }
     }

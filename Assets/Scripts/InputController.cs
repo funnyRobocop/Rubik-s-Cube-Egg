@@ -8,12 +8,7 @@ namespace RubiksCubeEgg.Game
     {
         
         [SerializeField]
-        private Camera mainCamera;
-        [SerializeField]
-        private Transform cameraRotator;
-        [SerializeField]
-        private bool lockCameraXZ;
-
+        private CameraController cameraController;
         [SerializeField]
         private SegmentBallContainer upContainer;
         [SerializeField]
@@ -78,7 +73,7 @@ namespace RubiksCubeEgg.Game
 
             if (Input.GetMouseButtonDown(0))
             {
-                var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+                var ray = cameraController.Camera.ScreenPointToRay(Input.mousePosition);
                 var hits = Physics.RaycastAll(ray, 100f, Consts.UpLayerMask | Consts.MiddleLayerMask | Consts.BottomLayerMask | Consts.BallLayerMask | Consts.CameraLayerMask);
                 Transform closestHit = null;
                 float minDistance = float.MaxValue;
@@ -151,7 +146,7 @@ namespace RubiksCubeEgg.Game
                     RotateSegmentContainer(bottomContainer, delta);
                     break;
                 case State.Camera:
-                    RotateCamera(cameraRotator, delta);
+                    RotateCamera(delta);
                     break;
                 case State.None:         
                     break;
@@ -180,12 +175,9 @@ namespace RubiksCubeEgg.Game
             lastMousePosition = Input.mousePosition;
         }
 
-        private void RotateCamera(Transform cameraParent, Vector3 inputDelta)
+        private void RotateCamera( Vector3 inputDelta)
         {
-            if (lockCameraXZ)
-                inputDelta = new Vector3(0f, inputDelta.x, 0f);
-
-            cameraParent.Rotate(inputDelta);
+            cameraController.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
         }
     }

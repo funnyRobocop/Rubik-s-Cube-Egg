@@ -17,6 +17,7 @@ namespace RubiksCubeEgg.Game
         void Awake()
         {
             thisTransform = GetComponent<Transform>();
+            enabled = false;
         }
 
         void Update()

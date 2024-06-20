@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f85df3374927904d9dfeba3633ecf85, type: 3}
+  m_Name: Props
+  m_EditorClassIdentifier: 
+  levels:
+  - ballList:
+    - side: 0
+      color: 0
+    - side: 0
+      color: 1
+    - side: 0
+      color: 2
+    - side: 0
+      color: 3
+    - side: 0
+      color: 1
+    - side: 0
+      color: 0
+    - side: 0
+      color: 0
+    - side: 0
+      color: 2
+    - side: 2
+      color: 1
+    - side: 2
+      color: 0
+  ballPrefabByColorList:
+  - {fileID: 3330943404164553362, guid: 45361cd7d138fd143a0acccbb86cc581, type: 3}
+  - {fileID: 3330943404164553362, guid: 86f964550146c1c449d8a784b72548d1, type: 3}
+  - {fileID: 3330943404164553362, guid: ceb995c1ecf0f3b448d94de10c71246c, type: 3}
+  - {fileID: 3330943404164553362, guid: 6e5acb21379dca34f8b1481a1bfb6b1b, type: 3}

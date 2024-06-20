@@ -8,25 +8,13 @@ namespace RubiksCubeEgg.Game
     public class Ball : MonoBehaviour
     {
 
-        [SerializeField]
-        private EndOfPathInstruction endOfPathInstruction;
-        [SerializeField]
         private float distanceTravelled;
-        [SerializeField]
-        private PathCreator pathCreator;
-
         private float goalDistanceTravelled;
         private int direction;
         private SideBallContainer sideBallContainer;
 
         public Transform ThisTransform { get; private set; }
-
-        void Awake()
-        {
-            ThisTransform = GetComponent<Transform>();
-            goalDistanceTravelled = distanceTravelled;
-            enabled = false;
-        }
+        public PathCreator PathCreator { get; set; }
 
         public static int InputDeltaToDirection(Vector3 inputDelta, Transform tr)
         {
@@ -54,19 +42,33 @@ namespace RubiksCubeEgg.Game
             return delta;
         }
 
+        private void Awake()
+        {
+            ThisTransform = GetComponent<Transform>();
+            enabled = false;
+        }
+
         private void Update()
         {
             if (Mathf.Abs(goalDistanceTravelled - distanceTravelled) > Consts.SideRotSpeed * Time.deltaTime)
             {
                 distanceTravelled += Consts.SideRotSpeed * Time.deltaTime * direction;
-                ThisTransform.position = pathCreator.path.GetPointAtDistance(distanceTravelled, endOfPathInstruction);
+                ThisTransform.position = PathCreator.path.GetPointAtDistance(distanceTravelled);
             }
             else
             {
                 distanceTravelled += Consts.SideRotSpeed * Time.deltaTime * direction;
-                ThisTransform.position = pathCreator.path.GetPointAtDistance(goalDistanceTravelled, endOfPathInstruction);
+                ThisTransform.position = PathCreator.path.GetPointAtDistance(goalDistanceTravelled);
                 OnGoalDistanceTravelledReach();
             }
+        }
+
+        public void Init(PathCreator pathCreator, float distanceTravelled)
+        {
+            PathCreator = pathCreator;
+            this.distanceTravelled = distanceTravelled;
+            goalDistanceTravelled = distanceTravelled;
+            ThisTransform.SetLocalPositionAndRotation(PathCreator.path.GetPointAtDistance(distanceTravelled), Quaternion.identity);
         }
 
         public void InitRotation(int delta, SideBallContainer sideBallContainer)
@@ -75,11 +77,6 @@ namespace RubiksCubeEgg.Game
             direction = delta;
             goalDistanceTravelled += Consts.SideRotStep * delta;
             enabled = true;
-        }
-
-        public void SetPathCreator(PathCreator pathCreator)
-        {
-            this.pathCreator = pathCreator;
         }
 
         private void OnGoalDistanceTravelledReach()
