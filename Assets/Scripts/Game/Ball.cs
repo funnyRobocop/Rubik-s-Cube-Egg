@@ -11,10 +11,12 @@ namespace RubiksCubeEgg.Game
         private float distanceTravelled;
         private float goalDistanceTravelled;
         private int direction;
-        private SideBallContainer sideBallContainer;
 
+        public SideBallContainer SideBallContainer { get; set; }
         public Transform ThisTransform { get; private set; }
         public PathCreator PathCreator { get; set; }
+        public Color Color { get; private set; }
+
 
         public static int InputDeltaToDirection(Vector3 inputDelta, Transform tr)
         {
@@ -63,17 +65,18 @@ namespace RubiksCubeEgg.Game
             }
         }
 
-        public void Init(PathCreator pathCreator, float distanceTravelled)
+        public void Init(PathCreator pathCreator, float distanceTravelled, Color color)
         {
-            PathCreator = pathCreator;
             this.distanceTravelled = distanceTravelled;
+            PathCreator = pathCreator;
+            Color = color;
             goalDistanceTravelled = distanceTravelled;
             ThisTransform.SetLocalPositionAndRotation(PathCreator.path.GetPointAtDistance(distanceTravelled), Quaternion.identity);
         }
 
         public void InitRotation(int delta, SideBallContainer sideBallContainer)
         {
-            this.sideBallContainer = sideBallContainer;
+            this.SideBallContainer = sideBallContainer;
             direction = delta;
             goalDistanceTravelled += Consts.SideRotStep * delta;
             enabled = true;
@@ -82,10 +85,10 @@ namespace RubiksCubeEgg.Game
         private void OnGoalDistanceTravelledReach()
         {
             enabled = false;
-            ThisTransform.localRotation = Quaternion.identity;
+            //ThisTransform.localRotation = Quaternion.identity;
 
-            if (sideBallContainer != null)
-                sideBallContainer.OnRotationFinish();
+            if (SideBallContainer != null)
+                SideBallContainer.OnRotationFinish();
         }
     }
 }

@@ -14,13 +14,26 @@ namespace RubiksCubeEgg
         [SerializeField]
         private Game.CollisionsChecker collisionsChecker;
 
-        
-        void Start()
+        private void Awake()
         {
             Application.targetFrameRate = 60;
-            
+            collisionsChecker.OnWin += Win;
+        }
+
+        private void OnDestroy()
+        {
+            collisionsChecker.OnWin -= Win;
+        }
+        
+        private void Start()
+        {
             var spawnedBalls = ballSpawner.SpawnBalls(CurrentLevel);
             collisionsChecker.Init(spawnedBalls);
+        }
+
+        private void Win()
+        {
+            Debug.Log("Win");
         }
     }
 }

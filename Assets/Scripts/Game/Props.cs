@@ -13,9 +13,6 @@ namespace RubiksCubeEgg.Game
         /// </summary>
         public List<GameObject> ballPrefabByColorList;
 
-        public enum Side { Forwad, Back, Left, Right }
-        public enum Color { Blue, Green, Grey, Violet }
-
         public GameObject GetBallPrefabByColor(Color color)
         {
             return ballPrefabByColorList[(int) color];
@@ -28,6 +25,9 @@ namespace RubiksCubeEgg.Game
             public List<Color> backBallList;
             public List<Color> leftBallList;
             public List<Color> rightBallList;
-        }
+        }        
     }
+    
+    public enum Side { Forwad, Back, Left, Right }
+    public enum Color { Blue, Green, Grey, Violet }
 }

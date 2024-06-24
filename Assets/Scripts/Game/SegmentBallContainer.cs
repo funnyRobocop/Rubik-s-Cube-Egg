@@ -12,6 +12,7 @@ namespace RubiksCubeEgg.Game
 
         private Transform thisTransform;
 
+        public override List<Ball> Balls => ballList;
 
         void Awake()
         {
@@ -51,6 +52,7 @@ namespace RubiksCubeEgg.Game
 
         public void OnRotateStart()
         {
+            OnRotationStarted?.Invoke();
             foreach (var item in ballList)
             {
                 item.ThisTransform.SetParent(thisTransform);

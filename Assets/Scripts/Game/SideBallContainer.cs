@@ -14,8 +14,9 @@ namespace RubiksCubeEgg.Game
         private PathCreator pathCreator;
 
         public bool CanMove { get; set; }
-        public Transform ThisTransform { get; private set; } 
+        public Transform ThisTransform { get; private set; }
 
+        public override List<Ball> Balls => ballList;
 
         void Awake()
         {
@@ -30,6 +31,7 @@ namespace RubiksCubeEgg.Game
                 ballList.Add(ball);
                 ball.PathCreator = pathCreator;
                 ball.tag = tag;
+                ball.SideBallContainer = this;
             }
         }
 
@@ -48,6 +50,7 @@ namespace RubiksCubeEgg.Game
 
         public void OnRotateStart()
         {
+            OnRotationStarted?.Invoke();
             foreach (var item in ballList)
             {
                 item.ThisTransform.SetParent(ThisTransform);

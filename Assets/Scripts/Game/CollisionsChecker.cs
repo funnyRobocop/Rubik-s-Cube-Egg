@@ -1,16 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 namespace RubiksCubeEgg.Game
 {
     public class CollisionsChecker : MonoBehaviour
     {
+
+        public event Action OnWin;
+
         [SerializeField]
         private List<BallContainerBase> ballContainers;
 
-        private List<Ball> ballList = new List<Ball>();
+        private List<Ball> ballList = new();
+        private bool isRun;
 
         public enum ContainerType { Up, Middle, Bottom, Forward, Back, Left, Right }
 
@@ -18,13 +22,19 @@ namespace RubiksCubeEgg.Game
         private void Awake()
         {
             foreach (var item in ballContainers)
+            {
+                item.OnRotationStarted += Stop;
                 item.OnRotationFinished += Run;
+            }
         }
 
         private void OnDestroy()
         {
             foreach (var item in ballContainers)
+            {
+                item.OnRotationStarted -= Stop;
                 item.OnRotationFinished -= Run;
+            }
         }
 
         public void Init(List<Ball> balls)
@@ -33,8 +43,13 @@ namespace RubiksCubeEgg.Game
             Run();
         }
 
-        public void Run()
+        private void Run()
         {
+            /*if (isRun)
+                return;*/
+
+            isRun = true;
+
             foreach (var item in ballContainers)
                 item.Clear();
 
@@ -70,6 +85,36 @@ namespace RubiksCubeEgg.Game
                     ballContainers[(int)ContainerType.Right].Add(ball);
                 }
             }
+
+            Debug.Log("Check is finished");
+
+            if (CheckWinCondition() && OnWin!= null)
+                OnWin();
+        }
+
+        private void Stop()
+        {
+            isRun = false;
+        }
+
+        private bool CheckWinCondition()
+        {
+            return CheckColorIsEqual(ballContainers[(int)ContainerType.Forward].Balls) &&
+                CheckColorIsEqual(ballContainers[(int)ContainerType.Back].Balls) &&
+                CheckColorIsEqual(ballContainers[(int)ContainerType.Left].Balls) &&
+                CheckColorIsEqual(ballContainers[(int)ContainerType.Right].Balls);
+        }
+
+        private bool CheckColorIsEqual(List<Ball> ballList)
+        {
+            var color = ballList[0].Color;
+            foreach (var item in ballList)
+            {
+                if (item.Color != color)
+                return false;
+            }
+
+            return true;
         }
     }
 }
