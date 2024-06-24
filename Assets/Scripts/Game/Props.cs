@@ -24,14 +24,10 @@ namespace RubiksCubeEgg.Game
         [System.Serializable]
         public class Level
         {
-            public List<Ball> ballList;
-            
-            [System.Serializable]
-            public class Ball
-            {
-                public Side side;
-                public Color color;
-            };
+            public List<Color> forwardBallList;
+            public List<Color> backBallList;
+            public List<Color> leftBallList;
+            public List<Color> rightBallList;
         }
     }
 }

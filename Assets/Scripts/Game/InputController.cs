@@ -23,9 +23,10 @@ namespace RubiksCubeEgg.Game
         [SerializeField]
         private SideBallContainer rightContainer;
 
+        private State state;
         private Vector3 lastMousePosition = Vector3.negativeInfinity;
         private Transform lastBallHit;
-        private State state;
+        private int lastBallHitFrameCounter;
 
         private enum State
         {
@@ -90,6 +91,7 @@ namespace RubiksCubeEgg.Game
                 {
                     if (closestHit.gameObject.layer == Consts.BallLayer)
                     {
+                        lastBallHitFrameCounter = 0;
                         lastBallHit = closestHit.parent;
 
                         if (lastBallHit.CompareTag(Consts.ForwardTag))
@@ -124,16 +126,16 @@ namespace RubiksCubeEgg.Game
             switch (state)
             {
                 case State.Forward:
-                    RotateSideContainer(forwardContainer, delta, lastBallHit);
+                    RotateSideContainer(forwardContainer, delta);
                     break;
                 case State.Back:
-                    RotateSideContainer(backContainer, delta, lastBallHit);
+                    RotateSideContainer(backContainer, delta);
                     break;
                 case State.Left:
-                    RotateSideContainer(leftContainer, delta, lastBallHit);
+                    RotateSideContainer(leftContainer, delta);
                     break;
                 case State.Right:
-                    RotateSideContainer(rightContainer, delta, lastBallHit);
+                    RotateSideContainer(rightContainer, delta);
                     break;
                 case State.Up:
                     RotateSegmentContainer(upContainer, delta);
@@ -152,14 +154,18 @@ namespace RubiksCubeEgg.Game
             }
         }
 
-        private void RotateSideContainer(SideBallContainer container, Vector3 inputDelta, Transform hit)
+        private void RotateSideContainer(SideBallContainer container, Vector3 inputDelta)
         {
-            if (hit == null || lastMousePosition == Input.mousePosition || !container.CanMove)
+            if (lastBallHit == null || lastMousePosition == Input.mousePosition || !container.CanMove)
+                return;
+
+            lastBallHitFrameCounter++;
+            if (lastBallHitFrameCounter < 10)
                 return;
 
             container.OnRotateStart();
-            container.Rotate(Ball.InputDeltaToDirection(inputDelta, hit));
-            lastMousePosition = Input.mousePosition;             
+            container.Rotate(Ball.InputDeltaToDirection(inputDelta, lastBallHit));
+            lastMousePosition = Input.mousePosition;
         }
 
         private void RotateSegmentContainer(SegmentBallContainer container, Vector3 inputDelta)

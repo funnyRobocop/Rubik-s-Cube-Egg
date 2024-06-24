@@ -13,27 +13,10 @@ MonoBehaviour:
   m_Name: Props
   m_EditorClassIdentifier: 
   levels:
-  - ballList:
-    - side: 0
-      color: 0
-    - side: 0
-      color: 1
-    - side: 0
-      color: 2
-    - side: 0
-      color: 3
-    - side: 0
-      color: 1
-    - side: 0
-      color: 0
-    - side: 0
-      color: 0
-    - side: 0
-      color: 2
-    - side: 2
-      color: 1
-    - side: 2
-      color: 0
+  - forwardBallList: 0000000000000000000000000000000000000000000000000000000000000000
+    backBallList: 0200000002000000020000000200000002000000020000000200000002000000
+    leftBallList: 0100000001000000010000000100000001000000010000000100000001000000
+    rightBallList: 0300000003000000030000000300000003000000030000000300000003000000
   ballPrefabByColorList:
   - {fileID: 3330943404164553362, guid: 45361cd7d138fd143a0acccbb86cc581, type: 3}
   - {fileID: 3330943404164553362, guid: 86f964550146c1c449d8a784b72548d1, type: 3}

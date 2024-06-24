@@ -10,7 +10,9 @@ namespace RubiksCubeEgg.Game
         [SerializeField]
         private List<BallContainerBase> ballContainers;
 
-        private Coroutine checkCollisionsCrtn;
+        private List<Ball> ballList = new List<Ball>();
+
+        public enum ContainerType { Up, Middle, Bottom, Forward, Back, Left, Right }
 
 
         private void Awake()
@@ -21,38 +23,53 @@ namespace RubiksCubeEgg.Game
 
         private void OnDestroy()
         {
-            StopAllCoroutines();
-
             foreach (var item in ballContainers)
                 item.OnRotationFinished -= Run;
         }
 
-        public void Init()
+        public void Init(List<Ball> balls)
         {
+            ballList.AddRange(balls);
             Run();
         }
 
         public void Run()
         {
-            if (checkCollisionsCrtn != null)
-                StopCoroutine(checkCollisionsCrtn);
-
             foreach (var item in ballContainers)
                 item.Clear();
 
-            gameObject.SetActive(true);
+            foreach (var ball in ballList)
+            {
+                if (ball.ThisTransform.position.y > 0.25f)
+                {
+                    ballContainers[(int)ContainerType.Up].Add(ball);
+                }
+                else if (ball.ThisTransform.position.y < -0.25f)
+                {
+                    ballContainers[(int)ContainerType.Bottom].Add(ball);
+                }
+                else
+                {
+                    ballContainers[(int)ContainerType.Middle].Add(ball);
+                }
 
-            if (isActiveAndEnabled)
-                checkCollisionsCrtn = StartCoroutine(CheckCollisionsCrtn());
-        }
-
-        private IEnumerator CheckCollisionsCrtn()
-        {
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
-            yield return new WaitForFixedUpdate();
-
-            gameObject.SetActive(false);
+                if (ball.ThisTransform.position.x < -0.55f)
+                {
+                    ballContainers[(int)ContainerType.Forward].Add(ball);
+                }
+                else if (ball.ThisTransform.position.x > 0.55f)
+                {
+                    ballContainers[(int)ContainerType.Back].Add(ball);
+                }
+                else if (ball.ThisTransform.position.z > 0.55f)
+                {
+                    ballContainers[(int)ContainerType.Left].Add(ball);
+                }
+                else
+                {
+                    ballContainers[(int)ContainerType.Right].Add(ball);
+                }
+            }
         }
     }
 }

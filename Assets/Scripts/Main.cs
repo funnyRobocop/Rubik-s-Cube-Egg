@@ -7,7 +7,8 @@ namespace RubiksCubeEgg
     {      
 
         public int CurrentLevel = 0;
-        
+        public int CurrentLevelView => CurrentLevel + 1;
+
         [SerializeField]
         private Game.BallSpawner ballSpawner;
         [SerializeField]
@@ -16,9 +17,10 @@ namespace RubiksCubeEgg
         
         void Start()
         {
-            CurrentLevel = 1;
-            ballSpawner.Init(CurrentLevel);
-            collisionsChecker.Init();
+            Application.targetFrameRate = 60;
+            
+            var spawnedBalls = ballSpawner.SpawnBalls(CurrentLevel);
+            collisionsChecker.Init(spawnedBalls);
         }
     }
 }
