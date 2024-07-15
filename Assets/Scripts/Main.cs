@@ -1,3 +1,4 @@
+using UI;
 using UnityEngine;
 
 
@@ -14,9 +15,12 @@ namespace RubiksCubeEgg
         [SerializeField]
         private Game.CollisionsChecker collisionsChecker;
 
+        public UIHandler uIHandler;
+
         private void Awake()
         {
             Application.targetFrameRate = 60;
+            Input.multiTouchEnabled = false;
             collisionsChecker.OnWin += Win;
         }
 
@@ -34,6 +38,7 @@ namespace RubiksCubeEgg
         private void Win()
         {
             Debug.Log("Win");
+            uIHandler.ShowWin();
         }
     }
 }
