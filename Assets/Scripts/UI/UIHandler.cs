@@ -19,10 +19,8 @@ namespace UI
         public Button restartBtn;
         public Button trainBtn;
         public Button settingsBtn;
-        public TextMeshPro levelNumber;
-        public TextMeshPro difficult;
-
-        public enum Difficult { easy, medium, hard, extreme, crazy }
+        public TextMeshProUGUI levelNumber;
+        public TextMeshProUGUI difficult;
 
 
         void Awake()
@@ -99,21 +97,21 @@ namespace UI
         {
             var level = Main.Instance.CurrentLevel;
 
-            string difficultText = "Super Extremely Hard";
+            string difficultText = "Extreme";
 
             if (level <= 80)
-                difficultText = "Very Super Hard";
+                difficultText = "Extreme";
             else if (level <= 60)
-                difficultText = "Very Very Hard";
+                difficultText = "Super";
             else if (level <= 40)
-                difficultText = "Very Hard";
+                difficultText = "Very";
             else if (level <= 20)
                 difficultText = "Hard";
             else if (level <= 5)
                 difficultText = "Easy";
             
             difficult.text = difficultText;
-            levelNumber.text = level.ToString();
+            levelNumber.text = "level " + level.ToString();
         }
     }
 }
