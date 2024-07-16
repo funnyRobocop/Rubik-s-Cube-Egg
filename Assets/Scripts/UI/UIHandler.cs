@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using RubiksCubeEgg;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +19,10 @@ namespace UI
         public Button restartBtn;
         public Button trainBtn;
         public Button settingsBtn;
+        public TextMeshPro levelNumber;
+        public TextMeshPro difficult;
 
-
+        public enum Difficult { easy, medium, hard, extreme, crazy }
 
 
         void Awake()
@@ -32,6 +35,8 @@ namespace UI
 
             winPanel.SetActive(false);
             startPanel.SetActive(true);
+
+            UpdateLevelView();
         }
 
         void OnDestroy()
@@ -49,6 +54,8 @@ namespace UI
             Main.Instance.Restart();
             startPanel.SetActive(false);
             winPanel.SetActive(false);
+
+            UpdateLevelView();
         }
 
         void OnPlayClick()
@@ -56,6 +63,8 @@ namespace UI
             Main.Instance.Restart();
             startPanel.SetActive(false);
             winPanel.SetActive(false);
+
+            UpdateLevelView();
         }
 
         void OnRestartClick()
@@ -63,6 +72,8 @@ namespace UI
             Main.Instance.Restart();
             startPanel.SetActive(false);
             winPanel.SetActive(false);
+
+            UpdateLevelView();
         }
 
         void OnTrainClick()
@@ -80,6 +91,29 @@ namespace UI
         {
             startPanel.SetActive(false);
             winPanel.SetActive(true);
+            
+            UpdateLevelView();
+        }
+
+        public void UpdateLevelView()
+        {
+            var level = Main.Instance.CurrentLevel;
+
+            string difficultText = "Super Extremely Hard";
+
+            if (level <= 80)
+                difficultText = "Very Super Hard";
+            else if (level <= 60)
+                difficultText = "Very Very Hard";
+            else if (level <= 40)
+                difficultText = "Very Hard";
+            else if (level <= 20)
+                difficultText = "Hard";
+            else if (level <= 5)
+                difficultText = "Easy";
+            
+            difficult.text = difficultText;
+            levelNumber.text = level.ToString();
         }
     }
 }
