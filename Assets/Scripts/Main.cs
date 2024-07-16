@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using UI;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ namespace RubiksCubeEgg
 
         public int CurrentLevel = 0;
         public int CurrentLevelView => CurrentLevel + 1;
+
+        public static Main Instance;
 
         [SerializeField]
         private Game.BallSpawner ballSpawner;
@@ -22,6 +25,7 @@ namespace RubiksCubeEgg
             Application.targetFrameRate = 60;
             Input.multiTouchEnabled = false;
             collisionsChecker.OnWin += Win;
+            Instance = this;
         }
 
         private void OnDestroy()
@@ -30,6 +34,11 @@ namespace RubiksCubeEgg
         }
         
         private void Start()
+        {
+            Restart();
+        }
+
+        public void Restart()
         {
             var spawnedBalls = ballSpawner.SpawnBalls(CurrentLevel);
             collisionsChecker.Init(spawnedBalls);

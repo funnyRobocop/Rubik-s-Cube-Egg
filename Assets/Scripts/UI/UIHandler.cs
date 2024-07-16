@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RubiksCubeEgg;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,7 +23,8 @@ namespace UI
 
         void OnNextClick()
         {
-            
+            Main.Instance.CurrentLevel++;
+            Main.Instance.Restart();
         }
 
         public void ShowWin()
