@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,15 @@ namespace UI
         public GameObject levelPanel;
         public GameObject trainPanel;
         public GameObject settingsPanel;
+        public SpriteRenderer backSprite;
+        public Material[] eggMaterial;
+
+        private Color choosedBackColor;
+        private Color choosedEggColor;
+
+        
+        public Button[] backColorBtn;
+        public Button[] eggColorBtn;
         
         public Button nextLevelBtn;
         public Button playBtn;
@@ -36,6 +46,18 @@ namespace UI
 
             winPanel.SetActive(false);
             startPanel.SetActive(true);
+            levelPanel.SetActive(false);
+            trainPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+
+            for (int i = 0; i < backColorBtn.Length; i++)
+            {
+                Button item = backColorBtn[i];
+                item.onClick.AddListener(() => SetBackColor(i));
+            }
+
+            foreach (var item in eggColorBtn)
+                item.onClick.AddListener(SetEggColor);
 
             UpdateLevelView();
         }
@@ -47,6 +69,11 @@ namespace UI
             trainBtn.onClick.RemoveListener(OnTrainClick);
             settingsBtn.onClick.RemoveListener(OnSettinigsClick);
             nextLevelBtn.onClick.RemoveListener(OnNextClick);
+            
+            foreach (var item in backColorBtn)
+                item.onClick.RemoveAllListeners();              
+            foreach (var item in eggColorBtn)
+                item.onClick.RemoveAllListeners(); 
         }
 
         void OnNextClick()
@@ -84,14 +111,16 @@ namespace UI
             winPanel.SetActive(false);
 
             trainPanel.SetActive(true);
-            trainPanel.transform.GetChild(0).gameObject.SetActive(true);
-            trainPanel.transform.GetChild(1).gameObject.SetActive(false);
+            trainPanel.transform.GetChild(0).gameObject.SetActive(true);//curtain
+            trainPanel.transform.GetChild(1).gameObject.SetActive(true);
             trainPanel.transform.GetChild(2).gameObject.SetActive(false);
             trainPanel.transform.GetChild(3).gameObject.SetActive(false);
+            trainPanel.transform.GetChild(4).gameObject.SetActive(false);
         }
 
         void OnSettinigsClick()
         {
+            settingsPanel.SetActive(true);
         }
 
         public void ShowWin()
@@ -121,6 +150,18 @@ namespace UI
             
             difficult.text = difficultText;
             levelNumber.text = "level " + level.ToString();
+        }
+
+        public void SetBackColor(int i)
+        {
+            choosedBackColor = backColorBtn[i].image.color;
+            backSprite.color = choosedBackColor;
+        }
+
+        public void SetEggColor()
+        {
+            foreach(var item in eggMaterial)
+                item.color = choosedEggColor;
         }
     }
 }
