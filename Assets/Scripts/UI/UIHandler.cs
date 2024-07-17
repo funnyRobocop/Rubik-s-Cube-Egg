@@ -20,9 +20,7 @@ namespace UI
         private Color choosedBackColor;
         private Button choosedBackColorBtn;
         private Color choosedEggColor;
-        private Button choosedEggColorBtn;
-
-        
+        private Button choosedEggColorBtn;        
         public Button[] backColorBtn;
         public Button[] eggColorBtn;
         
@@ -49,20 +47,20 @@ namespace UI
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
 
-            foreach (var item in backColorBtn)
+            foreach (var btn in backColorBtn)
             {
-                item.onClick.AddListener(() =>
+                btn.onClick.AddListener(() =>
                 {
-                    choosedBackColorBtn = item;
+                    choosedBackColorBtn = btn;
                     ChangeBackColor();                 
                 });
             }
 
-            foreach (var item in eggColorBtn)
+            foreach (var btn in eggColorBtn)
             {
-                item.onClick.AddListener(() =>
+                btn.onClick.AddListener(() =>
                 {
-                    choosedEggColorBtn = item;
+                    choosedEggColorBtn = btn;
                     ChangeEggColor();                 
                 });
             }
@@ -82,6 +80,18 @@ namespace UI
                 item.onClick.RemoveAllListeners();              
             foreach (var item in eggColorBtn)
                 item.onClick.RemoveAllListeners(); 
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                winPanel.SetActive(false);
+                startPanel.SetActive(true);
+                levelPanel.SetActive(false);
+                trainPanel.SetActive(false);
+                settingsPanel.SetActive(false);
+            }
         }
 
         void OnNextClick()
@@ -153,15 +163,15 @@ namespace UI
 
             string difficultText = "Extreme";
 
-            if (level <= 80)
+            if (level >= 80)
                 difficultText = "Extreme";
-            else if (level <= 60)
+            else if (level >= 60)
                 difficultText = "Super";
-            else if (level <= 40)
+            else if (level >= 40)
                 difficultText = "Very";
-            else if (level <= 20)
+            else if (level >= 20)
                 difficultText = "Hard";
-            else if (level <= 5)
+            else if (level >= 5)
                 difficultText = "Easy";
             
             difficult.text = difficultText;
