@@ -31,6 +31,8 @@ namespace UI
         public Button settingsBtn;
         public TextMeshProUGUI levelNumber;
         public TextMeshProUGUI difficult;
+        public Button leftLevelBtn;
+        public Button rightLevelBtn;
 
 
         void Awake()
