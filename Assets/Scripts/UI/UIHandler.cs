@@ -13,7 +13,9 @@ namespace UI
     {
         public GameObject winPanel;
         public GameObject startPanel;
+        public GameObject levelPanel;
         public GameObject trainPanel;
+        public GameObject settingsPanel;
         
         public Button nextLevelBtn;
         public Button playBtn;
