@@ -192,5 +192,19 @@ namespace UI
             foreach(var item in eggMaterial)
                 item.color = choosedEggColor;
         }
+
+        void OnLeftLevelBtnClick()
+        {
+             Main.Instance.CurrentLevel--;
+            UpdateLevelView();
+            Main.Instance.Restart();
+        }
+
+        void OnRightLevelBtnClick()
+        {
+             Main.Instance.CurrentLevel++;
+            UpdateLevelView();
+            Main.Instance.Restart();
+        }
     }
 }
