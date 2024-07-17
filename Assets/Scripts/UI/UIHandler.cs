@@ -14,6 +14,7 @@ namespace UI
         public GameObject levelPanel;
         public GameObject trainPanel;
         public GameObject settingsPanel;
+        public GameObject chooseLvlPanel;
         public SpriteRenderer backSprite;
         public Material[] eggMaterial;
 
@@ -34,6 +35,8 @@ namespace UI
         public Button leftLevelBtn;
         public Button rightLevelBtn;
 
+        public RubiksCubeEgg.Game.Props props;
+
 
         void Awake()
         {
@@ -42,6 +45,8 @@ namespace UI
             trainBtn.onClick.AddListener(OnTrainClick);
             settingsBtn.onClick.AddListener(OnSettinigsClick);
             nextLevelBtn.onClick.AddListener(OnNextClick);
+            leftLevelBtn.onClick.AddListener(OnLeftLevelBtnClick);
+            rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
 
             winPanel.SetActive(false);
             startPanel.SetActive(true);
@@ -195,14 +200,22 @@ namespace UI
 
         void OnLeftLevelBtnClick()
         {
-             Main.Instance.CurrentLevel--;
+            Main.Instance.CurrentLevel--;
+
+            if (Main.Instance.CurrentLevel <= 1)
+                Main.Instance.CurrentLevel = 1;
+
             UpdateLevelView();
             Main.Instance.Restart();
         }
 
         void OnRightLevelBtnClick()
         {
-             Main.Instance.CurrentLevel++;
+            Main.Instance.CurrentLevel++;
+            
+            if (Main.Instance.CurrentLevel > props.levels.Count - 1)
+                Main.Instance.CurrentLevel = props.levels.Count - 1;
+            
             UpdateLevelView();
             Main.Instance.Restart();
         }

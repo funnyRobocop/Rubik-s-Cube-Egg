@@ -6882,6 +6882,7 @@ MonoBehaviour:
   levelPanel: {fileID: 1660804752}
   trainPanel: {fileID: 973852580}
   settingsPanel: {fileID: 1089503948}
+  chooseLvlPanel: {fileID: 1161225694}
   backSprite: {fileID: 1354311064}
   eggMaterial:
   - {fileID: 2100000, guid: 559335a5e57ab12419f03cf5c242f69d, type: 2}
@@ -6906,6 +6907,7 @@ MonoBehaviour:
   difficult: {fileID: 442141843}
   leftLevelBtn: {fileID: 223011597}
   rightLevelBtn: {fileID: 462230146}
+  props: {fileID: 11400000, guid: 71005d27a79dd77499157a82d0a364ed, type: 2}
 --- !u!1 &1402152672
 GameObject:
   m_ObjectHideFlags: 0
