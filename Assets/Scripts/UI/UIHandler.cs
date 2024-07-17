@@ -13,6 +13,7 @@ namespace UI
     {
         public GameObject winPanel;
         public GameObject startPanel;
+        public GameObject trainPanel;
         
         public Button nextLevelBtn;
         public Button playBtn;
@@ -79,6 +80,12 @@ namespace UI
             Main.Instance.Restart();
             startPanel.SetActive(false);
             winPanel.SetActive(false);
+
+            trainPanel.SetActive(true);
+            trainPanel.transform.GetChild(0).gameObject.SetActive(true);
+            trainPanel.transform.GetChild(1).gameObject.SetActive(false);
+            trainPanel.transform.GetChild(2).gameObject.SetActive(false);
+            trainPanel.transform.GetChild(3).gameObject.SetActive(false);
         }
 
         void OnSettinigsClick()
