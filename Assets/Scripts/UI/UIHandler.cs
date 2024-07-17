@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
@@ -21,7 +18,9 @@ namespace UI
         public Material[] eggMaterial;
 
         private Color choosedBackColor;
+        private Button choosedBackColorBtn;
         private Color choosedEggColor;
+        private Button choosedEggColorBtn;
 
         
         public Button[] backColorBtn;
@@ -50,14 +49,23 @@ namespace UI
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
 
-            for (int i = 0; i < backColorBtn.Length; i++)
+            foreach (var item in backColorBtn)
             {
-                Button item = backColorBtn[i];
-                item.onClick.AddListener(() => SetBackColor(i));
+                item.onClick.AddListener(() =>
+                {
+                    choosedBackColorBtn = item;
+                    ChangeBackColor();                 
+                });
             }
 
             foreach (var item in eggColorBtn)
-                item.onClick.AddListener(SetEggColor);
+            {
+                item.onClick.AddListener(() =>
+                {
+                    choosedEggColorBtn = item;
+                    ChangeEggColor();                 
+                });
+            }
 
             UpdateLevelView();
         }
@@ -93,6 +101,8 @@ namespace UI
             winPanel.SetActive(false);
 
             UpdateLevelView();
+
+            Handheld.Vibrate();
         }
 
         void OnRestartClick()
@@ -102,6 +112,8 @@ namespace UI
             winPanel.SetActive(false);
 
             UpdateLevelView();
+
+            Handheld.Vibrate();
         }
 
         void OnTrainClick()
@@ -116,6 +128,8 @@ namespace UI
             trainPanel.transform.GetChild(2).gameObject.SetActive(false);
             trainPanel.transform.GetChild(3).gameObject.SetActive(false);
             trainPanel.transform.GetChild(4).gameObject.SetActive(false);
+
+            Handheld.Vibrate();
         }
 
         void OnSettinigsClick()
@@ -129,6 +143,8 @@ namespace UI
             winPanel.SetActive(true);
             
             UpdateLevelView();
+
+            Handheld.Vibrate();
         }
 
         public void UpdateLevelView()
@@ -152,14 +168,15 @@ namespace UI
             levelNumber.text = "level " + level.ToString();
         }
 
-        public void SetBackColor(int i)
+        public void ChangeBackColor()
         {
-            choosedBackColor = backColorBtn[i].image.color;
-            backSprite.color = choosedBackColor;
+            choosedBackColor = choosedBackColorBtn.GetComponent<Image>().color;
+            Camera.main.backgroundColor = choosedBackColor;
         }
 
-        public void SetEggColor()
+        public void ChangeEggColor()
         {
+            choosedEggColor = choosedEggColorBtn.GetComponent<Image>().color;
             foreach(var item in eggMaterial)
                 item.color = choosedEggColor;
         }
