@@ -9,15 +9,15 @@ namespace UI
 
     public class UIHandler : MonoBehaviour
     {
-        public GameObject winPanel;
         public GameObject startPanel;
         public GameObject levelPanel;
         public GameObject trainPanel;
         public GameObject settingsPanel;
         public GameObject chooseLvlPanel;
+        public GameObject winPanel;
+
         public SpriteRenderer backSprite;
         public Material[] eggMaterial;
-
         private Color choosedBackColor;
         private Button choosedBackColorBtn;
         private Color choosedEggColor;
@@ -48,11 +48,14 @@ namespace UI
             leftLevelBtn.onClick.AddListener(OnLeftLevelBtnClick);
             rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
 
-            winPanel.SetActive(false);
             startPanel.SetActive(true);
             levelPanel.SetActive(false);
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(false);
+            winPanel.SetActive(false);
+
+            restartBtn.transform.parent.gameObject.SetActive(false);
 
             foreach (var btn in backColorBtn)
             {
@@ -98,6 +101,9 @@ namespace UI
                 levelPanel.SetActive(false);
                 trainPanel.SetActive(false);
                 settingsPanel.SetActive(false);
+                chooseLvlPanel.SetActive(false);
+
+                restartBtn.transform.parent.gameObject.SetActive(true);
             }
         }
 
@@ -105,8 +111,15 @@ namespace UI
         {
             Main.Instance.CurrentLevel++;
             Main.Instance.Restart();
-            startPanel.SetActive(false);
+
             winPanel.SetActive(false);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(true);
+            trainPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(false);
+            
+            restartBtn.transform.parent.gameObject.SetActive(false);
 
             UpdateLevelView();
         }
@@ -114,8 +127,15 @@ namespace UI
         void OnPlayClick()
         {
             Main.Instance.Restart();
-            startPanel.SetActive(false);
+            
             winPanel.SetActive(false);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(true);
+            trainPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(true);
+            
+            restartBtn.transform.parent.gameObject.SetActive(false);
 
             UpdateLevelView();
 
@@ -125,21 +145,35 @@ namespace UI
         void OnRestartClick()
         {
             Main.Instance.Restart();
-            startPanel.SetActive(false);
+
             winPanel.SetActive(false);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(true);
+            trainPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(false);
+
+            restartBtn.transform.parent.gameObject.SetActive(false);
 
             UpdateLevelView();
 
             Handheld.Vibrate();
+
         }
 
         void OnTrainClick()
         {
             Main.Instance.Restart();
-            startPanel.SetActive(false);
-            winPanel.SetActive(false);
 
+            winPanel.SetActive(false);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(false);
             trainPanel.SetActive(true);
+            settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(false);
+
+            restartBtn.transform.parent.gameObject.SetActive(false);
+
             trainPanel.transform.GetChild(0).gameObject.SetActive(true);//curtain
             trainPanel.transform.GetChild(1).gameObject.SetActive(true);
             trainPanel.transform.GetChild(2).gameObject.SetActive(false);
@@ -151,13 +185,26 @@ namespace UI
 
         void OnSettinigsClick()
         {
+            winPanel.SetActive(false);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(false);
+            trainPanel.SetActive(false);
             settingsPanel.SetActive(true);
+            chooseLvlPanel.SetActive(false);
+
+            restartBtn.transform.parent.gameObject.SetActive(false);
         }
 
         public void ShowWin()
         {
-            startPanel.SetActive(false);
             winPanel.SetActive(true);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(false);
+            trainPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(false);
+
+            restartBtn.transform.parent.gameObject.SetActive(false);
             
             UpdateLevelView();
 
@@ -168,7 +215,7 @@ namespace UI
         {
             var level = Main.Instance.CurrentLevel;
 
-            string difficultText = "Extreme";
+            var difficultText = "Extreme";
 
             if (level >= 80)
                 difficultText = "Extreme";

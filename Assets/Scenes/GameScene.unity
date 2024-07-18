@@ -6928,12 +6928,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 335626045}
   - {fileID: 1260012197}
   - {fileID: 973852581}
   - {fileID: 1089503949}
   - {fileID: 1660804753}
   - {fileID: 1161225695}
+  - {fileID: 335626045}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -6953,12 +6953,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 784b802fc3bf2b44db8cc37b561145f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winPanel: {fileID: 335626044}
   startPanel: {fileID: 1260012196}
   levelPanel: {fileID: 1660804752}
   trainPanel: {fileID: 973852580}
   settingsPanel: {fileID: 1089503948}
   chooseLvlPanel: {fileID: 1161225694}
+  winPanel: {fileID: 335626044}
   backSprite: {fileID: 1354311064}
   eggMaterial:
   - {fileID: 2100000, guid: 559335a5e57ab12419f03cf5c242f69d, type: 2}
@@ -9983,7 +9983,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1981187224
 RectTransform:
   m_ObjectHideFlags: 0
