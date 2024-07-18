@@ -9,7 +9,6 @@ namespace RubiksCubeEgg
     {      
 
         public int CurrentLevel = 0;
-        public int CurrentLevelView => CurrentLevel + 1;
 
         public static Main Instance;
 

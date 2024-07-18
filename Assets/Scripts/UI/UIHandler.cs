@@ -34,6 +34,7 @@ namespace UI
         public TextMeshProUGUI difficult;
         public Button leftLevelBtn;
         public Button rightLevelBtn;
+        public Button updateBtn;
 
         public RubiksCubeEgg.Game.Props props;
 
@@ -47,6 +48,7 @@ namespace UI
             nextLevelBtn.onClick.AddListener(OnNextClick);
             leftLevelBtn.onClick.AddListener(OnLeftLevelBtnClick);
             rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
+            updateBtn.onClick.AddListener(OnUpdateAllBtnClick);
 
             startPanel.SetActive(true);
             levelPanel.SetActive(false);
@@ -55,6 +57,7 @@ namespace UI
             chooseLvlPanel.SetActive(false);
             winPanel.SetActive(false);
 
+            playBtn.transform.parent.gameObject.SetActive(true);
             restartBtn.transform.parent.gameObject.SetActive(false);
 
             foreach (var btn in backColorBtn)
@@ -85,6 +88,9 @@ namespace UI
             trainBtn.onClick.RemoveListener(OnTrainClick);
             settingsBtn.onClick.RemoveListener(OnSettinigsClick);
             nextLevelBtn.onClick.RemoveListener(OnNextClick);
+            leftLevelBtn.onClick.RemoveListener(OnLeftLevelBtnClick);
+            rightLevelBtn.onClick.RemoveListener(OnRightLevelBtnClick);
+            updateBtn.onClick.RemoveListener(OnUpdateAllBtnClick);
             
             foreach (var item in backColorBtn)
                 item.onClick.RemoveAllListeners();              
@@ -103,13 +109,32 @@ namespace UI
                 settingsPanel.SetActive(false);
                 chooseLvlPanel.SetActive(false);
 
+                playBtn.transform.parent.gameObject.SetActive(false);
                 restartBtn.transform.parent.gameObject.SetActive(true);
             }
+        }
+
+        void OnUpdateAllBtnClick()
+        {
+            winPanel.SetActive(false);
+            startPanel.SetActive(false);
+            levelPanel.SetActive(true);
+            trainPanel.SetActive(false);
+            settingsPanel.SetActive(false);
+            chooseLvlPanel.SetActive(false);
+
+            UpdateLevelView();
+            Main.Instance.Restart();       
         }
 
         void OnNextClick()
         {
             Main.Instance.CurrentLevel++;
+            
+            if (Main.Instance.CurrentLevel > props.levels.Count - 1)
+                Main.Instance.CurrentLevel = props.levels.Count - 1;
+            
+            UpdateLevelView();
             Main.Instance.Restart();
 
             winPanel.SetActive(false);
@@ -119,6 +144,7 @@ namespace UI
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(false);
             
+            playBtn.transform.parent.gameObject.SetActive(true);
             restartBtn.transform.parent.gameObject.SetActive(false);
 
             UpdateLevelView();
@@ -130,11 +156,12 @@ namespace UI
             
             winPanel.SetActive(false);
             startPanel.SetActive(false);
-            levelPanel.SetActive(true);
+            levelPanel.SetActive(false);
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(true);
             
+            playBtn.transform.parent.gameObject.SetActive(false);
             restartBtn.transform.parent.gameObject.SetActive(false);
 
             UpdateLevelView();
@@ -148,11 +175,12 @@ namespace UI
 
             winPanel.SetActive(false);
             startPanel.SetActive(false);
-            levelPanel.SetActive(true);
+            levelPanel.SetActive(false);
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(false);
+            chooseLvlPanel.SetActive(true);
 
+            playBtn.transform.parent.gameObject.SetActive(false);
             restartBtn.transform.parent.gameObject.SetActive(false);
 
             UpdateLevelView();
@@ -172,6 +200,7 @@ namespace UI
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(false);
 
+            playBtn.transform.parent.gameObject.SetActive(false);
             restartBtn.transform.parent.gameObject.SetActive(false);
 
             trainPanel.transform.GetChild(0).gameObject.SetActive(true);//curtain
@@ -192,6 +221,7 @@ namespace UI
             settingsPanel.SetActive(true);
             chooseLvlPanel.SetActive(false);
 
+            playBtn.transform.parent.gameObject.SetActive(false);
             restartBtn.transform.parent.gameObject.SetActive(false);
         }
 
@@ -204,6 +234,7 @@ namespace UI
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(false);
 
+            playBtn.transform.parent.gameObject.SetActive(false);
             restartBtn.transform.parent.gameObject.SetActive(false);
             
             UpdateLevelView();
@@ -225,7 +256,7 @@ namespace UI
                 difficultText = "Very";
             else if (level >= 20)
                 difficultText = "Hard";
-            else if (level >= 5)
+            else 
                 difficultText = "Easy";
             
             difficult.text = difficultText;
