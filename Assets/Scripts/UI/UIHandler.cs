@@ -244,7 +244,7 @@ namespace UI
 
         public void UpdateLevelView()
         {
-            var level = Main.Instance.CurrentLevel;
+            var level = Main.Instance.CurrentLevel + 1;
 
             var difficultText = "Extreme";
 
@@ -280,8 +280,8 @@ namespace UI
         {
             Main.Instance.CurrentLevel--;
 
-            if (Main.Instance.CurrentLevel <= 1)
-                Main.Instance.CurrentLevel = 1;
+            if (Main.Instance.CurrentLevel < 0)
+                Main.Instance.CurrentLevel = 0;
 
             UpdateLevelView();
             Main.Instance.Restart();
