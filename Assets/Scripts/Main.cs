@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices;
 using UI;
 using UnityEngine;
 
@@ -34,13 +33,13 @@ namespace RubiksCubeEgg
         
         private void Start()
         {
+            ballSpawner.SpawnBalls(CurrentLevel);
             Restart();
         }
 
         public void Restart()
         {
-            var spawnedBalls = ballSpawner.SpawnBalls(CurrentLevel);
-            collisionsChecker.Init(spawnedBalls);
+            //SceneManager.LoadScene(0);
         }
 
         private void Win()
