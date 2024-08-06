@@ -159,7 +159,7 @@ namespace UI
             levelPanel.SetActive(false);
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(true);
+            //chooseLvlPanel.SetActive(true);
             
             playBtn.transform.parent.gameObject.SetActive(false);
             restartBtn.transform.parent.gameObject.SetActive(false);

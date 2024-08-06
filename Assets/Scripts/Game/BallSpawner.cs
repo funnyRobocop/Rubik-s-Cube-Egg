@@ -20,6 +20,7 @@ namespace RubiksCubeEgg.Game
         {
             index = 0;
             var result = new List<Ball>();
+            Debug.Log(levelNumber);
             SpawnBalls(props.levels[levelNumber].forwardBallList, Side.Forwad, ref result);
             SpawnBalls(props.levels[levelNumber].backBallList, Side.Back, ref result);
             SpawnBalls(props.levels[levelNumber].leftBallList, Side.Left, ref result);

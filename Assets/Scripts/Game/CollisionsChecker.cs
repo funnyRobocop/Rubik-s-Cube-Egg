@@ -107,6 +107,12 @@ namespace RubiksCubeEgg.Game
 
         private bool CheckColorIsEqual(List<Ball> ballList)
         {
+            if (ballList.Count != Consts.SideBallCount)
+            {
+                Debug.LogError("elements count not correct" + ballList.Count) ;
+                return false;
+            }
+
             var color = ballList[0].Color;
             foreach (var item in ballList)
             {
