@@ -48,6 +48,12 @@ namespace RubiksCubeEgg.Game
 
         private void Update()
         {
+            if (!IsMouseOverGameWindow)
+            {   
+                lastMousePosition = Vector3.negativeInfinity;
+                return;
+            }
+
             if (!Input.GetMouseButton(0))
             {
                 lastMousePosition = Input.mousePosition;                
@@ -180,8 +186,19 @@ namespace RubiksCubeEgg.Game
 
         private void RotateCamera( Vector3 inputDelta)
         {
+            if (!IsMouseOverGameWindow)
+            return;
             cameraController.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
+        }
+
+        private bool IsMouseOverGameWindow
+        {
+            get
+            {
+                Vector3 mp = Input.mousePosition;
+                return !( 0>mp.x || 0>mp.y || Screen.width<mp.x || Screen.height<mp.y );
+            }
         }
     }
 }
