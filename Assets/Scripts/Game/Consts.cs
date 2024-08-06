@@ -23,5 +23,6 @@ namespace RubiksCubeEgg.Game
         public const string BackTag = "Back";
         public const string LeftTag = "Left";
         public const string RightTag = "Right";
+        public const int CurtainLayer = 10;
     }
 }

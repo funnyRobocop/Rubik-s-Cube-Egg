@@ -15,6 +15,7 @@ namespace UI
         public GameObject settingsPanel;
         public GameObject chooseLvlPanel;
         public GameObject winPanel;
+        public GameObject curtain;
 
         public SpriteRenderer backSprite;
         public Material[] eggMaterial;
@@ -50,6 +51,7 @@ namespace UI
             rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
             updateBtn.onClick.AddListener(OnUpdateAllBtnClick);
 
+            curtain.SetActive(true);
             startPanel.SetActive(true);
             levelPanel.SetActive(false);
             trainPanel.SetActive(false);
@@ -102,6 +104,7 @@ namespace UI
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
+                curtain.SetActive(true);
                 winPanel.SetActive(false);
                 startPanel.SetActive(true);
                 levelPanel.SetActive(false);
@@ -137,6 +140,7 @@ namespace UI
             UpdateLevelView();
             Main.Instance.Restart();
 
+            curtain.SetActive(false);
             winPanel.SetActive(false);
             startPanel.SetActive(false);
             levelPanel.SetActive(true);
@@ -154,6 +158,7 @@ namespace UI
         {
             Main.Instance.Restart();
             
+            curtain.SetActive(false);
             winPanel.SetActive(false);
             startPanel.SetActive(false);
             levelPanel.SetActive(false);
@@ -173,6 +178,7 @@ namespace UI
         {
             Main.Instance.Restart();
 
+            curtain.SetActive(true);
             winPanel.SetActive(false);
             startPanel.SetActive(false);
             levelPanel.SetActive(false);
@@ -214,6 +220,7 @@ namespace UI
 
         void OnSettinigsClick()
         {
+            curtain.SetActive(true);
             winPanel.SetActive(false);
             startPanel.SetActive(false);
             levelPanel.SetActive(false);
@@ -227,6 +234,7 @@ namespace UI
 
         public void ShowWin()
         {
+            curtain.SetActive(true);
             winPanel.SetActive(true);
             startPanel.SetActive(false);
             levelPanel.SetActive(false);

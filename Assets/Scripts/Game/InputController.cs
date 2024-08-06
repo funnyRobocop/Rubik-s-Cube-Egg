@@ -1,3 +1,5 @@
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -22,6 +24,9 @@ namespace RubiksCubeEgg.Game
         private SideBallContainer leftContainer;
         [SerializeField]
         private SideBallContainer rightContainer;
+        [SerializeField]
+        private GameObject uiCurtain;
+
 
         private State state;
         private Vector3 lastMousePosition = Vector3.negativeInfinity;
@@ -81,8 +86,12 @@ namespace RubiksCubeEgg.Game
             {
                 var ray = cameraController.Camera.ScreenPointToRay(Input.mousePosition);
                 var hits = Physics.RaycastAll(ray, 100f, Consts.UpLayerMask | Consts.MiddleLayerMask | Consts.BottomLayerMask | Consts.BallLayerMask | Consts.CameraLayerMask);
+
+                if (uiCurtain.activeInHierarchy)
+                    return;
+
                 Transform closestHit = null;
-                float minDistance = float.MaxValue;
+                var minDistance = float.MaxValue;
                 foreach (var item in hits)
                 {
                     if (item.distance < minDistance)
