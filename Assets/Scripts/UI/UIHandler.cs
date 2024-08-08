@@ -49,7 +49,6 @@ namespace UI
             nextLevelBtn.onClick.AddListener(OnNextClick);
             leftLevelBtn.onClick.AddListener(OnLeftLevelBtnClick);
             rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
-            updateBtn.onClick.AddListener(OnUpdateAllBtnClick);
 
             curtain.SetActive(true);
             startPanel.SetActive(true);
@@ -92,7 +91,6 @@ namespace UI
             nextLevelBtn.onClick.RemoveListener(OnNextClick);
             leftLevelBtn.onClick.RemoveListener(OnLeftLevelBtnClick);
             rightLevelBtn.onClick.RemoveListener(OnRightLevelBtnClick);
-            updateBtn.onClick.RemoveListener(OnUpdateAllBtnClick);
             
             foreach (var item in backColorBtn)
                 item.onClick.RemoveAllListeners();              
@@ -115,19 +113,6 @@ namespace UI
                 playBtn.transform.parent.gameObject.SetActive(false);
                 restartBtn.transform.parent.gameObject.SetActive(true);
             }
-        }
-
-        void OnUpdateAllBtnClick()
-        {
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(true);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(false);
-
-            UpdateLevelView();
-            Main.Instance.Restart();       
         }
 
         void OnNextClick()
