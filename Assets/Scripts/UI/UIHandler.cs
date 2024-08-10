@@ -33,6 +33,13 @@ namespace UI
         public Button[] eggColorBtn;
         
         public Button playBtn;
+        public GameObject restartBtn;
+        public GameObject trainBtn;
+        public GameObject settingsBtn;
+
+        public Vector3 initPlayBtnPos;
+        public Vector3 initTrainBtnPos;
+
         public TextMeshProUGUI levelNumber;
         public TextMeshProUGUI difficult;
 
@@ -58,7 +65,11 @@ namespace UI
                     ChangeEggColor();                 
                 });
             }
+
             UpdateLevelView();
+
+            initPlayBtnPos = playBtn.transform.parent.position;
+            initTrainBtnPos = trainBtn.transform.position;
         }
 
         void OnDestroy()
@@ -79,7 +90,7 @@ namespace UI
                 curtain.SetActive(true);
                 startPanel.SetActive(true);
                 
-                levelPanel.SetActive(false);
+                //levelPanel.SetActive(false);
                 trainPanel.SetActive(false);
                 settingsPanel.SetActive(false);
                 chooseLvlPanel.SetActive(false);
@@ -111,10 +122,6 @@ namespace UI
             }
         }
 
-        public void OnDisabledLevelItemClick()
-        {
-        }
-
         public void ShowWin()
         {
             curtain.SetActive(true);
@@ -126,6 +133,8 @@ namespace UI
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(false);
             dialogPanel.SetActive(false);
+
+            ShowAllStartBtn(false);
 
             Handheld.Vibrate();
         }
@@ -161,6 +170,28 @@ namespace UI
             choosedEggColor = choosedEggColorBtn.GetComponent<Image>().color;
             foreach(var item in eggMaterial)
                 item.color = choosedEggColor;
+        }
+
+        public void OnPlayBtnClick()
+        {
+            curtain.SetActive(false);
+            startPanel.SetActive(false);
+
+            if (!Main.Instance.IsRun)
+            {
+                LoadChooseLevelPanel();
+                chooseLvlPanel.SetActive(true);
+            }
+        }
+
+        public void ShowAllStartBtn(bool isOn)
+        {
+            restartBtn.SetActive(isOn);
+            settingsBtn.SetActive(isOn);
+            startPanel.GetComponent<Animator>().enabled = isOn;
+
+            playBtn.transform.parent.position = new Vector3(playBtn.transform.parent.position.x, initPlayBtnPos.y, playBtn.transform.parent.position.z);
+            trainBtn.transform.position = new Vector3(trainBtn.transform.position.x, initTrainBtnPos.y, trainBtn.transform.position.z);
         }
     }
 }

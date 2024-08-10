@@ -1,4 +1,5 @@
 using System;
+using Palmmedia.ReportGenerator.Core;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
@@ -38,21 +39,35 @@ namespace UI
             {
                 back.color = passedColor;
                 levelText.color = defaultLevelTextColor;
-                //playBtn.onClick.AddListener(Main.Instance.Restart);
+                playBtn.onClick.AddListener(() => 
+                { 
+                    Main.Instance.LoadLevel(levelNumber); 
+                    handler.levelPanel.SetActive(true);
+                    handler.settingsBtn.gameObject.SetActive(true);
+                    handler.restartBtn.gameObject.SetActive(true);
+                    handler.ShowAllStartBtn(true);
+                });
+                handler.UpdateLevelView();
             }
             else if (state == State.Disabled)
             {
                 back.color = disabledColor;
                 levelText.color = disabledColor;
-                playBtn.onClick.AddListener(handler.OnDisabledLevelItemClick);
             }
             else if (state == State.Skipped)
             {
                 back.color = scippedColor;
                 levelText.color = defaultLevelTextColor;
-                //playBtn.onClick.AddListener(Main.Instance.Restart);
+                playBtn.onClick.AddListener(() => 
+                { 
+                    Main.Instance.LoadLevel(levelNumber); 
+                    handler.levelPanel.SetActive(true);
+                    handler.settingsBtn.gameObject.SetActive(true);
+                    handler.restartBtn.gameObject.SetActive(true);
+                    handler.ShowAllStartBtn(true);
+                });
+                handler.UpdateLevelView();
             }
-
         }
     }
 }

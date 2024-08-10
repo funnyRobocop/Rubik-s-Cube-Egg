@@ -21,6 +21,8 @@ namespace RubiksCubeEgg
         [SerializeField]
         private UIHandler uIHandler;
 
+        public bool IsRun;
+
         void Awake()
         {
             Application.targetFrameRate = 60;
@@ -42,14 +44,17 @@ namespace RubiksCubeEgg
         public void LoadLevel(int level)
         {
             ChoosedLevel = level;
+            IsRun = ChoosedLevel > 0;
             var spawnedBalls = ballSpawner.SpawnBalls(level);
             collisionsChecker.Init(spawnedBalls);
+            uIHandler.chooseLvlPanel.SetActive(false);
         }
 
         private void Win()
         {
             Debug.Log("Win");
             uIHandler.ShowWin();
+            IsRun = false;
         }
     }
 }
