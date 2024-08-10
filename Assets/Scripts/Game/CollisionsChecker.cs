@@ -45,8 +45,8 @@ namespace RubiksCubeEgg.Game
 
         private void Run()
         {
-            /*if (isRun)
-                return;*/
+            if (Main.Instance.ChoosedLevel == 0)
+                return;
 
             isRun = true;
 

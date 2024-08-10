@@ -38,7 +38,7 @@ namespace UI
             {
                 back.color = passedColor;
                 levelText.color = defaultLevelTextColor;
-                playBtn.onClick.AddListener(Main.Instance.Restart);
+                //playBtn.onClick.AddListener(Main.Instance.Restart);
             }
             else if (state == State.Disabled)
             {
@@ -50,7 +50,7 @@ namespace UI
             {
                 back.color = scippedColor;
                 levelText.color = defaultLevelTextColor;
-                playBtn.onClick.AddListener(Main.Instance.Restart);
+                //playBtn.onClick.AddListener(Main.Instance.Restart);
             }
 
         }

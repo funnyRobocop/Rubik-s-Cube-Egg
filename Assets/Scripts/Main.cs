@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UI;
 using UnityEngine;
 
@@ -19,30 +18,31 @@ namespace RubiksCubeEgg
         private Game.BallSpawner ballSpawner;
         [SerializeField]
         private Game.CollisionsChecker collisionsChecker;
+        [SerializeField]
+        private UIHandler uIHandler;
 
-        public UIHandler uIHandler;
-
-        private void Awake()
+        void Awake()
         {
             Application.targetFrameRate = 60;
             Input.multiTouchEnabled = false;
             collisionsChecker.OnWin += Win;
-            Instance = this;
+            Instance = this;            
+        }
+        
+        void Start()
+        {
+            LoadLevel(0);
         }
 
         private void OnDestroy()
         {
             collisionsChecker.OnWin -= Win;
         }
-        
-        private void Start()
-        {
-            Restart();
-        }
 
-        public void Restart()
+        public void LoadLevel(int level)
         {
-            var spawnedBalls = ballSpawner.SpawnBalls(CurrentLevel);
+            ChoosedLevel = level;
+            var spawnedBalls = ballSpawner.SpawnBalls(level);
             collisionsChecker.Init(spawnedBalls);
         }
 
