@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
@@ -9,13 +10,17 @@ namespace UI
 
     public class UIHandler : MonoBehaviour
     {
-        public GameObject startPanel;
+        public GameObject curtain;
+
         public GameObject levelPanel;
+        public GameObject startPanel;
         public GameObject trainPanel;
         public GameObject settingsPanel;
-        public GameObject chooseLvlPanel;
         public GameObject winPanel;
-        public GameObject curtain;
+        public GameObject chooseLvlPanel;
+        public GameObject chooseLvlItemPrefab;
+        public GameObject chooseLvlItemParent;
+        public List<ChooseLevelItem> levelItems = new();
 
         public SpriteRenderer backSprite;
         public Material[] eggMaterial;
@@ -47,8 +52,6 @@ namespace UI
             trainBtn.onClick.AddListener(OnTrainClick);
             settingsBtn.onClick.AddListener(OnSettinigsClick);
             nextLevelBtn.onClick.AddListener(OnNextClick);
-            leftLevelBtn.onClick.AddListener(OnLeftLevelBtnClick);
-            rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
 
             curtain.SetActive(true);
             startPanel.SetActive(true);
@@ -78,8 +81,32 @@ namespace UI
                     ChangeEggColor();                 
                 });
             }
-
             UpdateLevelView();
+        }
+
+        public void LoadChooseLevelPanel()
+        {
+            if (levelItems.Count > 0)
+            {
+                for (int item = 0; item < levelItems.Count; item++)
+                {
+                    var levelItem = levelItems[item];
+                    levelItem.Load(item, this);
+                    return;
+                }
+            }
+
+            for (int i = 0; i < props.levels.Count; i++)
+            {
+                var item = props.levels[i];
+                var level = Instantiate(chooseLvlItemPrefab, Vector3.zero, Quaternion.identity);
+                level.transform.SetParent(chooseLvlItemParent.transform);
+                level.transform.localScale = Vector3.one;
+                var chooseLevelItem = level.GetComponent<ChooseLevelItem>();
+
+                chooseLevelItem.Load(i+1,this);
+                levelItems.Add(chooseLevelItem);
+            }
         }
 
         void OnDestroy()
@@ -89,8 +116,6 @@ namespace UI
             trainBtn.onClick.RemoveListener(OnTrainClick);
             settingsBtn.onClick.RemoveListener(OnSettinigsClick);
             nextLevelBtn.onClick.RemoveListener(OnNextClick);
-            leftLevelBtn.onClick.RemoveListener(OnLeftLevelBtnClick);
-            rightLevelBtn.onClick.RemoveListener(OnRightLevelBtnClick);
             
             foreach (var item in backColorBtn)
                 item.onClick.RemoveAllListeners();              
@@ -177,7 +202,6 @@ namespace UI
             UpdateLevelView();
 
             Handheld.Vibrate();
-
         }
 
         void OnTrainClick()
@@ -201,6 +225,11 @@ namespace UI
             trainPanel.transform.GetChild(4).gameObject.SetActive(false);
 
             Handheld.Vibrate();
+        }
+
+        public void OnDisabledLevelItemClick()
+        {
+
         }
 
         void OnSettinigsClick()
@@ -237,7 +266,7 @@ namespace UI
 
         public void UpdateLevelView()
         {
-            var level = Main.Instance.CurrentLevel + 1;
+            var level = Main.Instance.ChoosedLevel + 1;
 
             var difficultText = "Extreme";
 
@@ -254,6 +283,8 @@ namespace UI
             
             difficult.text = difficultText;
             levelNumber.text = "level " + level.ToString();
+
+            LoadChooseLevelPanel();
         }
 
         public void ChangeBackColor()
@@ -267,28 +298,6 @@ namespace UI
             choosedEggColor = choosedEggColorBtn.GetComponent<Image>().color;
             foreach(var item in eggMaterial)
                 item.color = choosedEggColor;
-        }
-
-        void OnLeftLevelBtnClick()
-        {
-            Main.Instance.CurrentLevel--;
-
-            if (Main.Instance.CurrentLevel < 0)
-                Main.Instance.CurrentLevel = 0;
-
-            UpdateLevelView();
-            Main.Instance.Restart();
-        }
-
-        void OnRightLevelBtnClick()
-        {
-            Main.Instance.CurrentLevel++;
-            
-            if (Main.Instance.CurrentLevel > props.levels.Count - 1)
-                Main.Instance.CurrentLevel = props.levels.Count - 1;
-            
-            UpdateLevelView();
-            Main.Instance.Restart();
         }
     }
 }

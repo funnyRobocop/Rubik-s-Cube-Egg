@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UI;
 using UnityEngine;
@@ -9,6 +10,8 @@ namespace RubiksCubeEgg
     {      
 
         public int CurrentLevel = 0;
+        public int ChoosedLevel = 0;
+        public List<int> SkippedLevelList = new();
 
         public static Main Instance;
 
