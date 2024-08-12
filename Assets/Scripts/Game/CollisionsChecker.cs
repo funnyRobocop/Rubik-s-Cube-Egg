@@ -13,7 +13,7 @@ namespace RubiksCubeEgg.Game
         [SerializeField]
         private List<BallContainerBase> ballContainers;
 
-        private List<Ball> ballList = new();
+        public List<Ball> ballList = new();
         private bool isRun;
 
         public enum ContainerType { Up, Middle, Bottom, Forward, Back, Left, Right }
@@ -45,9 +45,6 @@ namespace RubiksCubeEgg.Game
 
         private void Run()
         {
-            if (Main.Instance.ChoosedLevel == 0)
-                return;
-
             isRun = true;
 
             foreach (var item in ballContainers)
@@ -86,6 +83,9 @@ namespace RubiksCubeEgg.Game
                 }
             }
 
+            if (Main.Instance.ChoosedLevel == 0)
+                return;
+                
             Debug.Log("Check is finished");
 
             if (CheckWinCondition() && OnWin!= null)

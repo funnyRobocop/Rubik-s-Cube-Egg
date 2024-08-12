@@ -11,6 +11,7 @@ namespace RubiksCubeEgg.Game
         private float distanceTravelled;
         private float goalDistanceTravelled;
         private int direction;
+        private float initDistanceTravelled;
 
         public SideBallContainer SideBallContainer { get; set; }
         public Transform ThisTransform { get; private set; }
@@ -48,6 +49,7 @@ namespace RubiksCubeEgg.Game
         {
             ThisTransform = GetComponent<Transform>();
             enabled = false;
+            initDistanceTravelled = distanceTravelled;
         }
 
         private void Update()
@@ -72,6 +74,12 @@ namespace RubiksCubeEgg.Game
             Color = color;
             goalDistanceTravelled = distanceTravelled;
             ThisTransform.SetLocalPositionAndRotation(PathCreator.path.GetPointAtDistance(distanceTravelled), Quaternion.identity);
+        }
+
+        public void ChangeColor(Color color)
+        {
+            //distanceTravelled = initDistanceTravelled;
+            Color = color;
         }
 
         public void InitRotation(int delta, SideBallContainer sideBallContainer)

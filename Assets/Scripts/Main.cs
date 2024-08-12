@@ -47,7 +47,16 @@ namespace RubiksCubeEgg
             IsRun = ChoosedLevel > 0;
             var spawnedBalls = ballSpawner.SpawnBalls(level);
             collisionsChecker.Init(spawnedBalls);
-            uIHandler.chooseLvlPanel.SetActive(false);
+        }
+
+        public void ReloadLevel(int level)
+        {
+            ChoosedLevel = level;
+            IsRun = ChoosedLevel > 0;
+            foreach (var item in collisionsChecker.ballList)
+            {
+                item.ChangeColor(Game.Color.Blue);
+            }
         }
 
         private void Win()

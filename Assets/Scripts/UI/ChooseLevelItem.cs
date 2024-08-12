@@ -41,11 +41,13 @@ namespace UI
                 levelText.color = defaultLevelTextColor;
                 playBtn.onClick.AddListener(() => 
                 { 
-                    Main.Instance.LoadLevel(levelNumber); 
+                    Main.Instance.ReloadLevel(levelNumber); 
                     handler.levelPanel.SetActive(true);
                     handler.settingsBtn.gameObject.SetActive(true);
                     handler.restartBtn.gameObject.SetActive(true);
                     handler.ShowAllStartBtn(true);
+                    handler.chooseLvlPanel.SetActive(false);
+                    handler.curtain.SetActive(false);
                 });
                 handler.UpdateLevelView();
             }
@@ -60,11 +62,13 @@ namespace UI
                 levelText.color = defaultLevelTextColor;
                 playBtn.onClick.AddListener(() => 
                 { 
-                    Main.Instance.LoadLevel(levelNumber); 
+                    Main.Instance.ReloadLevel(levelNumber); 
                     handler.levelPanel.SetActive(true);
                     handler.settingsBtn.gameObject.SetActive(true);
                     handler.restartBtn.gameObject.SetActive(true);
                     handler.ShowAllStartBtn(true);
+                    handler.chooseLvlPanel.SetActive(false);
+                    handler.curtain.SetActive(false);
                 });
                 handler.UpdateLevelView();
             }
