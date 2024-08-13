@@ -23,6 +23,7 @@ namespace UI
 
         public void Load(int levelNumber, UIHandler handler)
         {
+            Debug.Log(levelNumber);
             playBtn.onClick.RemoveAllListeners();
             var currentLevel = Main.Instance.CurrentLevel;
 

@@ -57,6 +57,7 @@ namespace RubiksCubeEgg
             {
                 item.ChangeColor(Game.Color.Blue);
             }
+            uIHandler.UpdateLevelView();
         }
 
         private void Win()

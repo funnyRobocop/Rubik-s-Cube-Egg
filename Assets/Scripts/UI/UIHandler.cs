@@ -104,9 +104,9 @@ namespace UI
                 for (int item = 0; item < levelItems.Count; item++)
                 {
                     var levelItem = levelItems[item];
-                    levelItem.Load(item, this);
-                    return;
+                    levelItem.Load(item+1, this);
                 }
+                return;
             }
 
             for (int i = 0; i < props.levels.Count; i++)
@@ -141,7 +141,7 @@ namespace UI
 
         public void UpdateLevelView()
         {
-            var level = Main.Instance.ChoosedLevel + 1;
+            var level = Main.Instance.ChoosedLevel;
 
             string difficultText;
             if (level >= 80)
