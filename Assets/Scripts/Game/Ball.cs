@@ -1,6 +1,7 @@
 using System;
 using PathCreation;
 using UnityEngine;
+using System;
 
 
 namespace RubiksCubeEgg.Game
@@ -17,6 +18,7 @@ namespace RubiksCubeEgg.Game
         public Transform ThisTransform { get; private set; }
         public PathCreator PathCreator { get; set; }
         public Color Color { get; private set; }
+        Props props;
 
 
         public static int InputDeltaToDirection(Vector3 inputDelta, Transform tr)
@@ -78,8 +80,9 @@ namespace RubiksCubeEgg.Game
 
         public void ChangeColor(Color color)
         {
-            //distanceTravelled = initDistanceTravelled;
+            distanceTravelled = initDistanceTravelled;
             Color = color;
+            //props.GetBallPrefabByColor(0);
         }
 
         public void InitRotation(int delta, SideBallContainer sideBallContainer)
