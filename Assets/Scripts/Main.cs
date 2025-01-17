@@ -23,9 +23,6 @@ namespace RubiksCubeEgg
 
         public bool IsRun;
 
-        public List<Material> materials;
-        public List<Color> colors;
-
         void Awake()
         {
             Application.targetFrameRate = 60;

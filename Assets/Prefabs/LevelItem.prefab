@@ -274,7 +274,7 @@ MonoBehaviour:
   scippedColor: {r: 1, g: 0.5372549, b: 0, a: 1}
   disabledColor: {r: 0.36862746, g: 0.36862746, b: 0.36862746, a: 1}
   defaultLevelTextColor: {r: 0.99607843, g: 0.8156863, b: 0.14509805, a: 1}
-  state: 0
+  state: 3
   leveNumber: 0
 --- !u!1 &8264857596876377649
 GameObject:
