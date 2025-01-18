@@ -119,7 +119,7 @@ namespace UI
                 return;
             }
 
-            for (int i = 0; i < props.levels.Count; i++)
+            for (int i = 0; i < props.levels.Count - 1; i++)
             {
                 var item = props.levels[i];
                 var level = Instantiate(chooseLvlItemPrefab, Vector3.zero, Quaternion.identity);
