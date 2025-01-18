@@ -59,9 +59,10 @@ namespace RubiksCubeEgg
                 else
                     if (SkippedLevelList.Contains(ChoosedLevel))
                         SkippedLevelList.Remove(ChoosedLevel); //todo проверить
+                
+                uIHandler.ShowWin();
             }
             
-            uIHandler.ShowWin();
             IsRun = false;
         }
     }
