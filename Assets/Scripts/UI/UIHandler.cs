@@ -79,6 +79,7 @@ namespace UI
                 curtain.SetActive(false);
                 startPanel.SetActive(false);                
                 levelPanel.SetActive(true);
+                ShowAllStartBtn(true);
             }
         }
 
@@ -197,7 +198,6 @@ namespace UI
         public void ShowAllStartBtn(bool isOn)
         {
             restartBtn.SetActive(isOn);
-            settingsBtn.SetActive(isOn);
             startPanel.GetComponent<Animator>().enabled = isOn;
 
             playBtn.transform.parent.position = new Vector3(playBtn.transform.parent.position.x, initPlayBtnPos.y, playBtn.transform.parent.position.z);
