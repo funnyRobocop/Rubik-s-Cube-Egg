@@ -42,7 +42,7 @@ namespace UI
                 playBtn.onClick.AddListener(() => 
                 { 
                     Main.ChoosedLevel = levelNumber;
-                    SceneManager.LoadScene(0);
+                    handler.RestartLevel();
                 });
                 handler.UpdateLevelView();
             }
@@ -58,7 +58,7 @@ namespace UI
                 playBtn.onClick.AddListener(() => 
                 {
                     Main.ChoosedLevel = levelNumber;
-                    SceneManager.LoadScene(0);
+                    handler.RestartLevel();
                 });
                 handler.UpdateLevelView();
             }

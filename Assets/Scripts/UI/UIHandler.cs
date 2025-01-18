@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -202,6 +203,11 @@ namespace UI
 
             playBtn.transform.parent.position = new Vector3(playBtn.transform.parent.position.x, initPlayBtnPos.y, playBtn.transform.parent.position.z);
             trainBtn.transform.position = new Vector3(trainBtn.transform.position.x, initTrainBtnPos.y, trainBtn.transform.position.z);
+        }
+
+        public void RestartLevel()
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }
