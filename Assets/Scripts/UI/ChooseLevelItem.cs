@@ -1,7 +1,7 @@
-
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace UI
@@ -22,9 +22,9 @@ namespace UI
 
         public void Load(int levelNumber, UIHandler handler)
         {
-            Debug.Log(levelNumber);
+            //Debug.Log("level item " + levelNumber);
             playBtn.onClick.RemoveAllListeners();
-            var currentLevel = Main.Instance.CurrentLevel;
+            var currentLevel = Main.CurrentLevel;
 
             if (levelNumber > currentLevel)
                 state = State.Disabled;
@@ -41,13 +41,8 @@ namespace UI
                 levelText.color = defaultLevelTextColor;
                 playBtn.onClick.AddListener(() => 
                 { 
-                    Main.Instance.ReloadLevel(levelNumber); 
-                    handler.levelPanel.SetActive(true);
-                    handler.settingsBtn.gameObject.SetActive(true);
-                    handler.restartBtn.gameObject.SetActive(true);
-                    handler.ShowAllStartBtn(true);
-                    handler.chooseLvlPanel.SetActive(false);
-                    handler.curtain.SetActive(false);
+                    Main.ChoosedLevel = levelNumber;
+                    SceneManager.LoadScene(0);
                 });
                 handler.UpdateLevelView();
             }
@@ -61,14 +56,9 @@ namespace UI
                 back.color = scippedColor;
                 levelText.color = defaultLevelTextColor;
                 playBtn.onClick.AddListener(() => 
-                { 
-                    Main.Instance.ReloadLevel(levelNumber); 
-                    handler.levelPanel.SetActive(true);
-                    handler.settingsBtn.gameObject.SetActive(true);
-                    handler.restartBtn.gameObject.SetActive(true);
-                    handler.ShowAllStartBtn(true);
-                    handler.chooseLvlPanel.SetActive(false);
-                    handler.curtain.SetActive(false);
+                {
+                    Main.ChoosedLevel = levelNumber;
+                    SceneManager.LoadScene(0);
                 });
                 handler.UpdateLevelView();
             }

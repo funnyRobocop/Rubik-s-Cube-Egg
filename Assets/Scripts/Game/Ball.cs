@@ -76,12 +76,6 @@ namespace RubiksCubeEgg.Game
             ThisTransform.SetLocalPositionAndRotation(PathCreator.path.GetPointAtDistance(distanceTravelled), Quaternion.identity);
         }
 
-        public void ChangeColor(Color color)
-        {
-            //distanceTravelled = initDistanceTravelled;
-            Color = color;
-        }
-
         public void InitRotation(int delta, SideBallContainer sideBallContainer)
         {
             this.SideBallContainer = sideBallContainer;

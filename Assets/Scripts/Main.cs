@@ -8,8 +8,8 @@ namespace RubiksCubeEgg
     public class Main : MonoBehaviour
     {      
 
-        public int CurrentLevel = 0;
-        public int ChoosedLevel = 0;
+        public static int CurrentLevel = 1;
+        public static int ChoosedLevel;
         public List<int> SkippedLevelList = new();
 
         public static Main Instance;
@@ -33,7 +33,7 @@ namespace RubiksCubeEgg
         
         void Start()
         {
-            LoadLevel(0);
+            LoadLevel(ChoosedLevel);
         }
 
         private void OnDestroy()
@@ -43,26 +43,24 @@ namespace RubiksCubeEgg
 
         public void LoadLevel(int level)
         {
-            ChoosedLevel = level;
-            IsRun = ChoosedLevel > 0;
+            IsRun = level > 0;
             var spawnedBalls = ballSpawner.SpawnBalls(level);
             collisionsChecker.Init(spawnedBalls);
-        }
-
-        public void ReloadLevel(int level)
-        {
-            ChoosedLevel = level;
-            IsRun = ChoosedLevel > 0;
-            foreach (var item in collisionsChecker.ballList)
-            {
-                item.ChangeColor(Game.Color.Blue);
-            }
-            uIHandler.UpdateLevelView();
         }
 
         private void Win()
         {
             Debug.Log("Win");
+
+            if (IsRun)
+            {
+                if (ChoosedLevel == CurrentLevel)
+                    CurrentLevel++;
+                else
+                    if (SkippedLevelList.Contains(ChoosedLevel))
+                        SkippedLevelList.Remove(ChoosedLevel); //todo проверить
+            }
+            
             uIHandler.ShowWin();
             IsRun = false;
         }

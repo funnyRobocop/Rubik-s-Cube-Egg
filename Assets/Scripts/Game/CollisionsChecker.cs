@@ -11,7 +11,7 @@ namespace RubiksCubeEgg.Game
         public event Action OnWin;
 
         [SerializeField]
-        private List<BallContainerBase> ballContainers;
+        public List<BallContainerBase> ballContainers;
 
         public List<Ball> ballList = new();
         private bool isRun;
@@ -83,10 +83,18 @@ namespace RubiksCubeEgg.Game
                 }
             }
 
-            if (Main.Instance.ChoosedLevel == 0)
+            if (Main.ChoosedLevel == 0)
                 return;
                 
-            Debug.Log("Check is finished");
+            /*Debug.Log("Check is finished");
+            foreach(var item in ballContainers[(int)ContainerType.Forward].Balls)
+                Debug.Log("Forward " + item.Color);
+            foreach(var item in ballContainers[(int)ContainerType.Back].Balls)
+                Debug.Log("Back " + item.Color);
+            foreach(var item in ballContainers[(int)ContainerType.Left].Balls)
+                Debug.Log("Left " + item.Color);
+            foreach(var item in ballContainers[(int)ContainerType.Right].Balls)
+                Debug.Log("Right " + item.Color);*/
 
             if (CheckWinCondition() && OnWin!= null)
                 OnWin();
@@ -112,7 +120,6 @@ namespace RubiksCubeEgg.Game
                 Debug.LogError("elements count not correct" + ballList.Count) ;
                 return false;
             }
-
             var color = ballList[0].Color;
             foreach (var item in ballList)
             {

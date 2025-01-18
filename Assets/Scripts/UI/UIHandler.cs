@@ -72,6 +72,16 @@ namespace UI
             initTrainBtnPos = trainBtn.transform.position;
         }
 
+        void Start()
+        {            
+            if (Main.ChoosedLevel > 0)
+            {
+                curtain.SetActive(false);
+                startPanel.SetActive(false);                
+                levelPanel.SetActive(true);
+            }
+        }
+
         void OnDestroy()
         {            
             foreach (var item in backColorBtn)
@@ -141,7 +151,7 @@ namespace UI
 
         public void UpdateLevelView()
         {
-            var level = Main.Instance.ChoosedLevel;
+            var level = Main.ChoosedLevel;
 
             string difficultText;
             if (level >= 80)
