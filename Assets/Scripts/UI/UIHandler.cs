@@ -132,6 +132,8 @@ namespace UI
                 chooseLevelItem.Load(i+1,this);
                 levelItems.Add(chooseLevelItem);
             }
+
+            chooseLvlItemParent.transform.position = Vector3.zero;
         }
 
         public void ShowWin()
