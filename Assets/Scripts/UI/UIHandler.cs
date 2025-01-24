@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
@@ -28,15 +29,17 @@ namespace UI
         public Material[] eggMaterial;
         private Color choosedBackColor;
         private Color choosedEggColor;
-        private Button choosedBackColorBtn;
-        private Button choosedEggColorBtn;        
-        public Button[] backColorBtn;
-        public Button[] eggColorBtn;
+        public Button choosedBackColorBtn;
+        public Button choosedEggColorBtn;        
+        public List<Button> backColorBtn;
+        public List<Button> eggColorBtn;
         
         public Button playBtn;
         public GameObject restartBtn;
         public GameObject trainBtn;
         public GameObject settingsBtn;
+        public GameObject musicOn;
+        public GameObject musicOff;
 
         public Vector3 initPlayBtnPos;
         public Vector3 initTrainBtnPos;
@@ -54,7 +57,9 @@ namespace UI
                 btn.onClick.AddListener(() =>
                 {
                     choosedBackColorBtn = btn;
-                    ChangeBackColor();                 
+                    btn.GetComponentsInChildren<Image>(true).Last().enabled = true;
+                    ChangeBackColor();
+                    Main.Instance.SaveData();              
                 });
             }
 
@@ -63,7 +68,9 @@ namespace UI
                 btn.onClick.AddListener(() =>
                 {
                     choosedEggColorBtn = btn;
-                    ChangeEggColor();                 
+                    btn.GetComponentsInChildren<Image>(true).Last().enabled = true;
+                    ChangeEggColor();
+                    Main.Instance.SaveData();
                 });
             }
 
@@ -71,6 +78,9 @@ namespace UI
 
             initPlayBtnPos = playBtn.transform.parent.position;
             initTrainBtnPos = trainBtn.transform.position;
+
+            musicOn.SetActive(Main.musicOn);
+            musicOff.SetActive(!Main.musicOn);
         }
 
         void Start()
@@ -136,6 +146,12 @@ namespace UI
             chooseLvlItemParent.transform.position = Vector3.zero;
         }
 
+        public void LoadSettings(int bg, int egg)
+        {
+            backColorBtn[bg].onClick.Invoke();
+            eggColorBtn[egg].onClick.Invoke();
+        }
+
         public void ShowWin()
         {
             curtain.SetActive(true);
@@ -158,13 +174,7 @@ namespace UI
             var level = Main.ChoosedLevel;
 
             string difficultText;
-            if (level >= 80)
-                difficultText = "Extreme";
-            else if (level >= 60)
-                difficultText = "Super";
-            else if (level >= 40)
-                difficultText = "Very";
-            else if (level >= 20)
+            if (level >= 14)
                 difficultText = "Hard";
             else 
                 difficultText = "Easy";

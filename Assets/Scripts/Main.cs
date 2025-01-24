@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
@@ -10,10 +11,13 @@ namespace RubiksCubeEgg
 
         public static int CurrentLevel = 1;
         public static int ChoosedLevel;
+        public static bool musicOn;
+
         public List<int> SkippedLevelList = new();
 
         public static Main Instance;
 
+        private DataLoader dataLoader;
         [SerializeField]
         private Game.BallSpawner ballSpawner;
         [SerializeField]
@@ -23,16 +27,25 @@ namespace RubiksCubeEgg
 
         public bool IsRun;
 
+        public bool MusicOn { set { musicOn = value; } }
+
         void Awake()
         {
             Application.targetFrameRate = 60;
             Input.multiTouchEnabled = false;
             collisionsChecker.OnWin += Win;
-            Instance = this;            
+            Instance = this;
+            dataLoader = FindFirstObjectByType<DataLoader>();       
         }
         
         void Start()
         {
+            var data = dataLoader.LoadFromPrefs();
+            CurrentLevel = data.level;
+
+            if (CurrentLevel < 1)
+                CurrentLevel = 1;
+
             LoadLevel(ChoosedLevel);
         }
 
@@ -62,8 +75,17 @@ namespace RubiksCubeEgg
                 
                 uIHandler.ShowWin();
             }
+
+            SaveData();
             
             IsRun = false;
+        }
+
+        public void SaveData()
+        {
+            dataLoader.SaveToPrefs(CurrentLevel, ChoosedLevel, 
+                uIHandler.backColorBtn.IndexOf(uIHandler.choosedBackColorBtn), 
+                uIHandler.eggColorBtn.IndexOf(uIHandler.choosedEggColorBtn));
         }
     }
 }

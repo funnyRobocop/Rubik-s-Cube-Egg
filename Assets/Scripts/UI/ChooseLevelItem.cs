@@ -35,7 +35,7 @@ namespace UI
 
             this.levelText.text = levelNumber.ToString();
 
-            state = State.Passed; // test
+            //state = State.Passed; // test
 
             if (state == State.Passed)
             {
