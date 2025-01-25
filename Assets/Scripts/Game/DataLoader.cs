@@ -2,39 +2,34 @@ using UnityEngine;
 
 public class  DataLoader : MonoBehaviour
 {
-    public int ID;
     public PlayerData PlayerData = new();
 
 
-    void Awake()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
-
-    public PlayerData LoadFromPrefs()
+    public void LoadFromPrefs()
     {
         var data = PlayerPrefs.GetString("data", string.Empty);
 
         if (string.IsNullOrEmpty(data))
-            return PlayerData;
+            return;
 
         PlayerData = JsonUtility.FromJson<PlayerData>(data);
-        return PlayerData;
     }
 
-    public void SaveToPrefs(int currentLevel, int choosedLevel, int bg, int egg)
+    public void SaveToPrefs(int currentLevel, int bg, int egg, bool music)
     {
-        ID++;
         PlayerData = new PlayerData
         {
-            id = ID,
+            id = PlayerData.id++,
             level = currentLevel,
             bg = bg,
-            egg = egg
+            egg = egg,
+            music = music
         };
-        string data = JsonUtility.ToJson(PlayerData);
+
+        var data = JsonUtility.ToJson(PlayerData);
         PlayerPrefs.SetString("data", data);
         PlayerPrefs.Save();
+        Debug.Log(data);
     }
 }
 
@@ -45,4 +40,5 @@ public class PlayerData
     public int level;
     public int bg;
     public int egg;
+    public bool music;
 }

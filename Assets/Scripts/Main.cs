@@ -7,11 +7,13 @@ using UnityEngine;
 namespace RubiksCubeEgg
 {
     public class Main : MonoBehaviour
-    {      
+    {
 
-        public static int CurrentLevel = 1;
+        public int CurrentLevel = 1;
         public static int ChoosedLevel;
-        public static bool musicOn;
+        public int Bg;
+        public int Egg;
+        public bool Music { get; set; }
 
         public List<int> SkippedLevelList = new();
 
@@ -27,8 +29,6 @@ namespace RubiksCubeEgg
 
         public bool IsRun;
 
-        public bool MusicOn { set { musicOn = value; } }
-
         void Awake()
         {
             Application.targetFrameRate = 60;
@@ -40,13 +40,19 @@ namespace RubiksCubeEgg
         
         void Start()
         {
-            var data = dataLoader.LoadFromPrefs();
-            CurrentLevel = data.level;
+            dataLoader.LoadFromPrefs();
+            CurrentLevel = dataLoader.PlayerData.level;
+            Bg = dataLoader.PlayerData.bg;
+            Egg = dataLoader.PlayerData.egg;
+            Music = dataLoader.PlayerData.music;
 
             if (CurrentLevel < 1)
                 CurrentLevel = 1;
 
             LoadLevel(ChoosedLevel);
+
+            uIHandler.LoadSettings(Bg, Egg);
+            uIHandler.LoadMusic(Music);
         }
 
         private void OnDestroy()
@@ -83,9 +89,7 @@ namespace RubiksCubeEgg
 
         public void SaveData()
         {
-            dataLoader.SaveToPrefs(CurrentLevel, ChoosedLevel, 
-                uIHandler.backColorBtn.IndexOf(uIHandler.choosedBackColorBtn), 
-                uIHandler.eggColorBtn.IndexOf(uIHandler.choosedEggColorBtn));
+            dataLoader.SaveToPrefs(CurrentLevel, Bg, Egg, Music);
         }
     }
 }

@@ -14,7 +14,6 @@ namespace RubiksCubeEgg.Game
         public List<BallContainerBase> ballContainers;
 
         public List<Ball> ballList = new();
-        private bool isRun;
 
         public enum ContainerType { Up, Middle, Bottom, Forward, Back, Left, Right }
 
@@ -23,7 +22,6 @@ namespace RubiksCubeEgg.Game
         {
             foreach (var item in ballContainers)
             {
-                item.OnRotationStarted += Stop;
                 item.OnRotationFinished += Run;
             }
         }
@@ -32,7 +30,6 @@ namespace RubiksCubeEgg.Game
         {
             foreach (var item in ballContainers)
             {
-                item.OnRotationStarted -= Stop;
                 item.OnRotationFinished -= Run;
             }
         }
@@ -45,8 +42,6 @@ namespace RubiksCubeEgg.Game
 
         private void Run()
         {
-            isRun = true;
-
             foreach (var item in ballContainers)
                 item.Clear();
 
@@ -98,11 +93,6 @@ namespace RubiksCubeEgg.Game
 
             if (CheckWinCondition() && OnWin!= null)
                 OnWin();
-        }
-
-        private void Stop()
-        {
-            isRun = false;
         }
 
         private bool CheckWinCondition()

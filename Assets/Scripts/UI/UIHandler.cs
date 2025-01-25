@@ -57,8 +57,11 @@ namespace UI
                 btn.onClick.AddListener(() =>
                 {
                     choosedBackColorBtn = btn;
+                    foreach (var item in backColorBtn)
+                        item.GetComponentsInChildren<Image>(true).Last().enabled = false;
                     btn.GetComponentsInChildren<Image>(true).Last().enabled = true;
                     ChangeBackColor();
+                    Main.Instance.Bg = backColorBtn.IndexOf(btn);
                     Main.Instance.SaveData();              
                 });
             }
@@ -68,8 +71,11 @@ namespace UI
                 btn.onClick.AddListener(() =>
                 {
                     choosedEggColorBtn = btn;
+                    foreach (var item in eggColorBtn)
+                        item.GetComponentsInChildren<Image>(true).Last().enabled = false;
                     btn.GetComponentsInChildren<Image>(true).Last().enabled = true;
                     ChangeEggColor();
+                    Main.Instance.Egg = eggColorBtn.IndexOf(btn);
                     Main.Instance.SaveData();
                 });
             }
@@ -78,9 +84,6 @@ namespace UI
 
             initPlayBtnPos = playBtn.transform.parent.position;
             initTrainBtnPos = trainBtn.transform.position;
-
-            musicOn.SetActive(Main.musicOn);
-            musicOff.SetActive(!Main.musicOn);
         }
 
         void Start()
@@ -111,8 +114,6 @@ namespace UI
 
                 curtain.SetActive(true);
                 startPanel.SetActive(true);
-                
-                //levelPanel.SetActive(false);
                 trainPanel.SetActive(false);
                 settingsPanel.SetActive(false);
                 chooseLvlPanel.SetActive(false);
@@ -150,6 +151,14 @@ namespace UI
         {
             backColorBtn[bg].onClick.Invoke();
             eggColorBtn[egg].onClick.Invoke();
+        }
+
+        public void LoadMusic(bool isOn)
+        {
+            if (isOn)
+                musicOff.GetComponentInChildren<Button>(true).onClick.Invoke();
+            else
+                musicOn.GetComponentInChildren<Button>(true).onClick.Invoke();
         }
 
         public void ShowWin()

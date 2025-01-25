@@ -1912,8 +1912,20 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 876953196}
         m_TargetAssemblyTypeName: RubiksCubeEgg.Main, Assembly-CSharp
-        m_MethodName: set_MusicOn
+        m_MethodName: set_Music
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 876953196}
+        m_TargetAssemblyTypeName: RubiksCubeEgg.Main, Assembly-CSharp
+        m_MethodName: SaveData
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3237,8 +3249,20 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 876953196}
         m_TargetAssemblyTypeName: RubiksCubeEgg.Main, Assembly-CSharp
-        m_MethodName: set_MusicOn
+        m_MethodName: set_Music
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 876953196}
+        m_TargetAssemblyTypeName: RubiksCubeEgg.Main, Assembly-CSharp
+        m_MethodName: SaveData
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -3606,7 +3630,7 @@ GameObject:
   - component: {fileID: 519048335}
   - component: {fileID: 519048336}
   m_Layer: 5
-  m_Name: 2
+  m_Name: 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5128,7 +5152,7 @@ GameObject:
   - component: {fileID: 734872047}
   - component: {fileID: 734872048}
   m_Layer: 5
-  m_Name: 1
+  m_Name: 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6582,6 +6606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1d8761d76f4164d9fd66ca63c7e199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentLevel: 1
+  Bg: 0
+  Egg: 0
   SkippedLevelList: 
   ballSpawner: {fileID: 1203810308}
   collisionsChecker: {fileID: 1203810309}
@@ -10468,10 +10495,10 @@ MonoBehaviour:
   choosedBackColorBtn: {fileID: 0}
   choosedEggColorBtn: {fileID: 0}
   backColorBtn:
-  - {fileID: 734872047}
-  - {fileID: 519048335}
-  - {fileID: 1905935565}
   - {fileID: 1948292400}
+  - {fileID: 1905935565}
+  - {fileID: 519048335}
+  - {fileID: 734872047}
   eggColorBtn:
   - {fileID: 60469869}
   - {fileID: 244157841}
@@ -10481,8 +10508,8 @@ MonoBehaviour:
   restartBtn: {fileID: 49711898}
   trainBtn: {fileID: 1814900742}
   settingsBtn: {fileID: 19645076}
-  musicOn: {fileID: 0}
-  musicOff: {fileID: 0}
+  musicOn: {fileID: 2106241465}
+  musicOff: {fileID: 856320486}
   initPlayBtnPos: {x: 0, y: 0, z: 0}
   initTrainBtnPos: {x: 0, y: 0, z: 0}
   levelNumber: {fileID: 874441656}
@@ -10597,12 +10624,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf670c508bc874548a2f55775f1d750c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: 0
   PlayerData:
     id: 0
     level: 0
     bg: 0
     egg: 0
+    music: 0
 --- !u!4 &1421923717
 Transform:
   m_ObjectHideFlags: 0
@@ -13836,7 +13863,7 @@ GameObject:
   - component: {fileID: 1905935565}
   - component: {fileID: 1905935566}
   m_Layer: 5
-  m_Name: 3
+  m_Name: 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14439,7 +14466,7 @@ GameObject:
   - component: {fileID: 1948292400}
   - component: {fileID: 1948292401}
   m_Layer: 5
-  m_Name: 4
+  m_Name: 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14995,10 +15022,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1530144844}
-  - {fileID: 734872044}
-  - {fileID: 519048332}
-  - {fileID: 1905935562}
   - {fileID: 1948292397}
+  - {fileID: 1905935562}
+  - {fileID: 519048332}
+  - {fileID: 734872044}
   m_Father: {fileID: 1713462307}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

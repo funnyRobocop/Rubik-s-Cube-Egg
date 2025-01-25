@@ -24,7 +24,7 @@ namespace UI
         {
             //Debug.Log("level item " + levelNumber);
             playBtn.onClick.RemoveAllListeners();
-            var currentLevel = Main.CurrentLevel;
+            var currentLevel = Main.Instance.CurrentLevel;
 
             if (levelNumber > currentLevel)
                 state = State.Disabled;
