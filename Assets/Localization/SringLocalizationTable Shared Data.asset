@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: SringLocalizationTable Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: SringLocalizationTable
+  m_TableCollectionNameGuidString: c006acf4b98107e4b9a26bffdffe4425
+  m_Entries:
+  - m_Id: 286774337536
+    m_Key: play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8113643397120
+    m_Key: restart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8349099040768
+    m_Key: train
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8625344290816
+    m_Key: settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11102206631936
+    m_Key: choosecolor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11454322647040
+    m_Key: back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11534391910400
+    m_Key: egg
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20374109888512
+    m_Key: win
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20572974424064
+    m_Key: next
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27501595533312
+    m_Key: train1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27508155424768
+    m_Key: train2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27510273548288
+    m_Key: train3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 27512349728768
+    m_Key: train4
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 3877827480539627788
+  references:
+    version: 2
+    RefIds:
+    - rid: 3877827480539627788
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1737926842824

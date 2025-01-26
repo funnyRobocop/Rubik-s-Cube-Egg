@@ -17,9 +17,10 @@ public class  DataLoader : MonoBehaviour
 
     public void SaveToPrefs(int currentLevel, int bg, int egg, bool music)
     {
+        PlayerData.id++;
         PlayerData = new PlayerData
         {
-            id = PlayerData.id++,
+            id = PlayerData.id,
             level = currentLevel,
             bg = bg,
             egg = egg,
