@@ -113,13 +113,18 @@ namespace UI
                 if (winPanel.activeInHierarchy || dialogPanel.activeInHierarchy)
                     return;
 
+                FromLevelToMenu();
+            }
+        }
+
+        public void FromLevelToMenu()
+        {
                 curtain.SetActive(true);
                 startPanel.SetActive(true);
                 trainPanel.SetActive(false);
                 settingsPanel.SetActive(false);
                 chooseLvlPanel.SetActive(false);
                 LoadMusic(Main.Instance.Music);
-            }
         }
 
         public void LoadChooseLevelPanel()
