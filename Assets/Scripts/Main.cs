@@ -52,7 +52,9 @@ namespace RubiksCubeEgg
             LoadLevel(ChoosedLevel);
 
             uIHandler.LoadSettings(Bg, Egg);
-            uIHandler.LoadMusic(Music);
+
+            if (ChoosedLevel <= 0)
+                uIHandler.LoadMusic(Music);
         }
 
         private void OnDestroy()
@@ -69,8 +71,6 @@ namespace RubiksCubeEgg
 
         private void Win()
         {
-            Debug.Log("Win");
-
             if (IsRun)
             {
                 if (ChoosedLevel == CurrentLevel)
@@ -80,9 +80,8 @@ namespace RubiksCubeEgg
                         SkippedLevelList.Remove(ChoosedLevel); //todo проверить
                 
                 uIHandler.ShowWin();
+                SaveData();
             }
-
-            SaveData();
             
             IsRun = false;
         }

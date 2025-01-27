@@ -21,6 +21,7 @@ namespace UI
         public GameObject winPanel;
         public GameObject chooseLvlPanel;
         public GameObject dialogPanel;
+        public AudioSource music;
 
         public GameObject chooseLvlItemPrefab;
         public GameObject chooseLvlItemParent;
@@ -117,6 +118,7 @@ namespace UI
                 trainPanel.SetActive(false);
                 settingsPanel.SetActive(false);
                 chooseLvlPanel.SetActive(false);
+                LoadMusic(Main.Instance.Music);
             }
         }
 
@@ -145,6 +147,7 @@ namespace UI
             }
 
             chooseLvlItemParent.transform.position = Vector3.zero;
+            music.Stop();
         }
 
         public void LoadSettings(int bg, int egg)
@@ -181,15 +184,16 @@ namespace UI
         public void UpdateLevelView()
         {
             var level = Main.ChoosedLevel;
+            var isRussian = Application.systemLanguage == SystemLanguage.Russian;
 
             string difficultText;
             if (level >= 14)
-                difficultText = "Hard";
+                difficultText = isRussian ? "сложно" : "hard";
             else 
-                difficultText = "Easy";
+                difficultText = isRussian ? "просто" : "easy";
             
             difficult.text = difficultText;
-            levelNumber.text = "level " + level.ToString();
+            levelNumber.text = (isRussian ? "уровень " : "level ") + level.ToString();
         }
 
         public void ChangeBackColor()
@@ -215,6 +219,7 @@ namespace UI
                 LoadChooseLevelPanel();
                 chooseLvlPanel.SetActive(true);
             }
+            music.Stop();
         }
 
         public void ShowAllStartBtn(bool isOn)
