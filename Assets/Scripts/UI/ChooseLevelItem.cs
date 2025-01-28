@@ -17,6 +17,7 @@ namespace UI
         public Color defaultLevelTextColor;
         public State state = State.None;
         public int leveNumber;
+        public GameObject check;
 
         public enum State { Passed, Skipped, Disabled, None }
 
@@ -24,6 +25,7 @@ namespace UI
         {
             //Debug.Log("level item " + levelNumber);
             playBtn.onClick.RemoveAllListeners();
+            check.SetActive(false);
             var currentLevel = Main.Instance.CurrentLevel;
 
             if (levelNumber > currentLevel)
@@ -46,6 +48,10 @@ namespace UI
                     Main.ChoosedLevel = levelNumber;
                     handler.RestartLevel();
                 });
+
+                /*if (levelNumber != currentLevel)
+                    check.SetActive(true);*/
+
                 handler.UpdateLevelView();
             }
             else if (state == State.Disabled)
