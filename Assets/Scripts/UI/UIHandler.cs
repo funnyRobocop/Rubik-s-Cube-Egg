@@ -183,7 +183,9 @@ namespace UI
 
             ShowAllStartBtn(false);
 
+#if UNITY_ANDROID
             Handheld.Vibrate();
+#endif
         }
 
         public void UpdateLevelView()

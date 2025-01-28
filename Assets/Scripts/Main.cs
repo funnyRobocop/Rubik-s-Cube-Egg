@@ -13,7 +13,7 @@ namespace RubiksCubeEgg
         public static int ChoosedLevel;
         public int Bg;
         public int Egg;
-        public bool Music { get; set; }
+        public bool Music { get; set; } = true;
 
         public List<int> SkippedLevelList = new();
 
