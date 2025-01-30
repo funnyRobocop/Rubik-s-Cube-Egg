@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 
 namespace UI
@@ -95,6 +96,7 @@ namespace UI
                 startPanel.SetActive(false);                
                 levelPanel.SetActive(true);
                 ShowAllStartBtn(true);
+                YandexGame.FullscreenShow();
             }
         }
 

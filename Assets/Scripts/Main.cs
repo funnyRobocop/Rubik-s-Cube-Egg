@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UI;
 using UnityEngine;
+using YG;
 
 
 namespace RubiksCubeEgg
@@ -35,12 +36,32 @@ namespace RubiksCubeEgg
             Input.multiTouchEnabled = false;
             collisionsChecker.OnWin += Win;
             Instance = this;
-            dataLoader = FindFirstObjectByType<DataLoader>();       
+            dataLoader = FindFirstObjectByType<DataLoader>();   
         }
-        
+
         void Start()
         {
-            dataLoader.LoadFromPrefs();
+#if UNITY_WEBGL
+            if (YandexGame.SDKEnabled)
+                LoadData();
+
+            YandexGame.GetDataEvent += LoadData;
+#else
+            LoadData();
+#endif 
+        }
+
+        private void OnDestroy()
+        {
+            collisionsChecker.OnWin -= Win;
+#if UNITY_WEBGL
+            YandexGame.GetDataEvent -= LoadData;
+#endif 
+        }
+        
+        private void LoadData()
+        {
+            dataLoader.Load();
             CurrentLevel = dataLoader.PlayerData.level;
             Bg = dataLoader.PlayerData.bg;
             Egg = dataLoader.PlayerData.egg;
@@ -55,11 +76,6 @@ namespace RubiksCubeEgg
 
             if (ChoosedLevel <= 0)
                 uIHandler.LoadMusic(Music);
-        }
-
-        private void OnDestroy()
-        {
-            collisionsChecker.OnWin -= Win;
         }
 
         public void LoadLevel(int level)
@@ -88,7 +104,7 @@ namespace RubiksCubeEgg
 
         public void SaveData()
         {
-            dataLoader.SaveToPrefs(CurrentLevel, Bg, Egg, Music);
+            dataLoader.Save(CurrentLevel, Bg, Egg, Music);
         }
     }
 }
