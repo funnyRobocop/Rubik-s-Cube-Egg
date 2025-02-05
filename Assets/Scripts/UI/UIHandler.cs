@@ -96,7 +96,7 @@ namespace UI
                 startPanel.SetActive(false);                
                 levelPanel.SetActive(true);
                 ShowAllStartBtn(true);
-                YandexGame.FullscreenShow();
+                //YandexGame.FullscreenShow();
             }
         }
 

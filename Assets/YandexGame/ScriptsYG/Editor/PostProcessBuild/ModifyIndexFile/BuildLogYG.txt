@@ -1,2 +1,0 @@
-Build path: C:/Projects/RubicsEgg/Builds/0.0.0.1
-Build number: 2

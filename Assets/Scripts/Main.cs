@@ -42,10 +42,10 @@ namespace RubiksCubeEgg
         void Start()
         {
 #if UNITY_WEBGL
-            if (YandexGame.SDKEnabled)
-                LoadData();
+            //if (YandexGame.SDKEnabled)
+            //    LoadData();
 
-            YandexGame.GetDataEvent += LoadData;
+            //YandexGame.GetDataEvent += LoadData;
 #else
             LoadData();
 #endif 
@@ -55,7 +55,7 @@ namespace RubiksCubeEgg
         {
             collisionsChecker.OnWin -= Win;
 #if UNITY_WEBGL
-            YandexGame.GetDataEvent -= LoadData;
+            //YandexGame.GetDataEvent -= LoadData;
 #endif 
         }
         
