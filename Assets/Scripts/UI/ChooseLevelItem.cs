@@ -10,65 +10,67 @@ namespace UI
     {
         public Button playBtn;
         public TextMeshProUGUI levelText;
-        public Image back;
-        public Color passedColor;
-        public Color scippedColor;
-        public Color disabledColor;
-        public Color defaultLevelTextColor;
+
+        public GameObject opened;
+        public GameObject passed;
+        public GameObject skipped;
+        public GameObject disabled;
+        
         public State state = State.None;
         public int leveNumber;
-        public GameObject check;
 
-        public enum State { Passed, Skipped, Disabled, None }
+        public enum State { Opened, Passed, Skipped, Disabled, None }
 
         public void Load(int levelNumber, UIHandler handler)
         {
             //Debug.Log("level item " + levelNumber);
-            playBtn.onClick.RemoveAllListeners();
-            check.SetActive(false);
+            
             var currentLevel = Main.Instance.CurrentLevel;
+            levelText.text = levelNumber.ToString();
 
-            if (levelNumber > currentLevel)
+            if (levelNumber == currentLevel)
+                state = State.Opened;
+            else if (levelNumber > currentLevel)
                 state = State.Disabled;
             else if (Main.Instance.SkippedLevelList.Contains(levelNumber))
                 state = State.Skipped;
             else 
                 state = State.Passed;
 
-            this.levelText.text = levelNumber.ToString();
-
             //state = State.Passed; // test
+
+            playBtn.onClick.RemoveAllListeners();
+            disabled.SetActive(false);
+            opened.SetActive(false);
+            passed.SetActive(false);
+            skipped.SetActive(false);
 
             if (state == State.Passed)
             {
-                back.color = passedColor;
-                levelText.color = defaultLevelTextColor;
+                passed.SetActive(true);
+                levelText.gameObject.SetActive(true);
+
                 playBtn.onClick.AddListener(() => 
                 { 
                     Main.ChoosedLevel = levelNumber;
                     handler.RestartLevel();
                 });
-
-                /*if (levelNumber != currentLevel)
-                    check.SetActive(true);*/
-
-                handler.UpdateLevelView();
             }
             else if (state == State.Disabled)
             {
-                back.color = disabledColor;
-                levelText.color = disabledColor;
+                disabled.SetActive(true);
+                levelText.gameObject.SetActive(false);
             }
-            else if (state == State.Skipped)
+            else
             {
-                back.color = scippedColor;
-                levelText.color = defaultLevelTextColor;
+                skipped.SetActive(true);
+                levelText.gameObject.SetActive(true);
+
                 playBtn.onClick.AddListener(() => 
                 {
                     Main.ChoosedLevel = levelNumber;
                     handler.RestartLevel();
                 });
-                handler.UpdateLevelView();
             }
         }
     }
