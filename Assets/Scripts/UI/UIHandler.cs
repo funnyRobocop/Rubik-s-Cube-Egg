@@ -22,6 +22,7 @@ namespace UI
         public GameObject winPanel;
         public GameObject chooseLvlPanel;
         public AudioSource music;
+        public GameObject adBtn;
 
         public GameObject chooseLvlItemPrefab;
         public GameObject chooseLvlItemParent;

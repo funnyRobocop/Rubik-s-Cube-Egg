@@ -83,7 +83,7 @@ namespace RubiksCubeEgg
                     CurrentLevel++;
                 else
                     if (SkippedLevelList.Contains(ChoosedLevel))
-                        SkippedLevelList.Remove(ChoosedLevel); //todo проверить
+                        SkippedLevelList.Remove(ChoosedLevel);
                 
                 uIHandler.ShowWin();
                 SaveData();
@@ -96,5 +96,33 @@ namespace RubiksCubeEgg
         {
             dataLoader.Save(CurrentLevel, Bg, Egg, Music);
         }
+
+        public void CheckRewardAd()
+        {
+            if (SkippedLevelList.Contains(ChoosedLevel) || ChoosedLevel < CurrentLevel)
+                uIHandler.adBtn.SetActive(false);
+            else
+                uIHandler.adBtn.SetActive(true);
+        }
+
+        public void RewardAdvShow()
+        {
+            if (SkippedLevelList.Contains(ChoosedLevel) || ChoosedLevel < CurrentLevel)
+                return;
+
+            YG2.RewardedAdvShow("skip", () =>
+            {
+                if (!SkippedLevelList.Contains(ChoosedLevel))
+                    SkippedLevelList.Add(ChoosedLevel);
+
+                ChoosedLevel = 0;
+                CurrentLevel++;
+                
+                SaveData();
+
+                uIHandler.chooseLvlPanel.SetActive(true);
+                uIHandler.LoadChooseLevelPanel();
+            });
+        } 
     }
 }
