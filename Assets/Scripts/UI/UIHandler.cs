@@ -217,7 +217,7 @@ namespace UI
         {
             choosedEggColor = choosedEggColorBtn.GetComponent<Image>().color;
             foreach(var item in eggMaterial)
-                item.color = choosedEggColor;
+                item.color = new Color(choosedEggColor.r, choosedEggColor.g, choosedEggColor.b, 255);
         }
 
         public void OnPlayBtnClick()
