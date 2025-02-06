@@ -194,7 +194,7 @@ namespace UI
         public void UpdateLevelView()
         {
             var level = Main.ChoosedLevel;
-            var isRussian = Application.systemLanguage == SystemLanguage.Russian;
+            var isRussian = YG2.lang == "ru";
 
             string difficultText;
             if (level >= 14)

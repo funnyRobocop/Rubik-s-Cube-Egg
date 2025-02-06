@@ -57,19 +57,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 27501595533312
-    m_Localized: tap on the empty area to rotate the egg
+    m_Localized: tap in an empty area to rotate the whole egg
     m_Metadata:
       m_Items: []
   - m_Id: 27508155424768
-    m_Localized: tap on the egg to rotate one of its 3 parts
+    m_Localized: tap on an egg to turn one of its 3 parts
     m_Metadata:
       m_Items: []
   - m_Id: 27510273548288
-    m_Localized: tap on the balls to move them inside the egg
+    m_Localized: tap on balls to move them inside the egg
     m_Metadata:
       m_Items: []
   - m_Id: 27512349728768
-    m_Localized: collect the balls of the same color together
+    m_Localized: gather the balls of the same color together
     m_Metadata:
       m_Items: []
   references:
