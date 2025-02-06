@@ -50,6 +50,7 @@ namespace UI
                 passed.SetActive(true);
                 levelText.gameObject.SetActive(true);
 
+                playBtn.interactable = true;
                 playBtn.onClick.AddListener(() => 
                 { 
                     Main.ChoosedLevel = levelNumber;
@@ -60,12 +61,15 @@ namespace UI
             {
                 disabled.SetActive(true);
                 levelText.gameObject.SetActive(false);
+
+                playBtn.interactable = false;
             }
             else
             {
                 skipped.SetActive(true);
                 levelText.gameObject.SetActive(true);
 
+                playBtn.interactable = true;
                 playBtn.onClick.AddListener(() => 
                 {
                     Main.ChoosedLevel = levelNumber;
