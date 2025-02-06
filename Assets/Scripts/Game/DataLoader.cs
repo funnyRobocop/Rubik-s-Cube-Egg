@@ -9,12 +9,16 @@ public class  DataLoader : MonoBehaviour
     {
         var data = string.Empty;
 #if UNITY_WEBGL
-        //data = YG2.saves.saves;
+        data = YG2.saves.saves;
 #else
         data = PlayerPrefs.GetString("data", string.Empty);
 #endif
+        if (string.IsNullOrEmpty(data))
+        {
+                Save(0,0,1,true);
+                return;
+        }
         PlayerData = JsonUtility.FromJson<PlayerData>(data);
-        PlayerData.music = !PlayerData.music;
     }
 
     public void Save(int currentLevel, int bg, int egg, bool music)
@@ -26,14 +30,14 @@ public class  DataLoader : MonoBehaviour
             level = currentLevel,
             bg = bg,
             egg = egg,
-            music = !music
+            music = music
         };
 
         var data = JsonUtility.ToJson(PlayerData);
 
 #if UNITY_WEBGL
-        //YG2.saves.saves = data;
-        //YG2.SaveProgress();
+        YG2.saves.saves = data;
+        YG2.SaveProgress();
 #else
         PlayerPrefs.SetString("data", data);
         PlayerPrefs.Save();

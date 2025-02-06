@@ -30,6 +30,7 @@ namespace UI
 
         public Material[] eggMaterial;
         private Color choosedBackColor;
+        public SpriteRenderer back;
         private Color choosedEggColor;
         public Button choosedBackColorBtn;
         public Button choosedEggColorBtn;        
@@ -96,7 +97,7 @@ namespace UI
                 startPanel.SetActive(false);                
                 levelPanel.SetActive(true);
                 ShowAllStartBtn(true);
-                //YandexGame.FullscreenShow();
+                YG2.InterstitialAdvShow();
             }
         }
 
@@ -209,6 +210,7 @@ namespace UI
         {
             choosedBackColor = choosedBackColorBtn.GetComponent<Image>().color;
             Camera.main.backgroundColor = choosedBackColor;
+            back.color = new Color(choosedBackColor.r, choosedBackColor.g, choosedBackColor.b, 255);
         }
 
         public void ChangeEggColor()
