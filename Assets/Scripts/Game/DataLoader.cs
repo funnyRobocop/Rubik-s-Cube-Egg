@@ -15,7 +15,7 @@ public class  DataLoader : MonoBehaviour
 #endif
         if (string.IsNullOrEmpty(data))
         {
-                Save(0,0,1,true);
+                Save(0,3,0,true);
                 return;
         }
         PlayerData = JsonUtility.FromJson<PlayerData>(data);
