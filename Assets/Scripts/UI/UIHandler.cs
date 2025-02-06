@@ -21,7 +21,6 @@ namespace UI
         public GameObject settingsPanel;
         public GameObject winPanel;
         public GameObject chooseLvlPanel;
-        public GameObject dialogPanel;
         public AudioSource music;
 
         public GameObject chooseLvlItemPrefab;
@@ -113,7 +112,7 @@ namespace UI
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (winPanel.activeInHierarchy || dialogPanel.activeInHierarchy)
+                if (winPanel.activeInHierarchy /*|| dialogPanel.activeInHierarchy*/)
                     return;
 
                 FromLevelToMenu();
@@ -182,7 +181,6 @@ namespace UI
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(false);
-            dialogPanel.SetActive(false);
 
             ShowAllStartBtn(false);
 
