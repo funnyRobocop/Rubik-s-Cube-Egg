@@ -99,6 +99,8 @@ namespace RubiksCubeEgg
                 
                 uIHandler.ShowWin();
                 SaveData();
+
+                YG2.SetLeaderboard("level", CurrentLevel - 1 - SkippedLevelList.Count);
             }
             
             IsRun = false;
