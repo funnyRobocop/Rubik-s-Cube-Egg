@@ -52,6 +52,10 @@ namespace UI
 
         public RubiksCubeEgg.Game.Props props;
 
+        public GameObject adBtnWithText;
+        public GameObject adBtnWithoutText;
+        private int lastWidth;
+
 
         void Awake()
         {
@@ -118,6 +122,16 @@ namespace UI
 
                 FromLevelToMenu();
             }
+
+            if (Screen.width != lastWidth)
+                OnChangeScreenWidth();
+        }
+
+        public void OnChangeScreenWidth()
+        {
+            adBtnWithText.SetActive(Screen.width >= Screen.height);
+            adBtnWithoutText.SetActive(Screen.width < Screen.height);
+            lastWidth = Screen.width;
         }
 
         public void FromLevelToMenu()
@@ -185,9 +199,9 @@ namespace UI
 
             ShowAllStartBtn(false);
 
-#if UNITY_ANDROID
+//#if UNITY_ANDROID
             Handheld.Vibrate();
-#endif
+//#endif
         }
 
         public void UpdateLevelView()
