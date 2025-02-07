@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using YG;
 
@@ -15,13 +16,13 @@ public class  DataLoader : MonoBehaviour
 #endif
         if (string.IsNullOrEmpty(data))
         {
-                Save(0,3,0,true);
+                Save(0,3,0,true, new List<int>());
                 return;
         }
         PlayerData = JsonUtility.FromJson<PlayerData>(data);
     }
 
-    public void Save(int currentLevel, int bg, int egg, bool music)
+    public void Save(int currentLevel, int bg, int egg, bool music, List<int> skipped)
     {
         PlayerData.id++;
         PlayerData = new PlayerData
@@ -30,7 +31,8 @@ public class  DataLoader : MonoBehaviour
             level = currentLevel,
             bg = bg,
             egg = egg,
-            music = music
+            music = music,
+            skipped = new List<int>(skipped)
         };
 
         var data = JsonUtility.ToJson(PlayerData);
@@ -54,4 +56,5 @@ public class PlayerData
     public int bg;
     public int egg;
     public bool music;
+    public List<int> skipped;
 }

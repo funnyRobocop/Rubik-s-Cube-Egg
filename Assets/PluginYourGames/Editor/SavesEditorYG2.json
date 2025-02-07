@@ -13,6 +13,6 @@
     false,
     false
   ],
-  "idSave": 549,
-  "saves": "{\"id\":399,\"level\":10,\"bg\":3,\"egg\":0,\"music\":false}"
+  "idSave": 746,
+  "saves": "{\"id\":596,\"level\":20,\"bg\":0,\"egg\":0,\"music\":false,\"skipped\":[18,19]}"
 }

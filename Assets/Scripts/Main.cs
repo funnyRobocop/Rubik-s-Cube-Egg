@@ -14,8 +14,17 @@ namespace RubiksCubeEgg
         public static int ChoosedLevel;
         public int Bg;
         public int Egg;
-        public bool Music { get; set; } = true;
+        public bool Music
+        {
+            get => music;
+            set
+            {
+                if (music != value)
+                    SaveData();
 
+                music = value;
+            }
+        }
         public List<int> SkippedLevelList = new();
 
         public static Main Instance;
@@ -29,6 +38,7 @@ namespace RubiksCubeEgg
         private UIHandler uIHandler;
 
         public bool IsRun;
+        private bool music = true;
 
         void Awake()
         {
@@ -55,12 +65,14 @@ namespace RubiksCubeEgg
             CurrentLevel = dataLoader.PlayerData.level;
             Bg = dataLoader.PlayerData.bg;
             Egg = dataLoader.PlayerData.egg;
+            SkippedLevelList = new List<int>(dataLoader.PlayerData.skipped);
             Music = dataLoader.PlayerData.music;
 
             if (CurrentLevel < 1)
                 CurrentLevel = 1;
 
             LoadLevel(ChoosedLevel);
+            CheckRewardAd();
 
             uIHandler.LoadSettings(Bg, Egg);
 
@@ -94,7 +106,7 @@ namespace RubiksCubeEgg
 
         public void SaveData()
         {
-            dataLoader.Save(CurrentLevel, Bg, Egg, Music);
+            dataLoader.Save(CurrentLevel, Bg, Egg, music, SkippedLevelList ?? new List<int>());
         }
 
         public void CheckRewardAd()
@@ -120,8 +132,13 @@ namespace RubiksCubeEgg
                 
                 SaveData();
 
+                IsRun = false;
+
                 uIHandler.chooseLvlPanel.SetActive(true);
                 uIHandler.LoadChooseLevelPanel();
+                uIHandler.startPanel.SetActive(false);
+                uIHandler.levelPanel.SetActive(false);
+                uIHandler.ShowAllStartBtn(false);
             });
         } 
     }
