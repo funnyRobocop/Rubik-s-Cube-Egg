@@ -16,14 +16,8 @@ namespace RubiksCubeEgg
         public int Egg;
         public bool Music
         {
-            get => music;
-            set
-            {
-                if (music != value)
-                    SaveData();
-
-                music = value;
-            }
+            get;
+            set;
         }
         public List<int> SkippedLevelList = new();
 
@@ -38,7 +32,6 @@ namespace RubiksCubeEgg
         private UIHandler uIHandler;
 
         public bool IsRun;
-        private bool music = true;
 
         void Awake()
         {
@@ -63,9 +56,9 @@ namespace RubiksCubeEgg
         {
             dataLoader.Load();
             CurrentLevel = dataLoader.PlayerData.level;
+            SkippedLevelList = new List<int>(dataLoader.PlayerData.skipped);
             Bg = dataLoader.PlayerData.bg;
             Egg = dataLoader.PlayerData.egg;
-            SkippedLevelList = new List<int>(dataLoader.PlayerData.skipped);
             Music = dataLoader.PlayerData.music;
 
             if (CurrentLevel < 1)
@@ -108,7 +101,7 @@ namespace RubiksCubeEgg
 
         public void SaveData()
         {
-            dataLoader.Save(CurrentLevel, Bg, Egg, music, SkippedLevelList ?? new List<int>());
+            dataLoader.Save(CurrentLevel, Bg, Egg, Music, SkippedLevelList ?? new List<int>());
         }
 
         public void CheckRewardAd()

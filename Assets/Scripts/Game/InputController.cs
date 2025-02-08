@@ -1,5 +1,3 @@
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 
@@ -59,7 +57,7 @@ namespace RubiksCubeEgg.Game
                 return;
             }
 
-            if (!Input.GetMouseButton(0))
+            if (!Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
             {
                 lastMousePosition = Input.mousePosition;                
 
