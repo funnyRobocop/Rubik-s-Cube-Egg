@@ -58,8 +58,7 @@ namespace RubiksCubeEgg.Game
             }
 
             if (!Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
-            {
-                lastMousePosition = Input.mousePosition;                
+            {             
 
                 if (state == State.Up || state == State.Middle|| state == State.Bottom)
                 {
@@ -165,6 +164,8 @@ namespace RubiksCubeEgg.Game
                 case State.None:         
                     break;
             }
+            
+            lastMousePosition = Input.mousePosition;   
         }
 
         private void RotateSideContainer(SideBallContainer container, Vector3 inputDelta)
