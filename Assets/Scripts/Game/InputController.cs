@@ -58,7 +58,8 @@ namespace RubiksCubeEgg.Game
             }
 
             if (!Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
-            {             
+            {         
+                lastMousePosition = Input.mousePosition;    
 
                 if (state == State.Up || state == State.Middle|| state == State.Bottom)
                 {
@@ -73,6 +74,7 @@ namespace RubiksCubeEgg.Game
                 rightContainer.CanMove = true;
 
                 lastBallHit = null;
+                lastBallHitFrameCounter = 0;
                 
                 state = State.None;
 
@@ -184,18 +186,15 @@ namespace RubiksCubeEgg.Game
 
         private void RotateSegmentContainer(SegmentBallContainer container, Vector3 inputDelta)
         {
-            if (lastMousePosition == Input.mousePosition)
-                return;
-
             container.OnRotateStart();
             container.Rotate(inputDelta);
-            lastMousePosition = Input.mousePosition;
         }
 
         private void RotateCamera( Vector3 inputDelta)
         {
             if (!IsMouseOverGameWindow)
-            return;
+                return;
+
             cameraController.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
         }
