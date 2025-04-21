@@ -175,9 +175,9 @@ namespace RubiksCubeEgg.Game
             if (lastBallHit == null || lastMousePosition == Input.mousePosition || !container.CanMove)
                 return;
 
-            lastBallHitFrameCounter++;
+            /*lastBallHitFrameCounter++;
             if (lastBallHitFrameCounter < 10)
-                return;
+                return;*/
 
             container.OnRotateStart();
             container.Rotate(Ball.InputDeltaToDirection(inputDelta, lastBallHit));
