@@ -83,6 +83,7 @@ namespace RubiksCubeEgg.Game
 
             if (Input.GetMouseButtonDown(0))
             {
+                lastMousePosition = Input.mousePosition;   
                 var ray = cameraController.Camera.ScreenPointToRay(Input.mousePosition);
                 var hits = Physics.RaycastAll(ray, 100f, Consts.UpLayerMask | Consts.MiddleLayerMask | Consts.BottomLayerMask | Consts.BallLayerMask | Consts.CameraLayerMask);
 
