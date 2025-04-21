@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: train4
     m_Metadata:
       m_Items: []
+  - m_Id: 30533798244061184
+    m_Key: skip
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

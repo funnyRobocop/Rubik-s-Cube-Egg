@@ -72,6 +72,10 @@ MonoBehaviour:
     m_Localized: gather the balls of the same color together
     m_Metadata:
       m_Items: []
+  - m_Id: 30533798244061184
+    m_Localized: skip for ad
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

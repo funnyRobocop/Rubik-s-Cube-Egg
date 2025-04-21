@@ -204,9 +204,9 @@ namespace UI
 
             ShowAllStartBtn(false);
 
-//#if UNITY_ANDROID
-            //Handheld.Vibrate();
-//#endif
+#if UNITY_ANDROID
+            Handheld.Vibrate();
+#endif
         }
 
         public void UpdateLevelView()
@@ -215,7 +215,7 @@ namespace UI
 #if UNITY_WEBGL
             var isRussian = YG2.lang == "ru";
 #else
-            var isRussian = false;
+            var isRussian = Application.systemLanguage == SystemLanguage.Russian;
 #endif          
 
             string difficultText;
