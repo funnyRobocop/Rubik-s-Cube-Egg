@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
         {
             if (lockCameraXZ)
                 inputDelta = new Vector3(0f, inputDelta.x, 0f);
-
-            cameraRotator.Rotate(inputDelta);
+            if (inputDelta.magnitude != float.NaN && !float.IsInfinity(inputDelta.magnitude) && inputDelta.normalized.y != float.NaN)
+                cameraRotator.Rotate(inputDelta);
         }
 }

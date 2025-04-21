@@ -1,7 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using RubiksCubeEgg;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YG;
 
 
 namespace UI
@@ -9,63 +13,63 @@ namespace UI
 
     public class UIHandler : MonoBehaviour
     {
-        public GameObject startPanel;
+        public GameObject curtain;
+
         public GameObject levelPanel;
+        public GameObject startPanel;
         public GameObject trainPanel;
         public GameObject settingsPanel;
-        public GameObject chooseLvlPanel;
         public GameObject winPanel;
+        public GameObject chooseLvlPanel;
+        public AudioSource music;
+        public GameObject adBtn;
 
-        public SpriteRenderer backSprite;
+        public GameObject chooseLvlItemPrefab;
+        public GameObject chooseLvlItemParent;
+        public List<ChooseLevelItem> levelItems = new();
+
         public Material[] eggMaterial;
         private Color choosedBackColor;
-        private Button choosedBackColorBtn;
+        public SpriteRenderer back;
         private Color choosedEggColor;
-        private Button choosedEggColorBtn;        
-        public Button[] backColorBtn;
-        public Button[] eggColorBtn;
+        public Button choosedBackColorBtn;
+        public Button choosedEggColorBtn;        
+        public List<Button> backColorBtn;
+        public List<Button> eggColorBtn;
         
-        public Button nextLevelBtn;
         public Button playBtn;
-        public Button restartBtn;
-        public Button trainBtn;
-        public Button settingsBtn;
+        public GameObject restartBtn;
+        public GameObject trainBtn;
+        public GameObject settingsBtn;
+        public GameObject musicOn;
+        public GameObject musicOff;
+
+        public Vector3 initPlayBtnPos;
+        public Vector3 initTrainBtnPos;
+
         public TextMeshProUGUI levelNumber;
         public TextMeshProUGUI difficult;
-        public Button leftLevelBtn;
-        public Button rightLevelBtn;
-        public Button updateBtn;
 
         public RubiksCubeEgg.Game.Props props;
+
+        public GameObject adBtnWithText;
+        public GameObject adBtnWithoutText;
+        private int lastWidth;
 
 
         void Awake()
         {
-            playBtn.onClick.AddListener(OnPlayClick);
-            restartBtn.onClick.AddListener(OnRestartClick);
-            trainBtn.onClick.AddListener(OnTrainClick);
-            settingsBtn.onClick.AddListener(OnSettinigsClick);
-            nextLevelBtn.onClick.AddListener(OnNextClick);
-            leftLevelBtn.onClick.AddListener(OnLeftLevelBtnClick);
-            rightLevelBtn.onClick.AddListener(OnRightLevelBtnClick);
-            updateBtn.onClick.AddListener(OnUpdateAllBtnClick);
-
-            startPanel.SetActive(true);
-            levelPanel.SetActive(false);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(false);
-            winPanel.SetActive(false);
-
-            playBtn.transform.parent.gameObject.SetActive(true);
-            restartBtn.transform.parent.gameObject.SetActive(false);
-
             foreach (var btn in backColorBtn)
             {
                 btn.onClick.AddListener(() =>
                 {
                     choosedBackColorBtn = btn;
-                    ChangeBackColor();                 
+                    foreach (var item in backColorBtn)
+                        item.GetComponentsInChildren<Image>(true).Last().enabled = false;
+                    btn.GetComponentsInChildren<Image>(true).Last().enabled = true;
+                    ChangeBackColor();
+                    Main.Instance.Bg = backColorBtn.IndexOf(btn);
+                    Main.Instance.SaveData();              
                 });
             }
 
@@ -74,24 +78,35 @@ namespace UI
                 btn.onClick.AddListener(() =>
                 {
                     choosedEggColorBtn = btn;
-                    ChangeEggColor();                 
+                    foreach (var item in eggColorBtn)
+                        item.GetComponentsInChildren<Image>(true).Last().enabled = false;
+                    btn.GetComponentsInChildren<Image>(true).Last().enabled = true;
+                    ChangeEggColor();
+                    Main.Instance.Egg = eggColorBtn.IndexOf(btn);
+                    Main.Instance.SaveData();
                 });
             }
 
             UpdateLevelView();
+
+            initPlayBtnPos = playBtn.transform.parent.position;
+            initTrainBtnPos = trainBtn.transform.position;
+        }
+
+        void Start()
+        {            
+            if (Main.ChoosedLevel > 0)
+            {
+                curtain.SetActive(false);
+                startPanel.SetActive(false);                
+                levelPanel.SetActive(true);
+                ShowAllStartBtn(true);
+                YG2.InterstitialAdvShow();
+            }
         }
 
         void OnDestroy()
-        {
-            playBtn.onClick.RemoveListener(OnPlayClick);
-            restartBtn.onClick.RemoveListener(OnRestartClick);
-            trainBtn.onClick.RemoveListener(OnTrainClick);
-            settingsBtn.onClick.RemoveListener(OnSettinigsClick);
-            nextLevelBtn.onClick.RemoveListener(OnNextClick);
-            leftLevelBtn.onClick.RemoveListener(OnLeftLevelBtnClick);
-            rightLevelBtn.onClick.RemoveListener(OnRightLevelBtnClick);
-            updateBtn.onClick.RemoveListener(OnUpdateAllBtnClick);
-            
+        {            
             foreach (var item in backColorBtn)
                 item.onClick.RemoveAllListeners();              
             foreach (var item in eggColorBtn)
@@ -102,200 +117,147 @@ namespace UI
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                winPanel.SetActive(false);
+                if (winPanel.activeInHierarchy /*|| dialogPanel.activeInHierarchy*/)
+                    return;
+
+                FromLevelToMenu();
+            }
+
+            if (Screen.width != lastWidth)
+                OnChangeScreenWidth();
+        }
+
+        public void OnChangeScreenWidth()
+        {
+            adBtnWithText.SetActive(Screen.width >= Screen.height);
+            adBtnWithoutText.SetActive(Screen.width < Screen.height);
+            lastWidth = Screen.width;
+        }
+
+        public void FromLevelToMenu()
+        {
+                curtain.SetActive(true);
                 startPanel.SetActive(true);
-                levelPanel.SetActive(false);
                 trainPanel.SetActive(false);
                 settingsPanel.SetActive(false);
                 chooseLvlPanel.SetActive(false);
+                LoadMusic(Main.Instance.Music);
+        }
 
-                playBtn.transform.parent.gameObject.SetActive(false);
-                restartBtn.transform.parent.gameObject.SetActive(true);
+        public void LoadChooseLevelPanel()
+        {
+            if (levelItems.Count > 0)
+            {
+                for (int item = 0; item < levelItems.Count; item++)
+                {
+                    var levelItem = levelItems[item];
+                    levelItem.Load(item+1, this);
+                }
+                return;
             }
+
+            for (int i = 0; i < props.levels.Count - 1; i++)
+            {
+                var item = props.levels[i];
+                var level = Instantiate(chooseLvlItemPrefab, Vector3.zero, Quaternion.identity);
+                level.transform.SetParent(chooseLvlItemParent.transform);
+                level.transform.localScale = Vector3.one;
+                var chooseLevelItem = level.GetComponent<ChooseLevelItem>();
+
+                chooseLevelItem.Load(i+1,this);
+                levelItems.Add(chooseLevelItem);
+            }
+
+            chooseLvlItemParent.transform.position = Vector3.zero;
+            music.Stop();
         }
 
-        void OnUpdateAllBtnClick()
+        public void LoadSettings(int bg, int egg)
         {
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(true);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(false);
-
-            UpdateLevelView();
-            Main.Instance.Restart();       
+            backColorBtn[bg].onClick.Invoke();
+            eggColorBtn[egg].onClick.Invoke();
         }
 
-        void OnNextClick()
+        public void LoadMusic(bool isOn)
         {
-            Main.Instance.CurrentLevel++;
-            
-            if (Main.Instance.CurrentLevel > props.levels.Count - 1)
-                Main.Instance.CurrentLevel = props.levels.Count - 1;
-            
-            UpdateLevelView();
-            Main.Instance.Restart();
-
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(true);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(false);
-            
-            playBtn.transform.parent.gameObject.SetActive(true);
-            restartBtn.transform.parent.gameObject.SetActive(false);
-
-            UpdateLevelView();
-        }
-
-        void OnPlayClick()
-        {
-            Main.Instance.Restart();
-            
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(false);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(true);
-            
-            playBtn.transform.parent.gameObject.SetActive(false);
-            restartBtn.transform.parent.gameObject.SetActive(false);
-
-            UpdateLevelView();
-
-            Handheld.Vibrate();
-        }
-
-        void OnRestartClick()
-        {
-            Main.Instance.Restart();
-
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(false);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(true);
-
-            playBtn.transform.parent.gameObject.SetActive(false);
-            restartBtn.transform.parent.gameObject.SetActive(false);
-
-            UpdateLevelView();
-
-            Handheld.Vibrate();
-
-        }
-
-        void OnTrainClick()
-        {
-            Main.Instance.Restart();
-
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(false);
-            trainPanel.SetActive(true);
-            settingsPanel.SetActive(false);
-            chooseLvlPanel.SetActive(false);
-
-            playBtn.transform.parent.gameObject.SetActive(false);
-            restartBtn.transform.parent.gameObject.SetActive(false);
-
-            trainPanel.transform.GetChild(0).gameObject.SetActive(true);//curtain
-            trainPanel.transform.GetChild(1).gameObject.SetActive(true);
-            trainPanel.transform.GetChild(2).gameObject.SetActive(false);
-            trainPanel.transform.GetChild(3).gameObject.SetActive(false);
-            trainPanel.transform.GetChild(4).gameObject.SetActive(false);
-
-            Handheld.Vibrate();
-        }
-
-        void OnSettinigsClick()
-        {
-            winPanel.SetActive(false);
-            startPanel.SetActive(false);
-            levelPanel.SetActive(false);
-            trainPanel.SetActive(false);
-            settingsPanel.SetActive(true);
-            chooseLvlPanel.SetActive(false);
-
-            playBtn.transform.parent.gameObject.SetActive(false);
-            restartBtn.transform.parent.gameObject.SetActive(false);
+            if (isOn)
+                musicOff.GetComponentInChildren<Button>(true).onClick.Invoke();
+            else
+                musicOn.GetComponentInChildren<Button>(true).onClick.Invoke();
         }
 
         public void ShowWin()
         {
+            curtain.SetActive(true);
             winPanel.SetActive(true);
+
             startPanel.SetActive(false);
             levelPanel.SetActive(false);
             trainPanel.SetActive(false);
             settingsPanel.SetActive(false);
             chooseLvlPanel.SetActive(false);
 
-            playBtn.transform.parent.gameObject.SetActive(false);
-            restartBtn.transform.parent.gameObject.SetActive(false);
-            
-            UpdateLevelView();
+            ShowAllStartBtn(false);
 
-            Handheld.Vibrate();
+//#if UNITY_ANDROID
+            //Handheld.Vibrate();
+//#endif
         }
 
         public void UpdateLevelView()
         {
-            var level = Main.Instance.CurrentLevel + 1;
+            var level = Main.ChoosedLevel;
+            var isRussian = YG2.lang == "ru";
 
-            var difficultText = "Extreme";
-
-            if (level >= 80)
-                difficultText = "Extreme";
-            else if (level >= 60)
-                difficultText = "Super";
-            else if (level >= 40)
-                difficultText = "Very";
-            else if (level >= 20)
-                difficultText = "Hard";
+            string difficultText;
+            if (level >= 14)
+                difficultText = isRussian ? "сложно" : "hard";
             else 
-                difficultText = "Easy";
+                difficultText = isRussian ? "просто" : "easy";
             
             difficult.text = difficultText;
-            levelNumber.text = "level " + level.ToString();
+            levelNumber.text = (isRussian ? "уровень " : "level ") + level.ToString();
         }
 
         public void ChangeBackColor()
         {
             choosedBackColor = choosedBackColorBtn.GetComponent<Image>().color;
             Camera.main.backgroundColor = choosedBackColor;
+            back.color = new Color(choosedBackColor.r, choosedBackColor.g, choosedBackColor.b, 255);
         }
 
         public void ChangeEggColor()
         {
             choosedEggColor = choosedEggColorBtn.GetComponent<Image>().color;
             foreach(var item in eggMaterial)
-                item.color = choosedEggColor;
+                item.color = new Color(choosedEggColor.r, choosedEggColor.g, choosedEggColor.b, 255);
         }
 
-        void OnLeftLevelBtnClick()
+        public void OnPlayBtnClick()
         {
-            Main.Instance.CurrentLevel--;
+            curtain.SetActive(false);
+            startPanel.SetActive(false);
 
-            if (Main.Instance.CurrentLevel < 0)
-                Main.Instance.CurrentLevel = 0;
-
-            UpdateLevelView();
-            Main.Instance.Restart();
+            if (!Main.Instance.IsRun)
+            {
+                LoadChooseLevelPanel();
+                chooseLvlPanel.SetActive(true);
+            }
+            music.Stop();
         }
 
-        void OnRightLevelBtnClick()
+        public void ShowAllStartBtn(bool isOn)
         {
-            Main.Instance.CurrentLevel++;
-            
-            if (Main.Instance.CurrentLevel > props.levels.Count - 1)
-                Main.Instance.CurrentLevel = props.levels.Count - 1;
-            
-            UpdateLevelView();
-            Main.Instance.Restart();
+            restartBtn.SetActive(isOn);
+            startPanel.GetComponent<Animator>().enabled = isOn;
+
+            playBtn.transform.parent.position = new Vector3(playBtn.transform.parent.position.x, initPlayBtnPos.y, playBtn.transform.parent.position.z);
+            trainBtn.transform.position = new Vector3(trainBtn.transform.position.x, initTrainBtnPos.y, trainBtn.transform.position.z);
+        }
+
+        public void RestartLevel()
+        {
+            SceneManager.LoadScene(0);
         }
     }
 }

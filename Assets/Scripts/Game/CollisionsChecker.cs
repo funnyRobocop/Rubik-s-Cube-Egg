@@ -11,10 +11,9 @@ namespace RubiksCubeEgg.Game
         public event Action OnWin;
 
         [SerializeField]
-        private List<BallContainerBase> ballContainers;
+        public List<BallContainerBase> ballContainers;
 
-        private List<Ball> ballList = new();
-        private bool isRun;
+        public List<Ball> ballList = new();
 
         public enum ContainerType { Up, Middle, Bottom, Forward, Back, Left, Right }
 
@@ -23,7 +22,6 @@ namespace RubiksCubeEgg.Game
         {
             foreach (var item in ballContainers)
             {
-                item.OnRotationStarted += Stop;
                 item.OnRotationFinished += Run;
             }
         }
@@ -32,7 +30,6 @@ namespace RubiksCubeEgg.Game
         {
             foreach (var item in ballContainers)
             {
-                item.OnRotationStarted -= Stop;
                 item.OnRotationFinished -= Run;
             }
         }
@@ -45,11 +42,6 @@ namespace RubiksCubeEgg.Game
 
         private void Run()
         {
-            /*if (isRun)
-                return;*/
-
-            isRun = true;
-
             foreach (var item in ballContainers)
                 item.Clear();
 
@@ -86,15 +78,21 @@ namespace RubiksCubeEgg.Game
                 }
             }
 
-            Debug.Log("Check is finished");
+            if (Main.ChoosedLevel == 0)
+                return;
+                
+            /*Debug.Log("Check is finished");
+            foreach(var item in ballContainers[(int)ContainerType.Forward].Balls)
+                Debug.Log("Forward " + item.Color);
+            foreach(var item in ballContainers[(int)ContainerType.Back].Balls)
+                Debug.Log("Back " + item.Color);
+            foreach(var item in ballContainers[(int)ContainerType.Left].Balls)
+                Debug.Log("Left " + item.Color);
+            foreach(var item in ballContainers[(int)ContainerType.Right].Balls)
+                Debug.Log("Right " + item.Color);*/
 
             if (CheckWinCondition() && OnWin!= null)
                 OnWin();
-        }
-
-        private void Stop()
-        {
-            isRun = false;
         }
 
         private bool CheckWinCondition()
@@ -107,6 +105,11 @@ namespace RubiksCubeEgg.Game
 
         private bool CheckColorIsEqual(List<Ball> ballList)
         {
+            if (ballList.Count != Consts.SideBallCount)
+            {
+                Debug.LogError("elements count not correct" + ballList.Count) ;
+                return false;
+            }
             var color = ballList[0].Color;
             foreach (var item in ballList)
             {

@@ -73,7 +73,9 @@ namespace RubiksCubeEgg.Game
         private void AlignRotation(float goalY)
         {
             var deltaY = goalY - thisTransform.localRotation.eulerAngles.y;
-            thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotAligningSpeed, 0f));
+            //thisTransform.Rotate(new Vector3(0f, deltaY * Time.deltaTime * Consts.SegmentRotAligningSpeed, 0f));
+
+            thisTransform.localRotation = Quaternion.Euler(new Vector3(thisTransform.localRotation.eulerAngles.x, goalY, thisTransform.localRotation.eulerAngles.z));
         }
 
         private void OnRotationFinish()

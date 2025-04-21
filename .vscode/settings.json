@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Rubik's Cube Egg.sln"
+    "dotnet.defaultSolution": "RubiksEgg.sln"
 }

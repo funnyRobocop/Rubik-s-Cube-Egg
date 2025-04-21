@@ -11,6 +11,7 @@ namespace RubiksCubeEgg.Game
         private float distanceTravelled;
         private float goalDistanceTravelled;
         private int direction;
+        private float initDistanceTravelled;
 
         public SideBallContainer SideBallContainer { get; set; }
         public Transform ThisTransform { get; private set; }
@@ -48,6 +49,7 @@ namespace RubiksCubeEgg.Game
         {
             ThisTransform = GetComponent<Transform>();
             enabled = false;
+            initDistanceTravelled = distanceTravelled;
         }
 
         private void Update()

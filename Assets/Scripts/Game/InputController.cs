@@ -22,6 +22,9 @@ namespace RubiksCubeEgg.Game
         private SideBallContainer leftContainer;
         [SerializeField]
         private SideBallContainer rightContainer;
+        [SerializeField]
+        private GameObject uiCurtain;
+
 
         private State state;
         private Vector3 lastMousePosition = Vector3.negativeInfinity;
@@ -48,9 +51,15 @@ namespace RubiksCubeEgg.Game
 
         private void Update()
         {
-            if (!Input.GetMouseButton(0))
-            {
-                lastMousePosition = Input.mousePosition;                
+            if (!IsMouseOverGameWindow)
+            {   
+                lastMousePosition = Vector3.negativeInfinity;
+                return;
+            }
+
+            if (!Input.GetMouseButton(0) || Input.GetMouseButtonUp(0))
+            {         
+                lastMousePosition = Input.mousePosition;    
 
                 if (state == State.Up || state == State.Middle|| state == State.Bottom)
                 {
@@ -65,6 +74,7 @@ namespace RubiksCubeEgg.Game
                 rightContainer.CanMove = true;
 
                 lastBallHit = null;
+                lastBallHitFrameCounter = 0;
                 
                 state = State.None;
 
@@ -73,10 +83,15 @@ namespace RubiksCubeEgg.Game
 
             if (Input.GetMouseButtonDown(0))
             {
+                lastMousePosition = Input.mousePosition;   
                 var ray = cameraController.Camera.ScreenPointToRay(Input.mousePosition);
                 var hits = Physics.RaycastAll(ray, 100f, Consts.UpLayerMask | Consts.MiddleLayerMask | Consts.BottomLayerMask | Consts.BallLayerMask | Consts.CameraLayerMask);
+
+                if (uiCurtain.activeInHierarchy)
+                    return;
+
                 Transform closestHit = null;
-                float minDistance = float.MaxValue;
+                var minDistance = float.MaxValue;
                 foreach (var item in hits)
                 {
                     if (item.distance < minDistance)
@@ -152,6 +167,8 @@ namespace RubiksCubeEgg.Game
                 case State.None:         
                     break;
             }
+            
+            lastMousePosition = Input.mousePosition;   
         }
 
         private void RotateSideContainer(SideBallContainer container, Vector3 inputDelta)
@@ -159,9 +176,9 @@ namespace RubiksCubeEgg.Game
             if (lastBallHit == null || lastMousePosition == Input.mousePosition || !container.CanMove)
                 return;
 
-            lastBallHitFrameCounter++;
+            /*lastBallHitFrameCounter++;
             if (lastBallHitFrameCounter < 10)
-                return;
+                return;*/
 
             container.OnRotateStart();
             container.Rotate(Ball.InputDeltaToDirection(inputDelta, lastBallHit));
@@ -170,18 +187,26 @@ namespace RubiksCubeEgg.Game
 
         private void RotateSegmentContainer(SegmentBallContainer container, Vector3 inputDelta)
         {
-            if (lastMousePosition == Input.mousePosition)
-                return;
-
             container.OnRotateStart();
             container.Rotate(inputDelta);
-            lastMousePosition = Input.mousePosition;
         }
 
         private void RotateCamera( Vector3 inputDelta)
         {
+            if (!IsMouseOverGameWindow)
+                return;
+
             cameraController.Rotate(inputDelta);
             lastMousePosition = Input.mousePosition;
+        }
+
+        private bool IsMouseOverGameWindow
+        {
+            get
+            {
+                Vector3 mp = Input.mousePosition;
+                return !( 0>mp.x || 0>mp.y || Screen.width<mp.x || Screen.height<mp.y );
+            }
         }
     }
 }
