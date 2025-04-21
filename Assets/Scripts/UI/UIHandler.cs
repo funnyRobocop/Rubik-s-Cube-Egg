@@ -5,8 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+#if UNITY_WEBGL
 using YG;
-
+#endif
 
 namespace UI
 {
@@ -101,7 +102,11 @@ namespace UI
                 startPanel.SetActive(false);                
                 levelPanel.SetActive(true);
                 ShowAllStartBtn(true);
+#if UNITY_WEBGL
                 YG2.InterstitialAdvShow();
+#else
+                Debug.Log("Todo InterstitialAdvShow");
+#endif
             }
         }
 
@@ -207,7 +212,11 @@ namespace UI
         public void UpdateLevelView()
         {
             var level = Main.ChoosedLevel;
+#if UNITY_WEBGL
             var isRussian = YG2.lang == "ru";
+#else
+            var isRussian = false;
+#endif          
 
             string difficultText;
             if (level >= 14)

@@ -92,8 +92,11 @@ namespace RubiksCubeEgg
                 
                 uIHandler.ShowWin();
                 SaveData();
-
+#if UNITY_WEBGL
                 YG2.SetLeaderboard("level", CurrentLevel - 1 - SkippedLevelList.Count);
+#else
+                Debug.Log("Todo SetLeaderboard");
+#endif   
             }
             
             IsRun = false;
@@ -116,7 +119,8 @@ namespace RubiksCubeEgg
         {
             if (SkippedLevelList.Contains(ChoosedLevel) || ChoosedLevel < CurrentLevel)
                 return;
-
+            
+#if UNITY_WEBGL
             YG2.RewardedAdvShow("skip", () =>
             {
                 if (!SkippedLevelList.Contains(ChoosedLevel))
@@ -135,6 +139,9 @@ namespace RubiksCubeEgg
                 uIHandler.levelPanel.SetActive(false);
                 uIHandler.ShowAllStartBtn(false);
             });
+#else
+                Debug.Log("Todo RewardedAdvShow");
+#endif   
         } 
     }
 }
