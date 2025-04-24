@@ -23,14 +23,14 @@ namespace YandexAdsEditor
 
         private static void ModifyPlist(string pathToBuildProject)
         {
-            /*string plistPath = Path.Combine(pathToBuildProject, "Info.plist");
+            string plistPath = Path.Combine(pathToBuildProject, "Info.plist");
             if (!File.Exists(plistPath))
             {
                 Debug.LogError("Info.plist not found at: " + plistPath);
                 return;
             }
 
-            PlistDocument plist = new PlistDocument();
+            /*PlistDocument plist = new PlistDocument();
             plist.ReadFromFile(plistPath);
 
             if (File.Exists(XMLFilePath))

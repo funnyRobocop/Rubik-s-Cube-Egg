@@ -105,7 +105,8 @@ namespace UI
 #if UNITY_WEBGL
                 YG2.InterstitialAdvShow();
 #else
-                Debug.Log("Todo InterstitialAdvShow");
+                AdsInterstitial.Instance.ShowInterstitial();
+                AdsRewarded.Instance.RequestRewardedAd();
 #endif
             }
         }

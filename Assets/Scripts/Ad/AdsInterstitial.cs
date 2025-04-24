@@ -8,61 +8,51 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YandexMobileAds;
 using YandexMobileAds.Base;
 
-public class YandexMobileAdsInterstitialDemoScript : MonoBehaviour
+public class AdsInterstitial : MonoBehaviour
 {
     private String message = "";
+    private float timer;
+    private float minTime = 60f;
 
     private InterstitialAdLoader interstitialAdLoader;
     private Interstitial interstitial;
 
+    public static AdsInterstitial Instance;
+
     public void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(this);
+
         this.interstitialAdLoader = new InterstitialAdLoader();
         this.interstitialAdLoader.OnAdLoaded += this.HandleAdLoaded;
         this.interstitialAdLoader.OnAdFailedToLoad += this.HandleAdFailedToLoad;
     }
 
-    public void OnGUI()
+    public void Start()
     {
-        var fontSize = (int)(0.05f * Math.Min(Screen.width, Screen.height));
+        RequestInterstitial();
+    }
 
-        var labelStyle = GUI.skin.GetStyle("label");
-        labelStyle.fontSize = fontSize;
-
-        var buttonStyle = GUI.skin.GetStyle("button");
-        buttonStyle.fontSize = fontSize;
-
-#if UNITY_EDITOR
-        this.message = "Mobile ads SDK is not available in editor. Only Android and iOS environments are supported";
-#else
-            if (GUILayout.Button("Request Interstitial", buttonStyle, GUILayout.Width(Screen.width), GUILayout.Height(Screen.height / 8)))
-            {
-                this.RequestInterstitial();
-            }
-
-            if (this.interstitial != null)
-            {
-                if (GUILayout.Button("Show Interstitial", buttonStyle, GUILayout.Width(Screen.width), GUILayout.Height(Screen.height / 8)))
-                {
-                    this.ShowInterstitial();
-                }
-            }
-            if(this.interstitial != null)
-            {
-                if (GUILayout.Button("Destroy Interstitial", buttonStyle, GUILayout.Width(Screen.width), GUILayout.Height(Screen.height / 8)))
-                {
-                    this.interstitial.Destroy();
-                }
-            }
-#endif
-
-        GUILayout.Label(this.message, labelStyle);
+    public void Update()
+    {
+        timer += Time.deltaTime;
+        if (timer > minTime)
+        {
+            if (interstitial == null)
+                RequestInterstitial();
+            timer = 0f;
+        }
     }
 
     private void RequestInterstitial()
@@ -70,8 +60,8 @@ public class YandexMobileAdsInterstitialDemoScript : MonoBehaviour
         //Sets COPPA restriction for user age under 13
         MobileAds.SetAgeRestrictedUser(true);
 
-        // Replace demo Unit ID 'demo-interstitial-yandex' with actual Ad Unit ID
-        string adUnitId = "demo-interstitial-yandex";
+        string adUnitId = "R-M-15198117-2";
+        //string adUnitId = "demo-interstitial-yandex";
 
         if (this.interstitial != null)
         {
@@ -82,7 +72,7 @@ public class YandexMobileAdsInterstitialDemoScript : MonoBehaviour
         this.DisplayMessage("Interstitial is requested");
     }
 
-    private void ShowInterstitial()
+    public void ShowInterstitial()
     {
         if (this.interstitial == null)
         {
@@ -137,8 +127,10 @@ public class YandexMobileAdsInterstitialDemoScript : MonoBehaviour
     {
         this.DisplayMessage("HandleAdDismissed event received");
 
-        this.interstitial.Destroy();
+        if (this.interstitial != null)
+            this.interstitial.Destroy();
         this.interstitial = null;
+        RequestInterstitial();
     }
 
     public void HandleImpression(object sender, ImpressionData impressionData)
@@ -150,6 +142,11 @@ public class YandexMobileAdsInterstitialDemoScript : MonoBehaviour
     public void HandleAdFailedToShow(object sender, AdFailureEventArgs args)
     {
         this.DisplayMessage($"HandleAdFailedToShow event received with message: {args.Message}");
+        
+        if (this.interstitial != null)
+            this.interstitial.Destroy();
+        this.interstitial = null;
+        RequestInterstitial();
     }
 
     #endregion

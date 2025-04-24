@@ -42,7 +42,8 @@ public static class GooglePostProcessBuild
                 rootDict.SetString("GADApplicationIdentifier", appKey);
 
                 File.WriteAllText(plistPath, plist.WriteToString());
-                Debug.Log("GADApplicationIdentifier successfully added to Info.plist");*/
+                Debug.Log("GADApplicationIdentifier successfully added to Info.plist");
+            */
             }
             else
             {

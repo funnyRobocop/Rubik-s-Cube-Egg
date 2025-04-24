@@ -139,7 +139,7 @@ namespace RubiksCubeEgg
                 uIHandler.ShowAllStartBtn(false);
             });
 #else
-                Debug.Log("Todo RewardedAdvShow");
+                AdsRewarded.Instance.ShowRewardedAd();
 #endif   
         } 
     }
