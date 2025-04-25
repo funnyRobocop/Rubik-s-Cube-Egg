@@ -106,7 +106,6 @@ namespace UI
                 YG2.InterstitialAdvShow();
 #else
                 AdsInterstitial.Instance.ShowInterstitial();
-                AdsRewarded.Instance.RequestRewardedAd();
 #endif
             }
         }

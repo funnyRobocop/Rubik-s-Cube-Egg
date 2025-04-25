@@ -8,19 +8,23 @@
  */
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using YandexMobileAds;
 using YandexMobileAds.Base;
 
 public class AdsRewarded : MonoBehaviour
 {
+
+    public Action OnLoaded;
+    public Action OnSuccess;
+    public Action OnFail;
+
     private String message = "";
 
     private RewardedAdLoader rewardedAdLoader;
 
     private RewardedAd rewardedAd;
+
     public static AdsRewarded Instance;
 
 
@@ -28,16 +32,16 @@ public class AdsRewarded : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
             return;
         }
 
         Instance = this;
         DontDestroyOnLoad(this);
 
-        this.rewardedAdLoader = new RewardedAdLoader();
-        this.rewardedAdLoader.OnAdLoaded += this.HandleAdLoaded;
-        this.rewardedAdLoader.OnAdFailedToLoad += this.HandleAdFailedToLoad;
+        rewardedAdLoader = new RewardedAdLoader();
+        rewardedAdLoader.OnAdLoaded += HandleAdLoaded;
+        rewardedAdLoader.OnAdFailedToLoad += HandleAdFailedToLoad;
     }
 
     public void Start()
@@ -47,39 +51,36 @@ public class AdsRewarded : MonoBehaviour
 
     public void RequestRewardedAd()
     {
-        this.DisplayMessage("RewardedAd is not ready yet");
         //Sets COPPA restriction for user age under 13
         MobileAds.SetAgeRestrictedUser(true);
 
-        if (this.rewardedAd != null)
+        if (rewardedAd != null)
         {
-            this.rewardedAd.Destroy();
+            rewardedAd.Destroy();
         }
 
-        // Replace demo Unit ID 'demo-rewarded-yandex' with actual Ad Unit ID
         string adUnitId = "R-M-15198117-3";
         
-        this.rewardedAdLoader.LoadAd(this.CreateAdRequest(adUnitId));
-        this.DisplayMessage("Rewarded Ad is requested");
+        rewardedAdLoader.LoadAd(CreateAdRequest(adUnitId));
+        DisplayMessage("Rewarded Ad is requested");
     }
 
     public void ShowRewardedAd()
     {
-        if (this.rewardedAd == null)
+        if (rewardedAd == null)
         {
-            this.DisplayMessage("RewardedAd is not ready yet");
-            RequestRewardedAd();
+            DisplayMessage("RewardedAd is not ready yet");
             return;
         }
 
-        this.rewardedAd.OnAdClicked += this.HandleAdClicked;
-        this.rewardedAd.OnAdShown += this.HandleAdShown;
-        this.rewardedAd.OnAdFailedToShow += this.HandleAdFailedToShow;
-        this.rewardedAd.OnAdImpression += this.HandleImpression;
-        this.rewardedAd.OnAdDismissed += this.HandleAdDismissed;
-        this.rewardedAd.OnRewarded += this.HandleRewarded;
+        rewardedAd.OnAdClicked += HandleAdClicked;
+        rewardedAd.OnAdShown += HandleAdShown;
+        rewardedAd.OnAdFailedToShow += HandleAdFailedToShow;
+        rewardedAd.OnAdImpression += HandleImpression;
+        rewardedAd.OnAdDismissed += HandleAdDismissed;
+        rewardedAd.OnRewarded += HandleRewarded;
 
-        this.rewardedAd.Show();
+        rewardedAd.Show();
     }
 
     private AdRequestConfiguration CreateAdRequest(string adUnitId)
@@ -97,52 +98,59 @@ public class AdsRewarded : MonoBehaviour
 
     public void HandleAdLoaded(object sender, RewardedAdLoadedEventArgs args)
     {
-        this.DisplayMessage("HandleAdLoaded event received");
-        this.rewardedAd = args.RewardedAd;
+        DisplayMessage("HandleAdLoaded event received");
+        rewardedAd = args.RewardedAd;
+
+        if (OnLoaded != null)
+            OnLoaded();
     }
 
     public void HandleAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        this.DisplayMessage(
-            $"HandleAdFailedToLoad event received with message: {args.Message}");
+        DisplayMessage($"HandleAdFailedToLoad event received with message: {args.Message}");
     }
 
     public void HandleAdClicked(object sender, EventArgs args)
     {
-        this.DisplayMessage("HandleAdClicked event received");
+        DisplayMessage("HandleAdClicked event received");
     }
 
     public void HandleAdShown(object sender, EventArgs args)
     {
-        this.DisplayMessage("HandleAdShown event received");
+        DisplayMessage("HandleAdShown event received");
     }
 
     public void HandleAdDismissed(object sender, EventArgs args)
     {
-        this.DisplayMessage("HandleAdDismissed event received");
+        DisplayMessage("HandleAdDismissed event received");
 
-        this.rewardedAd.Destroy();
-        this.rewardedAd = null;
+        rewardedAd.Destroy();
+        rewardedAd = null;
     }
 
     public void HandleImpression(object sender, ImpressionData impressionData)
     {
         var data = impressionData == null ? "null" : impressionData.rawData;
-        this.DisplayMessage($"HandleImpression event received with data: {data}");
+        DisplayMessage($"HandleImpression event received with data: {data}");
     }
 
     public void HandleRewarded(object sender, Reward args)
     {
-        this.DisplayMessage($"HandleRewarded event received: amout = {args.amount}, type = {args.type}");
+        DisplayMessage($"HandleRewarded event received: amout = {args.amount}, type = {args.type}");
+
+        if (OnSuccess != null)
+            OnSuccess();
     }
 
     public void HandleAdFailedToShow(object sender, AdFailureEventArgs args)
     {
-        this.DisplayMessage(
-            $"HandleAdFailedToShow event received with message: {args.Message}");
+        DisplayMessage($"HandleAdFailedToShow event received with message: {args.Message}");
             
-        this.rewardedAd.Destroy();
-        this.rewardedAd = null;
+        rewardedAd.Destroy();
+        rewardedAd = null;
+
+        if (OnFail != null)
+            OnFail();
     }
 
     #endregion

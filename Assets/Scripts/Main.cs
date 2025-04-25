@@ -49,6 +49,9 @@ namespace RubiksCubeEgg
         private void OnDestroy()
         {
             collisionsChecker.OnWin -= Win;
+            AdsRewarded.Instance.OnLoaded -= ShowAdBtn;
+            AdsRewarded.Instance.OnSuccess -= OnRewardedAdSuccess;
+            AdsRewarded.Instance.OnFail -= HideAdBtn;
         }
         
         private void LoadData()
@@ -108,10 +111,43 @@ namespace RubiksCubeEgg
 
         public void CheckRewardAd()
         {
+            uIHandler.adBtn.SetActive(false);
             if (SkippedLevelList.Contains(ChoosedLevel) || ChoosedLevel < CurrentLevel)
-                uIHandler.adBtn.SetActive(false);
-            else
-                uIHandler.adBtn.SetActive(true);
+                return;
+
+            AdsRewarded.Instance.RequestRewardedAd();
+            AdsRewarded.Instance.OnLoaded += ShowAdBtn;            
+        }
+
+        private void ShowAdBtn()
+        {
+            uIHandler.adBtn.SetActive(true);
+            AdsRewarded.Instance.OnSuccess += OnRewardedAdSuccess;
+            AdsRewarded.Instance.OnFail += HideAdBtn;
+        }
+
+        private void HideAdBtn()
+        {
+            uIHandler.adBtn.SetActive(false);
+        }
+
+        private void OnRewardedAdSuccess()
+        {
+            if (!SkippedLevelList.Contains(ChoosedLevel))
+                SkippedLevelList.Add(ChoosedLevel);
+
+            ChoosedLevel = 0;
+            CurrentLevel++;
+            
+            SaveData();
+
+            IsRun = false;
+
+            uIHandler.chooseLvlPanel.SetActive(true);
+            uIHandler.LoadChooseLevelPanel();
+            uIHandler.startPanel.SetActive(false);
+            uIHandler.levelPanel.SetActive(false);
+            uIHandler.ShowAllStartBtn(false);
         }
 
         public void RewardAdvShow()
@@ -120,26 +156,9 @@ namespace RubiksCubeEgg
                 return;
             
 #if UNITY_WEBGL
-            YG2.RewardedAdvShow("skip", () =>
-            {
-                if (!SkippedLevelList.Contains(ChoosedLevel))
-                    SkippedLevelList.Add(ChoosedLevel);
-
-                ChoosedLevel = 0;
-                CurrentLevel++;
-                
-                SaveData();
-
-                IsRun = false;
-
-                uIHandler.chooseLvlPanel.SetActive(true);
-                uIHandler.LoadChooseLevelPanel();
-                uIHandler.startPanel.SetActive(false);
-                uIHandler.levelPanel.SetActive(false);
-                uIHandler.ShowAllStartBtn(false);
-            });
+            YG2.RewardedAdvShow("skip", OnRewardedAdSuccess);
 #else
-                AdsRewarded.Instance.ShowRewardedAd();
+            AdsRewarded.Instance.ShowRewardedAd();
 #endif   
         } 
     }

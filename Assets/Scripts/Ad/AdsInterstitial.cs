@@ -16,7 +16,7 @@ public class AdsInterstitial : MonoBehaviour
 {
     private String message = "";
     private float timer;
-    private float minTime = 60f;
+    private float timerInterval = 60f;
 
     private InterstitialAdLoader interstitialAdLoader;
     private Interstitial interstitial;
@@ -34,9 +34,9 @@ public class AdsInterstitial : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(this);
 
-        this.interstitialAdLoader = new InterstitialAdLoader();
-        this.interstitialAdLoader.OnAdLoaded += this.HandleAdLoaded;
-        this.interstitialAdLoader.OnAdFailedToLoad += this.HandleAdFailedToLoad;
+        interstitialAdLoader = new InterstitialAdLoader();
+        interstitialAdLoader.OnAdLoaded += HandleAdLoaded;
+        interstitialAdLoader.OnAdFailedToLoad += HandleAdFailedToLoad;
     }
 
     public void Start()
@@ -47,7 +47,7 @@ public class AdsInterstitial : MonoBehaviour
     public void Update()
     {
         timer += Time.deltaTime;
-        if (timer > minTime)
+        if (timer > timerInterval)
         {
             if (interstitial == null)
                 RequestInterstitial();
@@ -63,30 +63,30 @@ public class AdsInterstitial : MonoBehaviour
         string adUnitId = "R-M-15198117-2";
         //string adUnitId = "demo-interstitial-yandex";
 
-        if (this.interstitial != null)
+        if (interstitial != null)
         {
-            this.interstitial.Destroy();
+            interstitial.Destroy();
         }
 
-        this.interstitialAdLoader.LoadAd(this.CreateAdRequest(adUnitId));
-        this.DisplayMessage("Interstitial is requested");
+        interstitialAdLoader.LoadAd(CreateAdRequest(adUnitId));
+        DisplayMessage("Interstitial is requested");
     }
 
     public void ShowInterstitial()
     {
-        if (this.interstitial == null)
+        if (interstitial == null)
         {
-            this.DisplayMessage("Interstitial is not ready yet");
+            DisplayMessage("Interstitial is not ready yet");
             return;
         }
 
-        this.interstitial.OnAdClicked += this.HandleAdClicked;
-        this.interstitial.OnAdShown += this.HandleAdShown;
-        this.interstitial.OnAdFailedToShow += this.HandleAdFailedToShow;
-        this.interstitial.OnAdImpression += this.HandleImpression;
-        this.interstitial.OnAdDismissed += this.HandleAdDismissed;
+        interstitial.OnAdClicked += HandleAdClicked;
+        interstitial.OnAdShown += HandleAdShown;
+        interstitial.OnAdFailedToShow += HandleAdFailedToShow;
+        interstitial.OnAdImpression += HandleImpression;
+        interstitial.OnAdDismissed += HandleAdDismissed;
 
-        this.interstitial.Show();
+        interstitial.Show();
     }
 
     private AdRequestConfiguration CreateAdRequest(string adUnitId)
@@ -104,49 +104,55 @@ public class AdsInterstitial : MonoBehaviour
 
     public void HandleAdLoaded(object sender, InterstitialAdLoadedEventArgs args)
     {
-        this.DisplayMessage("HandleAdLoaded event received");
+        DisplayMessage("HandleAdLoaded event received");
 
-        this.interstitial = args.Interstitial;
+        interstitial = args.Interstitial;
     }
 
     public void HandleAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
-        this.DisplayMessage($"HandleAdFailedToLoad event received with message: {args.Message}");
+        DisplayMessage($"HandleAdFailedToLoad event received with message: {args.Message}");
     }
     public void HandleAdClicked(object sender, EventArgs args)
     {
-        this.DisplayMessage("HandleAdClicked event received");
+        DisplayMessage("HandleAdClicked event received");
+
+        if (interstitial != null)
+            interstitial.Destroy();
+        interstitial = null;
     }
 
     public void HandleAdShown(object sender, EventArgs args)
     {
-        this.DisplayMessage("HandleAdShown event received");
+        DisplayMessage("HandleAdShown event received");
+        
+        if (interstitial != null)
+            interstitial.Destroy();
+        interstitial = null;
     }
 
     public void HandleAdDismissed(object sender, EventArgs args)
     {
-        this.DisplayMessage("HandleAdDismissed event received");
+        DisplayMessage("HandleAdDismissed event received");
 
-        if (this.interstitial != null)
-            this.interstitial.Destroy();
-        this.interstitial = null;
-        RequestInterstitial();
+        if (interstitial != null)
+            interstitial.Destroy();
+        interstitial = null;
     }
 
     public void HandleImpression(object sender, ImpressionData impressionData)
     {
         var data = impressionData == null ? "null" : impressionData.rawData;
-        this.DisplayMessage($"HandleImpression event received with data: {data}");
+        DisplayMessage($"HandleImpression event received with data: {data}");
     }
 
     public void HandleAdFailedToShow(object sender, AdFailureEventArgs args)
     {
         this.DisplayMessage($"HandleAdFailedToShow event received with message: {args.Message}");
         
-        if (this.interstitial != null)
-            this.interstitial.Destroy();
-        this.interstitial = null;
-        RequestInterstitial();
+        if (interstitial != null)
+            interstitial.Destroy();
+        interstitial = null;
     }
 
     #endregion
