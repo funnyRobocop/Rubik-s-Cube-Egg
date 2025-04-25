@@ -60,6 +60,7 @@ public class AdsRewarded : MonoBehaviour
         }
 
         string adUnitId = "R-M-15198117-3";
+        //adUnitId = "demo-rewarded-yandex";
         
         rewardedAdLoader.LoadAd(CreateAdRequest(adUnitId));
         DisplayMessage("Rewarded Ad is requested");
@@ -124,7 +125,8 @@ public class AdsRewarded : MonoBehaviour
     {
         DisplayMessage("HandleAdDismissed event received");
 
-        rewardedAd.Destroy();
+        if (rewardedAd!= null)
+            rewardedAd.Destroy();
         rewardedAd = null;
     }
 
@@ -138,6 +140,10 @@ public class AdsRewarded : MonoBehaviour
     {
         DisplayMessage($"HandleRewarded event received: amout = {args.amount}, type = {args.type}");
 
+        if (rewardedAd!= null)
+            rewardedAd.Destroy();
+        rewardedAd = null;
+
         if (OnSuccess != null)
             OnSuccess();
     }
@@ -146,7 +152,8 @@ public class AdsRewarded : MonoBehaviour
     {
         DisplayMessage($"HandleAdFailedToShow event received with message: {args.Message}");
             
-        rewardedAd.Destroy();
+        if (rewardedAd!= null)
+            rewardedAd.Destroy();
         rewardedAd = null;
 
         if (OnFail != null)

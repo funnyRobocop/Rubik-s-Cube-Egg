@@ -41,7 +41,7 @@ public class AdsInterstitial : MonoBehaviour
 
     public void Start()
     {
-        RequestInterstitial();
+        //RequestInterstitial();
     }
 
     public void Update()
@@ -125,7 +125,7 @@ public class AdsInterstitial : MonoBehaviour
     public void HandleAdShown(object sender, EventArgs args)
     {
         DisplayMessage("HandleAdShown event received");
-        
+
         if (interstitial != null)
             interstitial.Destroy();
         interstitial = null;

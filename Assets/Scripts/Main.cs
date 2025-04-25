@@ -159,6 +159,7 @@ namespace RubiksCubeEgg
             YG2.RewardedAdvShow("skip", OnRewardedAdSuccess);
 #else
             AdsRewarded.Instance.ShowRewardedAd();
+            HideAdBtn();
 #endif   
         } 
     }
